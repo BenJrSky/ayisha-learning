@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lesson — Ayisha.js</title>
+  <link rel="stylesheet" href="site.css">
+  <meta name="color-scheme" content="light dark">
+</head>
+<body>
+  <component @src="header.html"></component>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+        <h1>Flexbox fundamentals</h1>
+        <p class="hero-subtitle">Build robust, responsive layouts using modern Flexbox patterns.</p>
+        <a href="course-detail.html" class="cta">Back to course</a>
+      </div>
+    </section>
+
+    <section class="philosophy">
+      <h2>What you'll learn</h2>
+      <ul>
+        <li>Flex container and item properties</li>
+        <li>Axis, alignment, wrapping, and gaps</li>
+        <li>Common responsive patterns (toolbars, split panes, sticky footers)</li>
+      </ul>
+    </section>
+
+    <section class="install">
+      <h2>Example snippet</h2>
+      <pre><code><no><div class="row" style="display:flex; gap:1rem;">
+  <div class="col" style="flex:1; background:#fff; border:1px solid var(--border-color); padding:1rem;">A</div>
+  <div class="col" style="flex:2; background:#fff; border:1px solid var(--border-color); padding:1rem;">B</div>
+  <div class="col" style="flex:1; background:#fff; border:1px solid var(--border-color); padding:1rem;">C</div>
+</div></no></code></pre>
+    </section>
+
+    <nav class="page-nav">
+      <a href="course-detail.html">← Back to course</a>
+      <a href="lesson.html">Next lesson →</a>
+    </nav>
+  </main>
+
+  <init>
+    _currentPage = 'courses';
+  </init>
+  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <component @src="footer.html"></component>
+</body>
+</html>

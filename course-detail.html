@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course Detail — Ayisha.js</title>
+  <link rel="stylesheet" href="site.css">
+  <meta name="color-scheme" content="light dark">
+</head>
+<body>
+  <component @src="header.html"></component>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+        <h1>CSS Pro</h1>
+        <p class="hero-subtitle">Master Flexbox, Grid, animations, and advanced responsive patterns.</p>
+        <a href="enroll.html" class="cta">Enroll now</a>
+      </div>
+    </section>
+
+    <section class="philosophy" style="border-bottom:1px solid var(--border-light)">
+      <h2>Overview</h2>
+      <p>CSS Pro is a practical course focused on writing modern, scalable CSS. Learn layout systems, responsive techniques, and delightful micro-interactions—all with clean, accessible markup.</p>
+      <div class="tip">
+        <strong>Who is this for?</strong> Designers and developers who already know basic CSS and want to level up their layouts and components.
+      </div>
+      <ul>
+        <li><strong>Level:</strong> Intermediate</li>
+        <li><strong>Duration:</strong> 12 hours (self-paced)</li>
+        <li><strong>Format:</strong> Project-based lessons</li>
+      </ul>
+    </section>
+
+    <section class="hello-world">
+      <h2>Curriculum</h2>
+      <ol>
+        <li><a href="lesson.html">Flexbox fundamentals</a> — axes, alignment, gaps, and real-world patterns</li>
+        <li><a href="lesson.html">CSS Grid basics</a> — tracks, areas, and responsive grid systems</li>
+        <li><a href="lesson.html">Responsive strategy</a> — fluid type, clamps, and breakpoints</li>
+        <li><a href="lesson.html">State and interaction</a> — focus states, transitions, and animations</li>
+        <li><a href="lesson.html">Component library</a> — buttons, cards, tabs, and modals</li>
+      </ol>
+      <p class="tip" style="margin-top:1.5rem;">All lessons are accessible, keyboard-friendly, and use semantic HTML.</p>
+    </section>
+
+    <nav class="page-nav">
+      <a href="courses.html">← Back to Courses</a>
+      <a href="enroll.html">Enroll in CSS Pro →</a>
+    </nav>
+  </main>
+
+  <init>
+    _currentPage = 'courses';
+  </init>
+  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <component @src="footer.html"></component>
+</body>
+</html>

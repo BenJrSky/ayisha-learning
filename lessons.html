@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lessons — Ayisha.js</title>
+  <link rel="stylesheet" href="site.css">
+  <meta name="color-scheme" content="light dark">
+</head>
+<body>
+  <component @src="header.html"></component>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+        <h1>Lessons</h1>
+        <p class="hero-subtitle">Quick, focused lessons to build skills step by step.</p>
+        <a href="courses.html" class="cta">Browse courses</a>
+      </div>
+    </section>
+
+    <section class="philosophy">
+      <h2>Available lessons</h2>
+      <ul>
+        <li><a href="lesson.html">Flexbox fundamentals</a></li>
+        <li><a href="lesson.html">CSS Grid basics</a></li>
+        <li><a href="lesson.html">Responsive strategy</a></li>
+        <li><a href="lesson.html">State and interaction</a></li>
+        <li><a href="lesson.html">Component library</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <init>
+    _currentPage = 'courses';
+  </init>
+  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <component @src="footer.html"></component>
+</body>
+</html>

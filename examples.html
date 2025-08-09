@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayisha.js - Interactive Examples</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <component @src="header.html"></component>
+  <main class="container">
+    <section class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+        <h1>Ayisha.js Practical Examples</h1>
+        <p class="hero-subtitle">Real-world, ready-to-use components for every sector. Copy the code or try the live demo below each example.</p>
+      </div>
+    </section>
+
+    <section class="philosophy">
+      <!-- MODAL EXAMPLE -->
+      <section class="example-block" style="background:#f8fafc;border-radius:12px;padding:2rem 1.5rem;margin-bottom:2.5rem;box-shadow:0 2px 12px #0001;">
+        <h2 style="margin-top:0">Modal Dialog</h2>
+        <div class="example-columns" style="display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-start;">
+          <div class="example-code" style="flex:1 1 340px;min-width:320px;max-width:480px;">
+            <h4 style="margin-bottom:0.5em;color:#ffc400;">HTML Code</h4>
+            <pre style="background:#fffbe6;border-radius:8px;padding:1em 0.5em;"><code><no>
+<button @click="showModal = true">Open Modal</button>
+<div class="modal" @show="showModal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;">
+  <div style="background:#fff;padding:2rem;border-radius:8px;min-width:300px;">
+    <h3>Ayisha.js Modal</h3>
+    <p>This is a modal dialog.</p>
+    <button @click="showModal = false">Close</button>
+  </div>
+</div>
+</no></code></pre>
+          </div>
+          <div class="example-live" style="flex:1 1 340px;min-width:320px;max-width:480px;background:#fff;border-radius:8px;padding:1.5em;box-shadow:0 2px 8px #0001;">
+            <h4 style="margin-bottom:0.5em;color:#ffc400;">Live Demo</h4>
+            <button @click="showModal = true" class="btn-primary">Open Modal</button>
+            <div class="modal" @show="showModal" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;">
+              <div style="background:#fff;padding:2rem;border-radius:8px;min-width:300px;box-shadow:0 2px 16px #0003;">
+                <h3>Ayisha.js Modal</h3>
+                <p>This is a modal dialog.</p>
+                <button @click="showModal = false" class="btn-secondary">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOGIN FORM EXAMPLE -->
+      <section class="example-block" style="background:#f8fafc;border-radius:12px;padding:2rem 1.5rem;margin-bottom:2.5rem;box-shadow:0 2px 12px #0001;">
+        <h2 style="margin-top:0">Validated Login Form</h2>
+        <div class="example-columns" style="display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-start;">
+          <div class="example-code" style="flex:1 1 340px;min-width:320px;max-width:480px;">
+            <h4 style="margin-bottom:0.5em;color:#ffc400;">HTML Code</h4>
+            <pre style="background:#fffbe6;border-radius:8px;padding:1em 0.5em;"><code><no>
+<form>
+  <input @model="email" @validate="email" placeholder="Email">
+  <input @model="password" @validate="password" placeholder="Password" type="password">
+  <button @click="console.log('Login', email, password)" @class="{ 'btn-primary': _validate.email && _validate.password, 'btn-secondary': !(_validate.email && _validate.password) }">Login</button>
+</form>
+<p>Email valid: <span @text="_validate.email ? '✔️' : '❌'"></span></p>
+<p>Password valid: <span @text="_validate.password ? '✔️' : '❌'"></span></p>
+</no></code></pre>
+          </div>
+          <div class="example-live" style="flex:1 1 340px;min-width:320px;max-width:480px;background:#fff;border-radius:8px;padding:1.5em;box-shadow:0 2px 8px #0001;">
+            <h4 style="margin-bottom:0.5em;color:#ffc400;">Live Demo</h4>
+            <form style="max-width:320px;margin-bottom:1em;">
+              <input @model="email" @validate="email" placeholder="Email" style="width:100%;margin-bottom:0.5em;">
+              <input @model="password" @validate="password" placeholder="Password" type="password" style="width:100%;margin-bottom:0.5em;">
+              <button @click="console.log('Login', email, password)" @class="{ 'btn-primary': _validate.email && _validate.password, 'btn-secondary': !(_validate.email && _validate.password) }" style="width:100%;">Login</button>
+            </form>
+            <div style="margin-bottom:0.5em;">
+              <span>Email valid: </span><span @text="_validate.email ? '✔️' : '❌'"></span>
+            </div>
+            <div>
+              <span>Password valid: </span><span @text="_validate.password ? '✔️' : '❌'"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CAROUSEL EXAMPLE -->
+      <section class="example-block" style="background:#f8fafc;border-radius:12px;padding:2rem 1.5rem;margin-bottom:2.5rem;box-shadow:0 2px 12px #0001;">
+        <h2 style="margin-top:0">Image Carousel</h2>
+        <div class="example-columns" style="display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-start;">
+          <div class="example-code" style="flex:1 1 340px;min-width:320px;max-width:480px;">
+            <h4 style="margin-bottom:0.5em;color:#ffc400;">HTML Code</h4>
+            <pre style="background:#fffbe6;border-radius:8px;padding:1em 0.5em;"><code><no>
+<div style="position:relative;display:flex;align-items:center;justify-content:center;">
+  <img src="{{images[current]}}" style="border-radius:12px;max-width:18rem;width:100%;height:12rem;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
+  
+  <button @click="current = (current-1+images.length)%images.length" 
+          style="position:absolute;left:-15px;top:50%;transform:translateY(-50%);
+                 width:40px;height:40px;border-radius:50%;border:none;
+                 background:rgba(255,255,255,0.95);color:#333;font-size:16px;
+                 box-shadow:0 2px 12px rgba(0,0,0,0.2);cursor:pointer;">❮</button>
+  
+  <button @click="current = (current+1)%images.length" 
+          style="position:absolute;right:-15px;top:50%;transform:translateY(-50%);
+                 width:40px;height:40px;border-radius:50%;border:none;
+                 background:rgba(255,255,255,0.95);color:#333;font-size:16px;
+                 box-shadow:0 2px 12px rgba(0,0,0,0.2);cursor:pointer;">❯</button>
+</div>
+
+<div style="display:flex;justify-content:center;gap:0.75rem;margin:1rem 0;">
+  <div @for="dot, index in images" @click="current = index"
+       style="width:12px;height:12px;border-radius:50%;cursor:pointer;"
+       @class="{'dot-active': current === index, 'dot-inactive': current !== index}"></div>
+</div>
+
+<p>Image <span @text="current+1"></span> of <span @text="images.length"></span></p>
+</no></code></pre>
+          </div>
+
+
+          <div @set="current=0" class="example-live" style="flex:1 1 340px;min-width:320px;max-width:480px;background:#fff;border-radius:8px;padding:1.5em;box-shadow:0 2px 8px #0001;">
+            <h4 style="margin-bottom:0.5em;color:#ffc400;">Live Demo</h4>
+            <div style="position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;">
+              <!-- Immagine principale -->
+              <img src="{{images[current]}}" style="border-radius:12px;max-width:18rem;width:100%;height:12rem;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,0.15);transition:all 0.3s ease;">
+              
+              <!-- Pulsante Previous -->
+              <button @click="current = (current-1+images.length)%images.length" 
+                      style="position:absolute;left:-15px;top:50%;transform:translateY(-50%);
+                             width:40px;height:40px;border-radius:50%;border:none;
+                             background:rgba(255,255,255,0.95);color:#333;font-size:16px;
+                             box-shadow:0 2px 12px rgba(0,0,0,0.2);cursor:pointer;
+                             display:flex;align-items:center;justify-content:center;
+                             transition:all 0.2s ease;backdrop-filter:blur(4px);"
+                      onmouseover="this.style.background='rgba(255,196,0,0.95)';this.style.color='white';this.style.transform='translateY(-50%) scale(1.1)'"
+                      onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#333';this.style.transform='translateY(-50%) scale(1)'">
+                ❮
+              </button>
+              
+              <!-- Pulsante Next -->
+              <button @click="current = (current+1)%images.length" 
+                      style="position:absolute;right:-15px;top:50%;transform:translateY(-50%);
+                             width:40px;height:40px;border-radius:50%;border:none;
+                             background:rgba(255,255,255,0.95);color:#333;font-size:16px;
+                             box-shadow:0 2px 12px rgba(0,0,0,0.2);cursor:pointer;
+                             display:flex;align-items:center;justify-content:center;
+                             transition:all 0.2s ease;backdrop-filter:blur(4px);"
+                      onmouseover="this.style.background='rgba(255,196,0,0.95)';this.style.color='white';this.style.transform='translateY(-50%) scale(1.1)'"
+                      onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#333';this.style.transform='translateY(-50%) scale(1)'">
+                ❯
+              </button>
+            </div>
+            
+            <!-- Indicatori di navigazione -->
+            <div style="display:flex;justify-content:center;gap:0.75rem;margin-bottom:1rem;">
+              <div @for="dot, index in images" 
+                   @click="current = index"
+                   style="width:12px;height:12px;border-radius:50%;cursor:pointer;transition:all 0.2s ease;"
+                   @class="{'dot-active': current === index, 'dot-inactive': current !== index}"></div>
+            </div>
+            
+            <p style="text-align:center;color:#666;font-size:14px;margin:0;">
+              Image <span @text="current+1" style="font-weight:bold;color:#ffc400;"></span> of <span @text="images.length" style="font-weight:bold;color:#ffc400;"></span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add more examples here as needed, following the same style -->
+    </section>
+  </main>
+  
+  <init>
+    state.images = ['/images/img_1.jpg','/images/img_2.jpg','/images/img_3.jpg'];
+    state.current = 0;
+    _currentPage = 'examples';
+  </init>
+
+  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <component @src="footer.html"></component>
+</body>
+</html>

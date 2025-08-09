@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Enroll — Ayisha.js</title>
+  <link rel="stylesheet" href="site.css">
+  <meta name="color-scheme" content="light dark">
+</head>
+<body>
+  <component @src="header.html"></component>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+        <h1>Enroll</h1>
+        <p class="hero-subtitle">Join a course and start learning with clean, modern UI. No builds. Just HTML & CSS.</p>
+        <a href="courses.html" class="cta">Browse courses</a>
+      </div>
+    </section>
+
+    <section class="philosophy">
+      <h2>Enrollment form</h2>
+      <form action="#" method="get" class="enroll-form" style="max-width:720px">
+        <label>Full name
+          <input type="text" name="name" required>
+        </label>
+        <label>Email
+          <input type="email" name="email" required>
+        </label>
+        <label>Course
+          <select name="course" required>
+            <option value="">Select a course…</option>
+            <option>UI Design from scratch</option>
+            <option>CSS Pro</option>
+            <option>Data for Product</option>
+            <option>Accessible HTML</option>
+          </select>
+        </label>
+        <label>Notes (optional)
+          <textarea name="notes" rows="5" placeholder="Anything we should know?"></textarea>
+        </label>
+        <button type="submit">Submit enrollment</button>
+      </form>
+    </section>
+
+    <nav class="page-nav">
+      <a href="courses.html">← Back to Courses</a>
+      <a href="index.html">Go to Home →</a>
+    </nav>
+  </main>
+
+  <init>
+    _currentPage = 'courses';
+  </init>
+  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <component @src="footer.html"></component>
+</body>
+</html>
