@@ -65,12 +65,12 @@
     <section class="section" @if="course?.instructor">
       <h2>Instructor</h2>
       <div class="instructor-box">
-        <img @if="course?.instructor?.avatar" @src="course.instructor.avatar" alt="Instructor photo" class="instructor-avatar">
+        <img @if="course?.instructor?.avatar" src="course.instructor.avatar" alt="Instructor photo" class="instructor-avatar">
         <div>
           <div class="instructor-name" @text="course.instructor.name"></div>
           <div class="instructor-bio" @text="course.instructor.bio"></div>
           <div class="instructor-links" @if="course.instructor.links && course.instructor.links.length">
-            <a @for="link in course.instructor.links" @key="link.url" @href="link.url" target="_blank" rel="noopener" class="instructor-link" @text="link.type"></a>
+            <a @for="link in course.instructor.links" @key="link.url" href="link.url" target="_blank" rel="noopener" class="instructor-link" @text="link.type"></a>
           </div>
         </div>
       </div>
