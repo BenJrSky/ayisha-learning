@@ -19,6 +19,7 @@
   },
 
   "overview": "HTML Master è il corso definitivo per imparare HTML da zero fino alle tecniche avanzate di semantica, accessibilità e best practice. Perfetto per chi vuole costruire solide basi e diventare un esperto del markup web.",
+  "content": "Questo corso copre tutto ciò che serve per diventare un vero esperto di HTML. Partirai dalle basi della sintassi e della struttura delle pagine web, per poi approfondire i tag principali, la semantica HTML5, l'accessibilità, le best practice e le tecniche moderne come custom elements, microdata e shadow DOM. Ogni lezione include esempi pratici, quiz e casi reali per consolidare l'apprendimento. Al termine sarai in grado di creare pagine web accessibili, SEO-friendly e pronte per il web moderno, con una solida comprensione sia teorica che pratica del markup HTML.",
   "prerequisites": ["Nessuno"],
   "outcomes": [
     "Comprendere la struttura di una pagina HTML",
@@ -29,9 +30,6 @@
 
   "pricing": { "free": true, "price": 0, "currency": "EUR" },
 
-  
-
-  
 
   "instructor": {
     "name": "Ayisha Team",
