@@ -1,0 +1,325 @@
+{
+  "id": "course_html_master",
+  "slug": "html-master",
+  "title": "HTML Master",
+  "subtitle": "Dalle basi ai segreti della semantica e delle best practice HTML.",
+  "category": "Development",
+  "level": "Beginner to Advanced",
+  "hours": 14,
+  "language": "it",
+  
+  "lastUpdated": "2025-08-10",
+  "tags": ["HTML", "Semantica", "Accessibilità", "Web"],
+
+  "hero": {
+    "image": "images/img_2.jpg",
+    "logo": "ayisha-logo-black.png",
+    "ctaText": "Iscriviti ora",
+    "ctaUrl": "enroll.html"
+  },
+
+  "overview": "HTML Master è il corso definitivo per imparare HTML da zero fino alle tecniche avanzate di semantica, accessibilità e best practice. Perfetto per chi vuole costruire solide basi e diventare un esperto del markup web.",
+  "prerequisites": ["Nessuno"],
+  "outcomes": [
+    "Comprendere la struttura di una pagina HTML",
+    "Utilizzare correttamente tutti i tag HTML",
+    "Applicare la semantica e le best practice",
+    "Creare pagine accessibili e SEO-friendly"
+  ],
+
+  "pricing": { "free": true, "price": 0, "currency": "EUR" },
+
+  
+
+  
+
+  "instructor": {
+    "name": "Ayisha Team",
+    "avatar": "images/img_3.jpg",
+    "bio": "Team di esperti frontend e accessibilità.",
+    "links": [
+      { "type": "site", "url": "https://example.com" }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "l1",
+      "slug": "introduzione-html",
+      "order": 1,
+      "title": "Introduzione a HTML",
+      "minutes": 30,
+      "summary": "Cos'è HTML, storia e struttura base di una pagina.",
+      "content": [
+        { "type": "text", "value": "HTML (HyperText Markup Language) è il linguaggio standard per creare pagine web.\n\nHTML permette di strutturare i contenuti tramite tag, che definiscono titoli, paragrafi, immagini, link e molto altro. Ogni pagina HTML inizia con una dichiarazione <!DOCTYPE html> che indica al browser il tipo di documento.\n\nLa struttura base di una pagina HTML comprende:\n- <html>: il contenitore principale\n- <head>: contiene metadati, titolo, link a CSS/JS\n- <body>: contiene il contenuto visibile della pagina\n\nEsempio di struttura base:" },
+        { "type": "code", "language": "html", "value": "<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"UTF-8\">\n    <title>La mia prima pagina</title>\n  </head>\n  <body>\n    <h1>Ciao mondo!</h1>\n    <p>Questa è la mia prima pagina HTML.</p>\n  </body>\n</html>" },
+        { "type": "tip", "value": "Ricorda: il file HTML deve sempre iniziare con <!DOCTYPE html> per garantire la compatibilità." },
+        { "type": "text", "value": "\nI tag HTML sono case-insensitive, ma per convenzione si usano sempre in minuscolo.\n\nPer approfondire: https://developer.mozilla.org/it/docs/Web/HTML/Element" }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Qual è il tag principale che racchiude tutto il documento HTML?",
+          "options": ["<body>", "<html>", "<head>"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "A cosa serve <!DOCTYPE html>?",
+          "options": ["A dichiarare il tipo di documento", "A inserire uno script", "A definire un link"],
+          "answer": 0
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "Cosa significa HTML?",
+          "options": ["HyperText Markup Language", "Home Tool Markup Language", "Hyperlinks and Text Markup Language"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "slug": "tag-principali",
+      "order": 2,
+      "title": "I tag principali di HTML",
+      "minutes": 40,
+      "summary": "Panoramica su <html>, <head>, <body>, <title>, <meta> e altri tag fondamentali.",
+      "content": [
+        { "type": "text", "value": "I tag principali di HTML sono fondamentali per strutturare correttamente una pagina web.\n\n- <html>: racchiude tutto il documento\n- <head>: contiene informazioni non visibili (metadati, titolo, link a risorse)\n- <body>: contiene il contenuto visibile\n- <title>: definisce il titolo della pagina (mostrato nella scheda del browser)\n- <meta>: fornisce metadati come charset, descrizione, viewport\n\nEsempio di <head> con metadati e titolo:" },
+        { "type": "code", "language": "html", "value": "<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"description\" content=\"Corso HTML completo\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Corso HTML</title>\n</head>" },
+        { "type": "tip", "value": "Il tag <meta charset=\"UTF-8\"> garantisce la corretta visualizzazione dei caratteri speciali." },
+        { "type": "text", "value": "\nAltri tag utili nel <head> sono <link> per i CSS e <script> per i JavaScript." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Dove si inserisce il titolo della pagina?",
+          "options": ["<body>", "<head>", "<footer>"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale tag imposta la codifica dei caratteri?",
+          "options": ["<meta charset=\"UTF-8\">", "<title>", "<script>"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "l3",
+      "slug": "testo-e-link",
+      "order": 3,
+      "title": "Testo, paragrafi e link",
+      "minutes": 35,
+      "summary": "Tag per il testo: <h1>-<h6>, <p>, <a>, <strong>, <em>.",
+      "content": [
+        { "type": "text", "value": "HTML offre diversi tag per strutturare il testo:\n- <h1> - <h6>: titoli di vari livelli (h1 è il più importante)\n- <p>: paragrafo\n- <a>: link ipertestuale\n- <strong>: testo in evidenza (importanza)\n- <em>: testo enfatizzato (enfasi)\n\nEsempio di utilizzo dei tag di testo:" },
+        { "type": "code", "language": "html", "value": "<h1>Benvenuto!</h1>\n<h2>Sottotitolo</h2>\n<p>Questo è un paragrafo di esempio. <strong>Importante!</strong> <em>Enfasi.</em></p>\n<a href=\"https://developer.mozilla.org\">Visita MDN</a>" },
+        { "type": "tip", "value": "Usa un solo <h1> per pagina e rispetta la gerarchia dei titoli per l'accessibilità." },
+        { "type": "text", "value": "\nI link possono aprire nuove schede con l'attributo target=\"_blank\"." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale tag si usa per un paragrafo di testo?",
+          "options": ["<h1>", "<p>", "<a>"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale attributo rende un link apribile in una nuova scheda?",
+          "options": ["target=\"_blank\"", "rel=\"noopener\"", "id=\"new\""],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "l4",
+      "slug": "liste-e-tabelle",
+      "order": 4,
+      "title": "Liste e tabelle",
+      "minutes": 40,
+      "summary": "Creare liste ordinate, non ordinate e tabelle.",
+      "content": [
+        { "type": "text", "value": "Le liste permettono di raggruppare elementi correlati.\n- <ul>: lista non ordinata (punti)\n- <ol>: lista ordinata (numeri)\n- <li>: elemento di lista\n\nEsempio di lista non ordinata e ordinata:" },
+        { "type": "code", "language": "html", "value": "<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n</ul>\n<ol>\n  <li>Primo</li>\n  <li>Secondo</li>\n</ol>" },
+        { "type": "text", "value": "Le tabelle servono per dati tabellari.\n- <table>: tabella\n- <tr>: riga\n- <th>: intestazione\n- <td>: cella\n\nEsempio di tabella:" },
+        { "type": "code", "language": "html", "value": "<table>\n  <tr>\n    <th>Nome</th><th>Cognome</th>\n  </tr>\n  <tr>\n    <td>Mario</td><td>Rossi</td>\n  </tr>\n</table>" },
+        { "type": "tip", "value": "Usa sempre <th> per le intestazioni e l'attributo scope per l'accessibilità." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale tag crea una lista non ordinata?",
+          "options": ["<ol>", "<ul>", "<li>"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale tag si usa per una cella di intestazione in una tabella?",
+          "options": ["<td>", "<tr>", "<th>"],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "l5",
+      "slug": "immagini-e-media",
+      "order": 5,
+      "title": "Immagini e media",
+      "minutes": 35,
+      "summary": "Tag <img>, <audio>, <video> e attributi accessibili.",
+      "content": [
+        { "type": "text", "value": "Le immagini e i media arricchiscono le pagine web.\n- <img>: inserisce un'immagine\n- <audio>: inserisce un audio\n- <video>: inserisce un video\n\nEsempio di immagine con attributo alt per l'accessibilità:" },
+        { "type": "code", "language": "html", "value": "<img src=\"gatto.jpg\" alt=\"Un gatto che dorme\">" },
+        { "type": "text", "value": "Esempio di video e audio:" },
+        { "type": "code", "language": "html", "value": "<video controls>\n  <source src=\"video.mp4\" type=\"video/mp4\">\n  Il tuo browser non supporta il video.\n</video>\n<audio controls>\n  <source src=\"audio.mp3\" type=\"audio/mpeg\">\n  Il tuo browser non supporta l'audio.\n</audio>" },
+        { "type": "tip", "value": "L'attributo alt è obbligatorio per le immagini: descrive il contenuto per chi non può vederle." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale attributo è obbligatorio per le immagini?",
+          "options": ["src", "alt", "title"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale tag si usa per inserire un video?",
+          "options": ["<audio>", "<video>", "<img>"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l6",
+      "slug": "form-e-input",
+      "order": 6,
+      "title": "Form e input",
+      "minutes": 45,
+      "summary": "Creare form, input, label, button e accessibilità nei form.",
+      "content": [
+        { "type": "text", "value": "I form permettono di raccogliere dati dagli utenti.\n- <form>: contenitore del modulo\n- <input>: campo di inserimento\n- <label>: etichetta per input\n- <button>: pulsante\n\nEsempio di form base con accessibilità:" },
+        { "type": "code", "language": "html", "value": "<form>\n  <label for=\"email\">Email</label>\n  <input id=\"email\" name=\"email\" type=\"email\" required>\n  <label for=\"password\">Password</label>\n  <input id=\"password\" name=\"password\" type=\"password\">\n  <button type=\"submit\">Accedi</button>\n</form>" },
+        { "type": "tip", "value": "Associa sempre le label agli input tramite l'attributo for/id per migliorare l'usabilità." },
+        { "type": "text", "value": "\nGli input possono avere diversi tipi: text, email, password, checkbox, radio, ecc." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa serve l'attributo for in <label>?",
+          "options": ["A collegare la label a un input", "A cambiare il colore", "A inserire un link"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale tipo di input si usa per una password?",
+          "options": ["text", "password", "email"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "l7",
+      "slug": "semantica-html5",
+      "order": 7,
+      "title": "Semantica HTML5",
+      "minutes": 50,
+      "summary": "Tag semantici: <header>, <nav>, <main>, <section>, <article>, <aside>, <footer>.",
+      "content": [
+        { "type": "text", "value": "I tag semantici descrivono il ruolo delle sezioni della pagina, migliorando accessibilità e SEO.\n- <header>: intestazione\n- <nav>: menu di navigazione\n- <main>: contenuto principale\n- <section>: sezione tematica\n- <article>: contenuto indipendente\n- <aside>: contenuto laterale\n- <footer>: piè di pagina\n\nEsempio di struttura semantica:" },
+        { "type": "code", "language": "html", "value": "<header>\n  <h1>Corso HTML</h1>\n</header>\n<nav>\n  <ul>\n    <li><a href=\"#lezione1\">Lezione 1</a></li>\n    <li><a href=\"#lezione2\">Lezione 2</a></li>\n  </ul>\n</nav>\n<main>\n  <section>\n    <article>\n      <h2>Articolo</h2>\n      <p>Contenuto...</p>\n    </article>\n  </section>\n</main>\n<aside>Note a lato</aside>\n<footer>Copyright 2025</footer>" },
+        { "type": "tip", "value": "Usa i tag semantici per rendere la pagina comprensibile anche ai lettori di schermo." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale tag rappresenta il contenuto principale della pagina?",
+          "options": ["<main>", "<section>", "<aside>"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale tag si usa per il menu di navigazione?",
+          "options": ["<nav>", "<footer>", "<header>"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "l8",
+      "slug": "accessibilita-e-best-practice",
+      "order": 8,
+      "title": "Accessibilità e best practice",
+      "minutes": 50,
+      "summary": "Regole per pagine accessibili, ARIA, e best practice HTML.",
+      "content": [
+        { "type": "text", "value": "L'accessibilità rende le pagine fruibili a tutti, anche a chi usa tecnologie assistive.\n\nBest practice:\n- Usa sempre attributi alt descrittivi per le immagini\n- Associa label agli input\n- Usa colori con sufficiente contrasto\n- Navigazione da tastiera\n- Struttura semantica\n\nARIA (Accessible Rich Internet Applications) aggiunge informazioni per i lettori di schermo.\n\nEsempio di pulsante accessibile con ARIA:" },
+        { "type": "code", "language": "html", "value": "<button aria-label=\"Chiudi finestra\">X</button>" },
+        { "type": "tip", "value": "Evita tabindex > 0 e non abusare di ruoli ARIA se puoi usare tag semantici." },
+        { "type": "text", "value": "\nPer approfondire: https://www.w3.org/WAI/test-evaluate/" }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa serve l'attributo aria-label?",
+          "options": ["A migliorare l'accessibilità", "A cambiare il colore", "A inserire un link"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale pratica migliora l'accessibilità delle immagini?",
+          "options": ["Usare alt descrittivo", "Usare solo immagini decorative", "Non usare immagini"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "l9",
+      "slug": "html-avanzato",
+      "order": 9,
+      "title": "HTML avanzato: custom elements e microdata",
+      "minutes": 60,
+      "summary": "Custom elements, microdata, e HTML moderno.",
+      "content": [
+        { "type": "text", "value": "HTML moderno permette di estendere il linguaggio con custom elements (web components) e di arricchire i dati con microdata per i motori di ricerca.\n\n- Custom elements: tag personalizzati definiti via JavaScript\n- Microdata: metadati strutturati per SEO\n\nEsempio di custom element e microdata:" },
+        { "type": "code", "language": "html", "value": "<my-element></my-element>\n\n<div itemscope itemtype=\"https://schema.org/Person\">\n  <span itemprop=\"name\">Mario Rossi</span>\n  <span itemprop=\"jobTitle\">Sviluppatore</span>\n</div>" },
+        { "type": "tip", "value": "I custom elements richiedono JavaScript per funzionare. I microdata migliorano la visibilità nei motori di ricerca." },
+        { "type": "text", "value": "\nPer approfondire: https://developer.mozilla.org/it/docs/Web/Web_Components e https://schema.org/" }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Cosa sono i custom elements?",
+          "options": ["Tag HTML personalizzati", "Immagini", "Tabelle"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "A cosa servono i microdata?",
+          "options": ["A migliorare la SEO", "A inserire video", "A creare form"],
+          "answer": 0
+        }
+      ]
+    }
+  ]
+}
