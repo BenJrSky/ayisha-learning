@@ -11,44 +11,63 @@
   <component @src="header.html"></component>
 
   <main class="container">
+    <!-- Fetch course by slug and expose as `course` -->
+    <div @fetch="'courses/' + (courseSlug || 'css-pro') + '.json'" @result="course"></div>
+
     <section class="hero">
       <div class="hero-background"></div>
       <div class="hero-content">
-        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
-        <h1>Flexbox fundamentals</h1>
-        <p class="hero-subtitle">Build robust, responsive layouts using modern Flexbox patterns.</p>
-        <a href="course-detail.html" class="cta">Back to course</a>
+        <img @src="course?.hero?.logo || 'ayisha-logo-black.png'" alt="Ayisha.js Logo" class="hero-logo">
+        <h1 @text="(() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return (cur && cur.title) || 'Lesson'; })()"></h1>
+        <p class="hero-subtitle" @text="(() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return (cur && cur.summary) || course?.subtitle || '' })()"></p>
+        <a class="cta" @link="'course-detail.html?course=' + (course?.slug || '')">Back to course</a>
       </div>
     </section>
 
     <section class="philosophy">
       <h2>What you'll learn</h2>
       <ul>
-        <li>Flex container and item properties</li>
-        <li>Axis, alignment, wrapping, and gaps</li>
-        <li>Common responsive patterns (toolbars, split panes, sticky footers)</li>
+        <li><span @text="(() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return (cur && cur.summary) || 'Focused, hands-on practice.' })()"></span></li>
       </ul>
+      <div class="tip" @if="(() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return !!(cur && cur.minutes) })()">
+        <strong>Estimated time:</strong> <span @text="(() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return (cur && (cur.minutes + ' minutes')) || '' })()"></span>
+      </div>
     </section>
 
     <section class="install">
-      <h2>Example snippet</h2>
-      <pre><code><no><div class="row" style="display:flex; gap:1rem;">
-  <div class="col" style="flex:1; background:#fff; border:1px solid var(--border-color); padding:1rem;">A</div>
-  <div class="col" style="flex:2; background:#fff; border:1px solid var(--border-color); padding:1rem;">B</div>
-  <div class="col" style="flex:1; background:#fff; border:1px solid var(--border-color); padding:1rem;">C</div>
-</div></no></code></pre>
+      <h2>Lesson content</h2>
+      <div @for="block in (() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return (cur && cur.content) || [] })()" @key="block.value">
+        <p @if="block.type === 'text'" @text="block.value"></p>
+        <pre @if="block.type === 'code'"><code><no @text="block.value"></no></code></pre>
+        <div class="tip" @if="block.type === 'tip'" @text="block.value"></div>
+      </div>
+    </section>
+
+    <section class="install" @if="(() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return (cur && cur.attachments && cur.attachments.length > 0) || false })()">
+      <h2>Resources</h2>
+      <ul>
+        <li @for="att in (() => { const list = course?.lessons || []; const target = list.find(l => l.slug === lessonSlug); const cur = target || [...list].sort((a,b)=>(a.order||0)-(b.order||0))[0]; return (cur && cur.attachments) || [] })()" @key="att.url">
+          <a @link="att.url" @text="att.label || att.url" target="_blank" rel="noopener"></a>
+        </li>
+      </ul>
     </section>
 
     <nav class="page-nav">
-      <a href="course-detail.html">← Back to course</a>
-      <a href="lesson.html">Next lesson →</a>
+      <a @link="'course-detail.html?course=' + (course?.slug || '')">← Back to course</a>
+      <a @if="(() => { const list = course?.lessons || []; if(!list.length) return false; const ordered = [...list].sort((a,b)=>(a.order||0)-(b.order||0)); const idx = ordered.findIndex(l => l.slug === lessonSlug); return idx >= 0 && idx < ordered.length - 1; })()"
+         @link="(() => { const list = course?.lessons || []; const ordered = [...list].sort((a,b)=>(a.order||0)-(b.order||0)); const idx = ordered.findIndex(l => l.slug === lessonSlug); const nextSlug = (idx >= 0 && idx < ordered.length - 1) ? ordered[idx+1].slug : ''; return 'lesson.html?course=' + (course?.slug || '') + '&lesson=' + nextSlug; })()"
+         @text="'Next lesson →'"></a>
     </nav>
   </main>
 
   <init>
     _currentPage = 'courses';
+    course = {};
+    const _p = new URLSearchParams(location.search);
+    courseSlug = _p.get('course') || 'css-pro';
+    lessonSlug = _p.get('lesson') || '';
   </init>
-  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <script src="/ayisha-1.0.4.js"></script>
   <component @src="footer.html"></component>
 </body>
 </html>

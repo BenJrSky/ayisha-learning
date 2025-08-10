@@ -4981,7 +4981,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
 </script>`;
     }
 
-    static version = "1.1.0";
+    static version = "1.0.4";
 
     // SSR Detection and Configuration
     isServerSide() {

@@ -11,32 +11,39 @@
   <component @src="header.html"></component>
 
   <main class="container">
+    <!-- Load course by slug to list its lessons -->
+    <div @fetch="'courses/' + (courseSlug || 'css-pro') + '.json'" @result="course"></div>
+
     <section class="hero">
       <div class="hero-background"></div>
       <div class="hero-content">
         <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
         <h1>Lessons</h1>
-        <p class="hero-subtitle">Quick, focused lessons to build skills step by step.</p>
-        <a href="courses.html" class="cta">Browse courses</a>
+        <p class="hero-subtitle" @text="course?.title ? ('All lessons in ' + course.title) : 'Quick, focused lessons to build skills step by step.'"></p>
+        <a class="cta" @link="'course-detail.html?course=' + (course?.slug || '')">Back to course</a>
       </div>
     </section>
 
     <section class="philosophy">
       <h2>Available lessons</h2>
-      <ul>
-        <li><a href="lesson.html">Flexbox fundamentals</a></li>
-        <li><a href="lesson.html">CSS Grid basics</a></li>
-        <li><a href="lesson.html">Responsive strategy</a></li>
-        <li><a href="lesson.html">State and interaction</a></li>
-        <li><a href="lesson.html">Component library</a></li>
-      </ul>
+      <ol>
+        <li @for="lesson in (course?.lessons || []).sort((a,b)=> (a.order||0)-(b.order||0))" @key="lesson.id">
+          <a @link="'lesson.html?course=' + (course?.slug || '') + '&lesson=' + lesson.slug" @text="lesson.title"></a>
+          <span> — </span>
+          <span @text="lesson.summary"></span>
+        </li>
+      </ol>
+      <p class="tip" style="margin-top:1rem;" @if="!(course?.lessons||[]).length">No lessons available yet.</p>
     </section>
   </main>
 
   <init>
     _currentPage = 'courses';
+    course = {};
+    const _p = new URLSearchParams(location.search);
+    courseSlug = _p.get('course') || 'css-pro';
   </init>
-  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <script src="/ayisha-1.0.4.js"></script>
   <component @src="footer.html"></component>
 </body>
 </html>

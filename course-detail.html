@@ -11,25 +11,29 @@
   <component @src="header.html"></component>
 
   <main class="container">
+    <!-- Load course JSON once and store in `course` -->
+    <div @fetch="'courses/' + (courseSlug || 'css-pro') + '.json'" @result="course"></div>
+
     <section class="hero">
       <div class="hero-background"></div>
       <div class="hero-content">
-        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
-        <h1>CSS Pro</h1>
-        <p class="hero-subtitle">Master Flexbox, Grid, animations, and advanced responsive patterns.</p>
-        <a href="enroll.html" class="cta">Enroll now</a>
+        <img @src="course?.hero?.logo || 'ayisha-logo-black.png'" alt="Ayisha.js Logo" class="hero-logo">
+        <h1 @text="course?.title || 'Course'">CSS Pro</h1>
+        <p class="hero-subtitle" @text="course?.subtitle"></p>
+        <a class="cta" @link="course?.hero?.ctaUrl || 'enroll.html'" @text="course?.hero?.ctaText || 'Enroll now'"></a>
       </div>
     </section>
 
     <section class="philosophy" style="border-bottom:1px solid var(--border-light)">
       <h2>Overview</h2>
-      <p>CSS Pro is a practical course focused on writing modern, scalable CSS. Learn layout systems, responsive techniques, and delightful micro-interactions—all with clean, accessible markup.</p>
+      <p @text="course?.overview"></p>
       <div class="tip">
-        <strong>Who is this for?</strong> Designers and developers who already know basic CSS and want to level up their layouts and components.
+        <strong>Prerequisites:</strong>
+        <span @text="(course?.prerequisites || []).join(', ') || 'None'"></span>
       </div>
       <ul>
-        <li><strong>Level:</strong> Intermediate</li>
-        <li><strong>Duration:</strong> 12 hours (self-paced)</li>
+        <li><strong>Level:</strong> <span @text="course?.level"></span></li>
+        <li><strong>Duration:</strong> <span @text="course?.hours"></span> hours (self-paced)</li>
         <li><strong>Format:</strong> Project-based lessons</li>
       </ul>
     </section>
@@ -37,25 +41,40 @@
     <section class="hello-world">
       <h2>Curriculum</h2>
       <ol>
-        <li><a href="lesson.html">Flexbox fundamentals</a> — axes, alignment, gaps, and real-world patterns</li>
-        <li><a href="lesson.html">CSS Grid basics</a> — tracks, areas, and responsive grid systems</li>
-        <li><a href="lesson.html">Responsive strategy</a> — fluid type, clamps, and breakpoints</li>
-        <li><a href="lesson.html">State and interaction</a> — focus states, transitions, and animations</li>
-        <li><a href="lesson.html">Component library</a> — buttons, cards, tabs, and modals</li>
+        <li @for="lesson in (course?.lessons || []).sort((a,b)=> (a.order||0)-(b.order||0))" @key="lesson.id">
+          <a @link="'lesson.html?course=' + (course?.slug || '') + '&lesson=' + lesson.slug" @text="lesson.title"></a>
+          <span> — </span>
+          <span @text="lesson.summary"></span>
+        </li>
       </ol>
       <p class="tip" style="margin-top:1.5rem;">All lessons are accessible, keyboard-friendly, and use semantic HTML.</p>
     </section>
 
+    <section class="instructor" @if="course?.instructor">
+      <h2>Instructor</h2>
+      <div style="display:flex;align-items:center;gap:1rem;background:var(--surface-secondary);padding:1rem;border-radius:12px;border:1px solid var(--border-color);">
+        <img @if="course?.instructor?.avatar" @src="course.instructor.avatar" alt="Instructor photo" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--border-color);">
+        <div>
+          <div style="font-weight:700;" @text="course.instructor.name"></div>
+          <div style="color:var(--text-secondary);" @text="course.instructor.bio"></div>
+        </div>
+      </div>
+    </section>
+
     <nav class="page-nav">
       <a href="courses.html">← Back to Courses</a>
-      <a href="enroll.html">Enroll in CSS Pro →</a>
+      <a @link="'enroll.html'" @text="'Enroll in ' + (course?.title || 'this course') + ' →'"></a>
     </nav>
   </main>
 
   <init>
     _currentPage = 'courses';
+    course = {};
+    // Read course slug from the URL, fallback to css-pro
+    const _p = new URLSearchParams(location.search);
+    courseSlug = _p.get('course') || 'css-pro';
   </init>
-  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <script src="/ayisha-1.0.4.js"></script>
   <component @src="footer.html"></component>
 </body>
 </html>

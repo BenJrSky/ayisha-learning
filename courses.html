@@ -49,8 +49,10 @@
       </form>
     </header>
 
+    <!-- Optional dynamic list support: if courses.json exists, render it; otherwise show static cards -->
     <section class="course-grid" aria-label="Course catalog">
-      <a class="course-card" href="course-detail.html">
+      <div @fetch="'courses/courses.json'" @result="coursesIndex"></div>
+      <a @if="!coursesIndex" class="course-card" href="course-detail.html?course=ui-design">
         <h3>UI Design from scratch</h3>
         <p>Colors, layout, components and design systems for modern web apps.</p>
         <div class="course-meta">
@@ -61,7 +63,7 @@
         <span class="arrow" aria-hidden="true">→</span>
       </a>
 
-      <a class="course-card" href="course-detail.html">
+      <a @if="!coursesIndex" class="course-card" href="course-detail.html?course=css-pro">
         <h3>CSS Pro</h3>
         <p>Flexbox, Grid, animations and advanced responsive with accessibility.</p>
         <div class="course-meta">
@@ -72,7 +74,7 @@
         <span class="arrow" aria-hidden="true">→</span>
       </a>
 
-      <a class="course-card" href="course-detail.html">
+      <a @if="!coursesIndex" class="course-card" href="course-detail.html?course=data-for-product">
         <h3>Data for Product</h3>
         <p>Metrics, funnels, cohorts and data storytelling to guide decisions.</p>
         <div class="course-meta">
@@ -83,7 +85,7 @@
         <span class="arrow" aria-hidden="true">→</span>
       </a>
 
-      <a class="course-card" href="course-detail.html">
+      <a @if="!coursesIndex" class="course-card" href="course-detail.html?course=accessible-html">
         <h3>Accessible HTML</h3>
         <p>Semantics, ARIA patterns and testing for inclusive interfaces.</p>
         <div class="course-meta">
@@ -93,13 +95,26 @@
         </div>
         <span class="arrow" aria-hidden="true">→</span>
       </a>
+
+      <!-- Render dynamic cards if coursesIndex is present -->
+      <a class="course-card" @for="c in coursesIndex?.courses || []" @key="c.slug" @link="'course-detail.html?course=' + c.slug">
+        <h3 @text="c.title"></h3>
+        <p @text="c.subtitle"></p>
+        <div class="course-meta">
+          <span class="badge badge-topic" @text="c.category"></span>
+          <span class="badge badge-level" @text="c.level"></span>
+          <span class="badge badge-time" @text="(c.hours || 0) + 'h'"></span>
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
     </section>
   </main>
 
   <init>
     _currentPage = 'courses';
+    coursesIndex = null;
   </init>
-  <script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.0-min.js"></script>
+  <script src="/ayisha-1.0.4.js"></script>
   <component @src="footer.html"></component>
 </body>
 </html>

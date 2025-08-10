@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-08-09",
+  "courses": [
+    {
+      "slug": "css-pro",
+      "title": "CSS Pro",
+      "subtitle": "Master Flexbox, Grid, animations, and advanced responsive patterns.",
+      "category": "Development",
+      "level": "Intermediate",
+      "hours": 12
+    }
+  ]
+}
