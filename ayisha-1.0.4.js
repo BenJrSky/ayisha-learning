@@ -1,3 +1,4 @@
+
 /*!
  * Ayisha.js - Complete Modular Directive System
  * (c) 2023 devBen - Benito Massidda
@@ -737,7 +738,7 @@
         mutatingMethods.forEach(method => {
           if (typeof arr[method] === 'function') {
             const original = arr[method];
-            arr[method] = function(...args) {
+            arr[method] = function (...args) {
               const result = original.apply(this, args);
               if (typeof renderCallback === 'function') renderCallback();
               return result;
@@ -1126,6 +1127,7 @@
         '@wait': `Esempio: <span @when=\"condizione\" @wait=\"1000\" @go=\"pagina\"></span>`,
         '@if': `Esempio: <div @if=\"condizione\">Mostra se condizione è true</div>`,
         '@not': `Esempio: <div @not=\"condizione\">Mostra se condizione è false</div>`,
+        '@json': `Esempio: <span @json=\"'/courses/html-master.json'\" @result=\"htmlcourse\" @then=\"lessons=htmlcourse.lessons\" @finally=\"step=1\"></span> (carica file JSON locale, solo GET)`,
         '@show': `Esempio: <div @show=\"condizione\">Mostra se condizione è true</div>`,
         '@hide': `Esempio: <div @hide=\"condizione\">Nasconde se condizione è true</div>`,
         '@for': `Esempio: <li @for="item in items">{{item}}</li> o <li @for="i, item in items">{{i}}: {{item}}</li>`,
@@ -1782,6 +1784,220 @@
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
+    }
+  }
+
+
+
+  class JsonManager {
+    constructor(evaluator) {
+      this.evaluator = evaluator;
+      this.pendingJsons = {};
+      this.lastJsonUrl = {};
+      this.fetched = {};
+      this.readyPromise = {};
+    }
+
+    setupJson(expr, rk, ctx, event, force) {
+      let url = this.evaluator.evalExpr(expr, ctx, event);
+      if (url === undefined) {
+        url = expr.replace(/\{([^}]+)\}/g, (_, key) => {
+          const val = this.evaluator.evalExpr(key, ctx, event);
+          return val != null ? val : '';
+        });
+      }
+      if (url === undefined || url === null) {
+        url = expr;
+      }
+      if (!url) return Promise.resolve(undefined);
+
+      // Solo file locali (iniziano con / o ./ o ../)
+      if (/^https?:\/\//.test(url)) {
+        return Promise.reject(new Error('@json accetta solo file locali'));
+      }
+      // Normalizza path locale
+      if (!url.startsWith('/')) {
+        url = '/' + url.replace(/^\.\//, '');
+      }
+      url = location.origin + url;
+
+      const fid = `${url}::${rk}`;
+
+      if (!force && !event && this.lastJsonUrl[fid]) {
+        if (!this.readyPromise[fid]) {
+          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
+          return this.readyPromise[fid];
+        }
+        return;
+      }
+      if (!force && this.lastJsonUrl[fid] && JSON.stringify(this.lastJsonUrl[fid]) === JSON.stringify({ url, value: this.evaluator.state[rk] })) {
+        if (!this.readyPromise[fid]) {
+          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
+          return this.readyPromise[fid];
+        }
+        return;
+      }
+      if (this.pendingJsons[fid]) return Promise.resolve(this.evaluator.state[rk]);
+
+      if (rk && typeof rk === 'string' && rk in this.evaluator.state) {
+        this.evaluator.state[rk] = null;
+      }
+      if (this.readyPromise[fid]) delete this.readyPromise[fid];
+      this.pendingJsons[fid] = true;
+      this.lastJsonUrl[fid] = { url, value: this.evaluator.state[rk] };
+      this.pendingJsons[fid] = true;
+      this.lastJsonUrl[rk] = url;
+      if (!(rk in this.evaluator.state)) {
+        this.evaluator.state[rk] = null;
+      }
+
+      // Solo GET locale, nessun header/payload
+      const fetchOptions = { method: 'GET' };
+      const fetchPromise = fetch(url, fetchOptions)
+        .then(res => {
+          if (!res.ok) {
+            if (!this.fetched[url]) this.fetched[url] = {};
+            this.fetched[url].error = `${res.status} ${res.statusText || 'errore di rete'}`;
+            let errorVar = '_error';
+            if (ctx && ctx._vNode && ctx._vNode.directives && ctx._vNode.directives['@error']) {
+              errorVar = ctx._vNode.directives['@error'] || '_error';
+            }
+            return res.text().then(errorBody => {
+              let parsedError;
+              try { parsedError = JSON.parse(errorBody); } catch (e) { parsedError = errorBody || `${res.status} ${res.statusText || 'errore di rete'}`; }
+              const errorObj = {
+                error: parsedError && parsedError.error ? parsedError.error : `${res.status} ${res.statusText}`,
+                details: parsedError && parsedError.details ? parsedError.details : parsedError
+              };
+              this.evaluator.state['_error'] = errorObj;
+              window._error = errorObj;
+              if (errorVar !== '_error') {
+                this.evaluator.state[errorVar] = errorObj;
+                window[errorVar] = errorObj;
+              }
+              throw new Error(`${res.status} ${res.statusText}`);
+            });
+          }
+          return res.json().catch(() => res.text());
+        })
+        .then(data => {
+          const oldVal = this.evaluator.state[rk];
+          const isEqual = JSON.stringify(oldVal) === JSON.stringify(data);
+          if (!isEqual) {
+            this.evaluator.state[rk] = data;
+          }
+          if (this.fetched[url]) delete this.fetched[url].error;
+          this.evaluator.state['_error'] = null;
+          let errorVar = '_error';
+          if (ctx && ctx._vNode && ctx._vNode.directives && ctx._vNode.directives['@error']) {
+            errorVar = ctx._vNode.directives['@error'] || '_error';
+          }
+          if (errorVar !== '_error') {
+            this.evaluator.state[errorVar] = null;
+          }
+          return data;
+        })
+        .catch(err => {
+          console.error('📄 JSON error:', { url, error: err.message, resultVariable: rk });
+          if (!this.fetched[url]) this.fetched[url] = {};
+          this.fetched[url].error = err.message;
+          let errorVar = '_error';
+          if (ctx && ctx._vNode && ctx._vNode.directives && ctx._vNode.directives['@error']) {
+            errorVar = ctx._vNode.directives['@error'] || '_error';
+          }
+          this.evaluator.state['_error'] = {
+            error: err && err.message ? err.message : (err || 'Errore sconosciuto'),
+            details: err && err.stack ? err.stack : undefined
+          };
+          if (errorVar !== '_error') {
+            this.evaluator.state[errorVar] = this.evaluator.state['_error'];
+          }
+          console.error('@json error:', err);
+        })
+        .finally(() => {
+          this.pendingJsons[fid] = false;
+        });
+      return fetchPromise;
+    }
+  }
+  class JsonDirective extends Directive {
+    constructor(evaluator, bindingManager, errorHandler, jsonManager) {
+      super(evaluator, bindingManager, errorHandler);
+      this.jsonManager = jsonManager;
+    }
+
+    apply(vNode, ctx, state, el, completionListener = null) {
+      const expr = vNode.directives['@json'];
+      if (!expr) return;
+      if (vNode.subDirectives?.['@json'] || vNode.directives['@when']) {
+        return;
+      }
+      const autoExpr = this.evaluator.autoVarExpr(expr);
+      const resultVar = vNode.directives['@result'] || 'result';
+      const ctxWithVNode = Object.assign({}, ctx, { _vNode: vNode });
+      const jsonPromise = this.jsonManager.setupJson(autoExpr, resultVar, ctxWithVNode);
+      if (completionListener && jsonPromise && typeof jsonPromise.then === 'function') {
+        completionListener.addTask(
+          jsonPromise.then(data => {
+            ctxWithVNode._eventResult = data;
+            return data;
+          })
+        );
+      }
+      if (vNode.directives['@watch']) {
+        this.handleWatchDirective(vNode, autoExpr, resultVar);
+      }
+    }
+
+    handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
+      const eventName = event === 'hover' ? 'mouseover' : event;
+      const done = completionListener ? completionListener.addAsyncTask() : null;
+      el.addEventListener(eventName, (e) => {
+        const resultVar = vNode.directives['@result'] || 'result';
+        const ctxWithVNode = Object.assign({}, ctx, { _vNode: vNode });
+        try {
+          let url = this.evaluator.evalExpr(expression, ctxWithVNode);
+          if (url === undefined) {
+            url = expression;
+          }
+          const jsonPromise = this.jsonManager.setupJson(url, resultVar, ctxWithVNode, e, true);
+          if (jsonPromise) {
+            jsonPromise.then(data => {
+              ctxWithVNode._eventResult = data;
+            }).finally(() => { if (done) done(); });
+          } else if (done) {
+            done();
+          }
+        } catch (err) {
+          this.showError(el, err, expression);
+          if (done) done();
+        }
+      });
+      return true;
+    }
+
+    handleWatchDirective(vNode, expr, resultVar) {
+      vNode.directives['@watch'].split(',').forEach(watchExpr => {
+        watchExpr = watchExpr.trim();
+        const match = watchExpr.match(/^([\w$]+)\s*=>\s*(.+)$/) ||
+          watchExpr.match(/^([\w$]+)\s*:\s*(.+)$/);
+        if (match) {
+          const prop = match[1];
+          const code = match[2];
+          this.evaluator.ensureVarInState(code);
+          window.ayisha.addWatcher(prop, (newVal) => {
+            try {
+              this.executeExpression(code, {}, { newVal }, true);
+            } catch (e) {
+              console.error('Watcher error:', e);
+            }
+          }, { oneShot: true });
+        } else {
+          window.ayisha.addWatcher(watchExpr, () => {
+            this.jsonManager.setupJson(expr, resultVar, undefined, undefined, true);
+          }, { oneShot: true });
+        }
+      });
     }
   }
 
@@ -3674,6 +3890,7 @@
       this.bindingManager = bindingManager;
       this.errorHandler = errorHandler;
       this.fetchManager = fetchManager;
+      this.jsonManager = new JsonManager(this.evaluator);
 
       this.initializeDirectives();
     }
@@ -3695,6 +3912,7 @@
       this.register('@style', new StyleDirective(this.evaluator, this.bindingManager, this.errorHandler));
       this.register('@click', new ClickDirective(this.evaluator, this.bindingManager, this.errorHandler));
       this.register('@fetch', new FetchDirective(this.evaluator, this.bindingManager, this.errorHandler, this.fetchManager));
+      this.register('@json', new JsonDirective(this.evaluator, this.bindingManager, this.errorHandler, this.jsonManager));
       this.register('@validate', new ValidateDirective(this.evaluator, this.bindingManager, this.errorHandler));
       this.register('@state', new StateDirective(this.evaluator, this.bindingManager, this.errorHandler));
       this.register('@log', new LogDirective(this.evaluator, this.bindingManager, this.errorHandler));
@@ -4652,12 +4870,12 @@
       const stack = [];
       const root = { tag: 'fragment', children: [], directives: {} };
       let current = root;
-      
+
       // Simple regex-based HTML parsing
       const htmlRegex = /<(\/?[a-zA-Z][a-zA-Z0-9]*)((?:\s+[^>]*)?)>/g;
       let lastIndex = 0;
       let match;
-      
+
       while ((match = htmlRegex.exec(template)) !== null) {
         // Add text content before this tag
         const textBefore = template.slice(lastIndex, match.index).trim();
@@ -4667,10 +4885,10 @@
             text: textBefore
           });
         }
-        
+
         const tagName = match[1];
         const attributes = match[2];
-        
+
         if (tagName.startsWith('/')) {
           // Closing tag
           if (stack.length > 0) {
@@ -4684,7 +4902,7 @@
             directives: {},
             attrs: {}
           };
-          
+
           // Parse attributes
           if (attributes) {
             // Handle double-quoted attributes
@@ -4693,35 +4911,35 @@
             while ((quotedMatch = quotedAttrRegex.exec(attributes)) !== null) {
               const attrName = quotedMatch[1];
               const attrValue = quotedMatch[2];
-              
+
               if (attrName.startsWith('@')) {
                 element.directives[attrName] = attrValue;
               } else {
                 element.attrs[attrName] = attrValue;
               }
             }
-            
+
             // Handle single-quoted attributes
             const singleQuotedAttrRegex = /([a-zA-Z@][a-zA-Z0-9_-]*)\s*=\s*'([^']*)'/g;
             let singleMatch;
             while ((singleMatch = singleQuotedAttrRegex.exec(attributes)) !== null) {
               const attrName = singleMatch[1];
               const attrValue = singleMatch[2];
-              
+
               if (attrName.startsWith('@')) {
                 element.directives[attrName] = attrValue;
               } else {
                 element.attrs[attrName] = attrValue;
               }
             }
-            
+
             // Also handle attributes without quotes for simple values
             const simpleAttrRegex = /([a-zA-Z@][a-zA-Z0-9_-]*)\s*=\s*([^"'\s>]+)/g;
             let simpleMatch;
             while ((simpleMatch = simpleAttrRegex.exec(attributes)) !== null) {
               const attrName = simpleMatch[1];
               const attrValue = simpleMatch[2];
-              
+
               if (attrName.startsWith('@')) {
                 element.directives[attrName] = attrValue;
               } else {
@@ -4729,9 +4947,9 @@
               }
             }
           }
-          
+
           current.children.push(element);
-          
+
           // Check if it's a self-closing tag
           const selfClosingTags = ['img', 'br', 'hr', 'input', 'meta', 'link'];
           if (!selfClosingTags.includes(tagName.toLowerCase()) && !attributes.includes('/')) {
@@ -4739,10 +4957,10 @@
             current = element;
           }
         }
-        
+
         lastIndex = htmlRegex.lastIndex;
       }
-      
+
       // Add remaining text
       const remainingText = template.slice(lastIndex).trim();
       if (remainingText) {
@@ -4751,7 +4969,7 @@
           text: remainingText
         });
       }
-      
+
       return root;
     }
 
@@ -4761,53 +4979,53 @@
         tagName: tagName.toUpperCase(),
         innerHTML: '',
         textContent: '',
-        setAttribute: function(name, value) {
+        setAttribute: function (name, value) {
           this.attributes = this.attributes || {};
           this.attributes[name] = value;
         },
-        getAttribute: function(name) {
+        getAttribute: function (name) {
           return this.attributes?.[name] || null;
         },
-        hasAttribute: function(name) {
+        hasAttribute: function (name) {
           return this.attributes && name in this.attributes;
         },
         childNodes: [],
         children: [],
         nodeType: 1,
         attributes: {},
-        appendChild: function(child) {
+        appendChild: function (child) {
           this.childNodes.push(child);
           if (child.nodeType === 1) {
             this.children.push(child);
           }
         },
-        querySelector: function(selector) {
+        querySelector: function (selector) {
           // Basic implementation for SSR
           return null;
         },
-        querySelectorAll: function(selector) {
+        querySelectorAll: function (selector) {
           return [];
         }
       };
-      
+
       // When innerHTML is set, parse it into child nodes
       Object.defineProperty(element, 'innerHTML', {
-        get: function() {
+        get: function () {
           return this._innerHTML || '';
         },
-        set: function(html) {
+        set: function (html) {
           this._innerHTML = html;
           this.childNodes = [];
           this.children = [];
-          
+
           if (html) {
             // Simple HTML parsing for SSR
             this._parseHTML(html);
           }
         }
       });
-      
-      element._parseHTML = function(html) {
+
+      element._parseHTML = function (html) {
         // Basic HTML parsing - create text nodes for now
         if (html.trim()) {
           const textNode = {
@@ -4818,7 +5036,7 @@
           this.childNodes.push(textNode);
         }
       };
-      
+
       return element;
     }
 
@@ -4893,7 +5111,7 @@
         const [, indexVar, itemVar, expr] = match;
         let arr = this.evaluator.evalExpr(expr, ctx) || [];
         if (typeof arr === 'object' && !Array.isArray(arr)) arr = Object.values(arr);
-        
+
         return arr.map((val, index) => {
           const clone = JSON.parse(JSON.stringify(vNode));
           delete clone.directives['@for'];
@@ -4907,7 +5125,7 @@
         const [, itemVar, expr] = match;
         let arr = this.evaluator.evalExpr(expr, ctx) || [];
         if (typeof arr === 'object' && !Array.isArray(arr)) arr = Object.values(arr);
-        
+
         return arr.map((val, index) => {
           const clone = JSON.parse(JSON.stringify(vNode));
           delete clone.directives['@for'];
@@ -5169,7 +5387,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
           else if (varName === '_currentPage') this.state[varName] = '';
           else if (varName === '_version') this.state[varName] = AyishaVDOM.version;
           else if (varName === '_locale') {
-            this.state[varName] = typeof navigator !== 'undefined' 
+            this.state[varName] = typeof navigator !== 'undefined'
               ? (navigator.language || navigator.userLanguage || 'en')
               : 'en';
           }
@@ -5199,7 +5417,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       if (!this.state._currentPage) this.state._currentPage = '';
       if (!this.state._version) this.state._version = AyishaVDOM.version;
       if (!this.state._locale) {
-        this.state._locale = typeof navigator !== 'undefined' 
+        this.state._locale = typeof navigator !== 'undefined'
           ? (navigator.language || navigator.userLanguage || 'en')
           : 'en';
       }
@@ -6383,7 +6601,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     _hydrateEventListeners() {
       // Find all elements with directives and re-attach event listeners
       const elementsWithDirectives = this.root.querySelectorAll('[data-ayisha-hydrate="true"]');
-      
+
       elementsWithDirectives.forEach(el => {
         try {
           const directivesAttr = el.getAttribute('data-ayisha-directives');
@@ -6447,24 +6665,24 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
   }
 
   // Static method for SSR usage
-  AyishaVDOM.createSSRInstance = function(options = {}) {
+  AyishaVDOM.createSSRInstance = function (options = {}) {
     const mockRoot = {
       childNodes: [],
       querySelectorAll: () => [],
-      addEventListener: () => {},
+      addEventListener: () => { },
       innerHTML: ''
     };
     return new AyishaVDOM(mockRoot, { ...options, ssr: true });
   };
 
   // Static method for easy hydration
-  AyishaVDOM.hydrate = function(root = document.body, hydrationData = null) {
+  AyishaVDOM.hydrate = function (root = document.body, hydrationData = null) {
     return new AyishaVDOM(root, { hydration: true }).hydrate(hydrationData);
   };
 
   const addDefaultAnimationStyles = () => {
     if (typeof document === 'undefined') return; // Skip in Node.js
-    
+
     const existingStyle = document.getElementById('ayisha-default-animations');
     if (!existingStyle) {
       const style = document.createElement('style');
@@ -6525,7 +6743,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         addDefaultAnimationStyles();
-        
+
         // Check if we need to hydrate or mount fresh
         if (typeof window !== 'undefined' && window.__AYISHA_HYDRATION_DATA__) {
           new AyishaVDOM(document.body).hydrate();
@@ -6535,7 +6753,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       });
     } else {
       addDefaultAnimationStyles();
-      
+
       // Check if we need to hydrate or mount fresh
       if (typeof window !== 'undefined' && window.__AYISHA_HYDRATION_DATA__) {
         new AyishaVDOM(document.body).hydrate();

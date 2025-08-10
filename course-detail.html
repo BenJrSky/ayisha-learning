@@ -12,7 +12,9 @@
 
   <main class="container">
     <!-- Load course JSON once and store in `course` -->
-    <div @fetch="'courses/' + (courseSlug || 'css-pro') + '.json'" @result="course"></div>
+    <div @json="/courses/json.html" @result="currentCourse"></div>
+
+    <span @state></span>
 
     <section class="hero">
       <div class="hero-background"></div>
