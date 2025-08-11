@@ -1,0 +1,277 @@
+{
+  "id": "course_css_pro",
+  "slug": "css-pro",
+  "title": "CSS Pro",
+  "subtitle": "Dal layout base alle tecniche avanzate di CSS moderno.",
+  "category": "Development",
+  "level": "Beginner to Advanced",
+  "hours": 16,
+  "language": "it",
+  "lastUpdated": "2025-08-11",
+  "tags": ["CSS", "Layout", "Responsive", "Flexbox", "Grid", "Design"],
+
+  "hero": {
+    "image": "images/img_1.jpg",
+    "logo": "ayisha-logo-black.png",
+    "ctaText": "Iscriviti ora",
+    "ctaUrl": "enroll.html"
+  },
+
+  "overview": "CSS Pro è il corso completo per dominare i fogli di stile: dal posizionamento base alle animazioni, dal responsive design alle tecniche avanzate di layout. Ideale per chi vuole creare interfacce moderne, accessibili e performanti.",
+  "content": "Imparerai tutto su selettori, box model, colori, tipografia, layout con Flexbox e Grid, responsive design, variabili CSS, animazioni, transizioni, custom properties e best practice per siti moderni. Ogni lezione include esempi pratici, quiz e casi reali. Al termine sarai in grado di progettare e realizzare interfacce web professionali e accessibili.",
+  "prerequisites": ["Conoscenze base di HTML"],
+  "outcomes": [
+    "Comprendere il box model e i selettori CSS",
+    "Realizzare layout responsive con Flexbox e Grid",
+    "Gestire colori, tipografia e spaziature",
+    "Applicare animazioni e transizioni moderne",
+    "Utilizzare variabili e custom properties",
+    "Seguire le best practice di accessibilità e performance"
+  ],
+
+  "pricing": { "free": true, "price": 0, "currency": "EUR" },
+
+  "instructor": {
+    "name": "Ayisha Team",
+    "avatar": "images/img_3.jpg",
+    "bio": "Team di esperti frontend e accessibilità.",
+    "links": [
+      { "type": "site", "url": "https://example.com" }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "c0",
+      "slug": "introduzione-css",
+      "order": 0,
+      "title": "Introduzione a CSS",
+      "minutes": 30,
+      "summary": "Cos'è CSS, storia e sintassi base.",
+      "content": [
+        { "type": "text", "value": "CSS (Cascading Style Sheets) è il linguaggio per la presentazione grafica delle pagine web. Permette di separare il contenuto (HTML) dalla forma (stile).\n\nLa sintassi base di CSS prevede selettori, proprietà e valori. Esempio:\n\nselector { property: value; }\n\nEsempio di regola CSS:" },
+        { "type": "code", "language": "css", "value": "body {\n  background: #fafafa;\n  color: #222;\n}" },
+        { "type": "tip", "value": "CSS si può scrivere inline, in <style> o in file esterni .css." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa serve CSS?",
+          "options": ["A strutturare il contenuto", "A definire lo stile grafico", "A scrivere script"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si applica un colore di sfondo al body?",
+          "options": ["background: #fafafa;", "color: #fafafa;", "font-size: 16px;"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "c1",
+      "slug": "selettori-e-specificita",
+      "order": 1,
+      "title": "Selettori e specificità",
+      "minutes": 40,
+      "summary": "Tutti i tipi di selettori CSS e la specificità.",
+      "content": [
+        { "type": "text", "value": "I selettori permettono di scegliere quali elementi HTML stilizzare.\n- Selettori di tipo: p, h1, div\n- Selettori di classe: .classe\n- Selettori di id: #id\n- Selettori discendenti, figli, attributo, pseudo-classi e pseudo-elementi\n\nLa specificità determina quale regola ha la precedenza. Più specifico > meno specifico." },
+        { "type": "code", "language": "css", "value": ".btn { color: #fff; }\n#main { padding: 2rem; }\nnav ul > li.active { font-weight: bold; }" },
+        { "type": "tip", "value": "Evita l'uso eccessivo di !important: peggiora la manutenzione." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale selettore ha la specificità più alta?",
+          "options": [".classe", "#id", "p"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si seleziona un elemento con classe 'box'?",
+          "options": [".box", "#box", "box"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "slug": "box-model-e-dimensioni",
+      "order": 2,
+      "title": "Box model e dimensioni",
+      "minutes": 45,
+      "summary": "Comprendere il box model, padding, border, margin, width, height.",
+      "content": [
+        { "type": "text", "value": "Il box model definisce come vengono calcolate le dimensioni e lo spazio degli elementi.\n- content: il contenuto\n- padding: spazio interno\n- border: bordo\n- margin: spazio esterno\n\nEsempio di box model e proprietà dimensioni:" },
+        { "type": "code", "language": "css", "value": ".card {\n  width: 300px;\n  padding: 1rem;\n  border: 2px solid #ffc107;\n  margin: 1rem auto;\n}" },
+        { "type": "tip", "value": "Usa box-sizing: border-box per semplificare il calcolo delle dimensioni." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa serve il padding?",
+          "options": ["A creare spazio interno", "A creare spazio esterno", "A colorare il testo"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si imposta il bordo di un elemento?",
+          "options": ["border: 2px solid #000;", "margin: 2px;", "outline: none;"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "slug": "colori-e-tipografia",
+      "order": 3,
+      "title": "Colori e tipografia",
+      "minutes": 35,
+      "summary": "Gestire colori, font, pesi, dimensioni e spaziature del testo.",
+      "content": [
+        { "type": "text", "value": "CSS permette di gestire colori (nomi, esadecimali, rgb, hsl), font, pesi, dimensioni e spaziature.\n\nEsempio di regole per testo e colori:" },
+        { "type": "code", "language": "css", "value": "h1 { color: #111827; font-size: 2.5rem; }\np { color: #374151; line-height: 1.7; }\n.important { color: #dc3545; font-weight: bold; }" },
+        { "type": "tip", "value": "Scegli font leggibili e rispetta il contrasto per l’accessibilità." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale proprietà imposta il colore del testo?",
+          "options": ["background", "color", "font-size"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si imposta la dimensione del font?",
+          "options": ["font-size: 2rem;", "color: 2rem;", "font-weight: 2rem;"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "slug": "layout-flexbox-grid",
+      "order": 4,
+      "title": "Layout: Flexbox e Grid",
+      "minutes": 60,
+      "summary": "Creare layout moderni e responsive con Flexbox e CSS Grid.",
+      "content": [
+        { "type": "text", "value": "Flexbox e Grid sono i sistemi di layout moderni di CSS.\n- Flexbox: layout monodimensionale (righe o colonne)\n- Grid: layout bidimensionale (righe e colonne)\n\nEsempio di Flexbox e Grid:" },
+        { "type": "code", "language": "css", "value": ".container { display: flex; gap: 1rem; }\n.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }" },
+        { "type": "tip", "value": "Usa media query per rendere i layout adattivi su mobile." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale proprietà attiva Flexbox?",
+          "options": ["display: flex;", "display: grid;", "flex-direction: row;"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si crea una griglia a due colonne?",
+          "options": ["grid-template-columns: 1fr 1fr;", "flex-direction: column;", "margin: auto;"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "slug": "responsive-design",
+      "order": 5,
+      "title": "Responsive design e media query",
+      "minutes": 45,
+      "summary": "Adattare il layout a tutti i dispositivi con media query.",
+      "content": [
+        { "type": "text", "value": "Il responsive design permette ai siti di adattarsi a ogni schermo.\n- Media query: regole condizionali per device\n- Unità relative: %, em, rem, vw, vh\n\nEsempio di media query:" },
+        { "type": "code", "language": "css", "value": "@media (max-width: 600px) {\n  .container { padding: 0.5rem; }\n}" },
+        { "type": "tip", "value": "Testa sempre il sito su più dispositivi e risoluzioni." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa servono le media query?",
+          "options": ["A cambiare stile in base al device", "A scrivere JavaScript", "A caricare immagini"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale unità è relativa alla dimensione del font root?",
+          "options": ["em", "rem", "%"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "slug": "animazioni-e-transizioni",
+      "order": 6,
+      "title": "Animazioni e transizioni",
+      "minutes": 40,
+      "summary": "Animare elementi con transizioni e keyframes.",
+      "content": [
+        { "type": "text", "value": "CSS permette di animare elementi con transizioni e animazioni.\n- transition: animazioni semplici su proprietà\n- @keyframes: animazioni complesse\n\nEsempio di transizione e animazione:" },
+        { "type": "code", "language": "css", "value": ".btn { transition: background 0.2s; }\n@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }" },
+        { "type": "tip", "value": "Non esagerare con le animazioni: privilegia l’usabilità." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale proprietà crea una transizione?",
+          "options": ["transition", "animation", "transform"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si definisce un keyframe?",
+          "options": ["@keyframes", "@media", "@import"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "slug": "variabili-custom-properties",
+      "order": 7,
+      "title": "Variabili e custom properties",
+      "minutes": 35,
+      "summary": "Usare variabili CSS per temi e riuso.",
+      "content": [
+        { "type": "text", "value": "Le custom properties (variabili CSS) permettono di riutilizzare valori e creare temi.\n\nEsempio di variabile CSS:" },
+        { "type": "code", "language": "css", "value": ":root { --main-color: #ffc107; }\n.btn { background: var(--main-color); }" },
+        { "type": "tip", "value": "Le variabili CSS sono ereditabili e possono essere modificate con JS." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Come si definisce una variabile CSS?",
+          "options": [":root { --colore: #fff; }", "var(--colore)", "@color: #fff;"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si usa una variabile CSS?",
+          "options": ["var(--colore)", "--colore", "@color"],
+          "answer": 0
+        }
+      ]
+    }
+  ]
+}

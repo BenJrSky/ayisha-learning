@@ -1,0 +1,272 @@
+{
+  "id": "course_ayisha_js",
+  "slug": "ayisha-js",
+  "title": "Ayisha.js: SPA e Direttive Moderne",
+  "subtitle": "Crea webapp moderne, reactive e modulari con Ayisha.js.",
+  "category": "Development",
+  "level": "Beginner to Advanced",
+  "hours": 18,
+  "language": "it",
+  "lastUpdated": "2025-08-11",
+  "tags": ["Ayisha.js", "SPA", "Direttive", "Reactive", "Componenti", "Routing"],
+
+  "hero": {
+    "image": "images/img_3.jpg",
+    "logo": "ayisha-logo-black.png",
+    "ctaText": "Inizia ora",
+    "ctaUrl": "enroll.html"
+  },
+
+  "overview": "Ayisha.js è il framework HTML-first per SPA moderne, reactive e modulari. Impara a creare applicazioni senza build, con routing avanzato, direttive, componenti e fetch JSON, tutto in puro HTML e JS.",
+  "content": "Il corso copre l'uso pratico di Ayisha.js: struttura di una SPA, routing, direttive (@if, @for, @json, @link, @page, ecc.), componenti, binding, fetch dati, validazione, error handling, logging, e best practice. Ogni lezione include esempi reali, snippet e quiz. Al termine saprai costruire webapp moderne, accessibili e performanti senza toolchain complessi.",
+  "prerequisites": ["Conoscenze base di HTML e JS"],
+  "outcomes": [
+    "Comprendere la filosofia HTML-first di Ayisha.js",
+    "Usare direttive per logica, dati e UI reattiva",
+    "Gestire routing SPA e parametri dinamici",
+    "Creare e riusare componenti modulari",
+    "Effettuare fetch JSON e binding dati",
+    "Gestire errori, validazione e logging avanzato"
+  ],
+
+  "pricing": { "free": true, "price": 0, "currency": "EUR" },
+
+  "instructor": {
+    "name": "Ayisha Team",
+    "avatar": "images/img_3.jpg",
+    "bio": "Team di esperti frontend e accessibilità.",
+    "links": [
+      { "type": "site", "url": "https://github.com/devben/ayisha" }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "a0",
+      "slug": "introduzione-ayisha-js",
+      "order": 0,
+      "title": "Cos'è Ayisha.js e filosofia HTML-first",
+      "minutes": 30,
+      "summary": "Perché Ayisha.js? Vantaggi, zero build, SPA semplificata.",
+      "content": [
+        { "type": "text", "value": "Ayisha.js permette di creare SPA moderne senza build, usando solo HTML e JS. Tutta la logica è dichiarativa tramite direttive. Ideale per chi vuole rapidità, accessibilità e zero toolchain." },
+        { "type": "tip", "value": "Non serve npm, webpack o transpiler: basta includere ayisha-1.0.4.js e scrivere HTML!" },
+        { "type": "text", "value": "\nCaratteristiche principali:\n- Routing SPA avanzato\n- Direttive modulari (@if, @for, @json, @link, @page, @model, ecc.)\n- Componenti HTML-first\n- Stato reattivo e binding\n- Fetch dati e validazione\n- Logging, error handling, overlay\n- SSR e hydration\n- Zero dipendenze, zero build, solo HTML+JS\n" },
+        { "type": "tip", "value": "Ayisha.js è open source e pensato per la didattica e la prototipazione rapida." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Qual è il principale vantaggio di Ayisha.js?",
+          "options": ["Serve Node.js", "Zero build e HTML-first", "Solo per backend"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale direttiva si usa per caricare dati JSON?",
+          "options": ["@json", "@fetch", "@for"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "a1",
+      "slug": "routing-e-spa",
+      "order": 1,
+      "title": "Routing SPA e parametri dinamici",
+      "minutes": 40,
+      "summary": "Gestire la navigazione single-page e i parametri nell'URL.",
+      "content": [
+        { "type": "text", "value": "Ayisha.js gestisce il routing SPA tramite la direttiva @page e @link. Puoi usare parametri dinamici nell'URL e fallback automatici. Esempio di pagina e link SPA:" },
+        { "type": "code", "language": "html", "value": "<section @page=\"home\">Benvenuto!</section>\n<a @link=\"course/html\">Vai al corso</a>" },
+        { "type": "tip", "value": "I link con @link non ricaricano la pagina, quelli con href sì." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Come si crea un link SPA in Ayisha.js?",
+          "options": ["<a href=\"pagina.html\">", "<a @link=\"pagina\">"],
+          "answer": 1
+        }
+      ]
+    },
+    {
+      "id": "a2",
+      "slug": "direttive-base",
+      "order": 2,
+      "title": "Direttive base: @if, @for, @text, @json, @show, @hide, @class, @style",
+      "minutes": 60,
+      "summary": "Logica dichiarativa, visibilità, classi e fetch dati con direttive.",
+      "content": [
+        { "type": "text", "value": "Le direttive permettono di gestire logica, dati e UI in modo dichiarativo. Esempi di @if, @for, @text, @json, @show, @hide, @class, @style:" },
+        { "type": "code", "language": "html", "value": "<div @if=\"user\">Ciao {{user.name}}</div>\n<ul>\n  <li @for=\"item in items\" @text=\"item\"></li>\n</ul>\n<div @json=\"/api/data.json\" @result=\"dati\"></div>\n<div @show=\"isVisible\">Mostra se true</div>\n<div @hide=\"isHidden\">Nascondi se true</div>\n<div @class=\"{ evidenza: isActive }\">Classe dinamica</div>\n<div @style=\"{ color: 'red' }\">Stile dinamico</div>" },
+        { "type": "tip", "value": "@json carica dati da file/endpoint e li mette in una variabile. @show/@hide gestiscono la visibilità, @class/@style classi e stili dinamici." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa serve la direttiva @for?",
+          "options": ["Ciclo su array/oggetti", "Condizione booleana", "Navigazione"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale direttiva mostra/nasconde un elemento?",
+          "options": ["@show/@hide", "@json", "@component"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "a3",
+      "slug": "componenti-e-riuso",
+      "order": 3,
+      "title": "Componenti, @component, @src e riuso HTML",
+      "minutes": 50,
+      "summary": "Creare componenti riutilizzabili, passare dati e logica.",
+      "content": [
+        { "type": "text", "value": "Con Ayisha.js puoi creare componenti HTML riutilizzabili tramite @component e @src. Puoi passare dati, direttive e logica ai componenti. Esempio:" },
+        { "type": "code", "language": "html", "value": "<component @src=\"components/card.html\" user=\"user\"></component>" },
+        { "type": "tip", "value": "I componenti possono ricevere dati tramite attributi, variabili e direttive. Puoi anche annidare componenti e usare @for per renderizzare liste di componenti." },
+        { "type": "code", "language": "html", "value": "<component @src=\"components/card.html\" @for=\"item in items\" :item=\"item\"></component>" }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Come si include un componente esterno?",
+          "options": ["<component @src=\"file.html\">", "<include src=\"file.html\">"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come si passa una variabile a un componente?",
+          "options": ["user=\"user\"", "@text=\"user\"", "@for=\"user\""],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "a4",
+      "slug": "binding-e-reactivity",
+      "order": 4,
+      "title": "Binding, stato, reattività e watcher",
+      "minutes": 60,
+      "summary": "Gestire dati, input, stato reattivo e watcher.",
+      "content": [
+        { "type": "text", "value": "Ayisha.js offre binding automatico tra stato e UI. Puoi usare @model per input, @watch per reagire ai cambiamenti, e variabili di stato globali. I watcher permettono di eseguire azioni al variare di una variabile." },
+        { "type": "code", "language": "html", "value": "<input @model=\"user.name\">\n<div @text=\"user.name\"></div>\n<div @watch=\"user.name\" @do=\"console.log('Cambiato!')\"></div>" },
+        { "type": "tip", "value": "Lo stato è sempre reattivo: ogni modifica aggiorna la UI. I watcher sono utili per side effect e logica avanzata." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa serve la direttiva @model?",
+          "options": ["Binding input <-> stato", "Animazione", "Routing"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "A cosa serve la direttiva @watch?",
+          "options": ["Eseguire azioni al variare di una variabile", "Mostrare/nascondere elementi", "Routing"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "a5",
+      "slug": "fetch-e-json",
+      "order": 5,
+      "title": "Fetch JSON, dati dinamici e @fetch avanzato",
+      "minutes": 50,
+      "summary": "Caricare dati da file o API con @json e @fetch, POST, header, errori.",
+      "content": [
+        { "type": "text", "value": "Con @json e @fetch puoi caricare dati esterni e usarli nella UI. @fetch supporta POST, header, body, error handling e loading state. Esempio di fetch e visualizzazione dati:" },
+        { "type": "code", "language": "html", "value": "<div @json=\"/api/courses.json\" @result=\"corsi\"></div>\n<ul>\n  <li @for=\"corso in corsi\" @text=\"corso.title\"></li>\n</ul>\n<div @fetch=\"{ url: '/api/user', method: 'POST', body: { id: 1 } }\" @result=\"user\" @error=\"fetchError\" @loading=\"isLoading\"></div>" },
+        { "type": "tip", "value": "@fetch è più avanzato: supporta POST, header, body, error handling e loading state. Puoi gestire errori e loading con variabili dedicate." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Qual è la differenza tra @json e @fetch?",
+          "options": ["@json solo GET, @fetch anche POST/PUT, errori, loading", "Nessuna differenza", "@json per immagini"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come gestisci lo stato di loading con @fetch?",
+          "options": ["@loading=\"var\"", "@show=\"isLoading\"", "Entrambe"],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": "a6",
+      "slug": "validazione-errori-logging",
+      "order": 6,
+      "title": "Validazione, errori, logging e overlay",
+      "minutes": 50,
+      "summary": "Gestire validazione, errori, log, overlay e debug.",
+      "content": [
+        { "type": "text", "value": "Ayisha.js offre direttive per validazione (@validate), gestione errori, e logging (@log). Puoi mostrare errori in UI, overlay automatici e tracciare lo stato delle direttive. Il log delle direttive aiuta il debug e la trasparenza." },
+        { "type": "code", "language": "html", "value": "<form @form @validate=\"userForm\">...</form>\n<div @log=\"userForm\"></div>\n<button @click=\"throw new Error('Test')\">Test errore</button>" },
+        { "type": "tip", "value": "Gli errori sono visibili in overlay, nel log delle direttive e puoi forzare errori per testare il sistema." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "A cosa serve la direttiva @validate?",
+          "options": ["Validazione form", "Animazione", "Routing"],
+          "answer": 0
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Dove puoi vedere gli errori in Ayisha.js?",
+          "options": ["Overlay, log direttive, console", "Solo console", "Solo overlay"],
+          "answer": 0
+        }
+      ]
+    },
+    {
+      "id": "a7",
+      "slug": "best-practice-e-accessibilita",
+      "order": 7,
+      "title": "Best practice, accessibilità e performance",
+      "minutes": 40,
+      "summary": "Consigli per SPA accessibili, pulite, performanti e manutenibili.",
+      "content": [
+        { "type": "text", "value": "Ayisha.js promuove accessibilità, performance e codice pulito: usa sempre etichette, colori accessibili, struttura semantica, test su più device, lazy loading dei componenti, ottimizzazione fetch e debug con log." },
+        { "type": "tip", "value": "Evita logica JS custom: usa sempre le direttive per coerenza e manutenibilità. Usa lazy loading e fetch ottimizzati per performance." },
+        { "type": "tip", "value": "Testa sempre l'accessibilità con strumenti come Lighthouse e screen reader." }
+      ],
+      "quiz": [
+        {
+          "id": "q1",
+          "type": "single",
+          "prompt": "Quale pratica migliora l'accessibilità in Ayisha.js?",
+          "options": ["Colori a basso contrasto", "Etichette e struttura semantica", "Solo JS custom"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Come migliori la performance di una SPA Ayisha.js?",
+          "options": ["Lazy loading componenti e fetch ottimizzati", "Aggiungendo JS custom ovunque", "Usando solo immagini grandi"],
+          "answer": 0
+        }
+      ]
+    }
+  ]
+}
