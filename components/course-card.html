@@ -1,0 +1,18 @@
+<div class="course-card" @for="course in (Array.isArray(courses) ? courses : [courses])" @key="course.slug">
+    <div class="course-card-inner">
+        <div class="course-card-header">
+            <span class="ayisha-badge" @text="course.level"></span>
+            <span class="course-hours">⏱️ <span @text="course.hours"></span>h</span>
+        </div>
+        <h3 class="course-title" @text="course.title"></h3>
+        <div class="course-subtitle" @text="course.subtitle"></div>
+        <div class="course-meta">
+            <span class="course-lessons">📚 <span @text="(course.lessons || []).length"></span> lezioni</span>
+            <span class="course-language">🌐 <span @text="course.language"></span></span>
+        </div>
+        <div class="course-tags">
+            <span class="ayisha-tag" @for="tag in (course.tags || [])" @key="tag" @text="tag"></span>
+        </div>
+        <a class="ayisha-btn" @link="'course/' + course.slug">Vai al corso →</a>
+    </div>
+</div>
