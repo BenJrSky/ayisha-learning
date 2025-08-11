@@ -1,6 +1,15 @@
 
-<div class="course-card" @json="/courses/{data}.json" @result="#course">
+<div class="course-card" @json="/courses/{data}.json" @result="course">
     <p @text="data"></p>
+    
+
+    <p @text="uno"></p>
+    <p @text="due"></p>
+    <p @text="tre"></p>
+
+
+    <p style="color:red;" @if="course === undefined">Errore: corso non trovato o fetch fallita!</p>
+    <p style="color:orange;" @if="course && course.error">Fetch error: <span @text="course.error"></span></p>
     <div class="course-card-inner">
         <div class="course-card-header">
             <span class="ayisha-badge" @text="course.level"></span>
@@ -15,6 +24,8 @@
         <div class="course-tags">
             <span class="ayisha-tag" @for="tag in (course.tags || [])" @key="tag" @text="tag"></span>
         </div>
-        <a class="ayisha-btn" @link="'course/' + course.slug">Vai al corso →</a>
+        <a class="ayisha-btn" @link="course/{data}">Vai al corso →</a>
     </div>
 </div>
+
+

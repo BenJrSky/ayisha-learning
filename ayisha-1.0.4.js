@@ -3613,12 +3613,26 @@
         window.ayisha?._processComponentInitBlocks(tempDiv);
         const componentVNode = window.ayisha?.parse(tempDiv);
         if (componentVNode && componentVNode.children) {
+          // --- STRICT SCOPE: ONLY scopedVars, parent ctx as prototype, NO global state fallback ---
+          let componentCtx;
+          if (vNode.scopedVars && typeof vNode.scopedVars === 'object') {
+            componentCtx = Object.create(ctx || null);
+            for (const [k, v] of Object.entries(vNode.scopedVars)) {
+              let val = v;
+              try {
+                val = window.ayisha.evaluator.evalExpr(v, ctx);
+              } catch {}
+              componentCtx[k] = val;
+            }
+          } else {
+            // No scopedVars: use a context that does NOT fallback to global state
+            componentCtx = Object.create(null);
+          }
           const frag = document.createDocumentFragment();
           componentVNode.children.forEach(child => {
-            const node = state._ayishaInstance._renderVNode(child, ctx);
+            const node = state._ayishaInstance._renderVNode(child, componentCtx);
             if (node) frag.appendChild(node);
           });
-
           if (completionListener) {
             completionListener.addTask(() => Promise.resolve());
           }
@@ -6329,9 +6343,23 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
 
     _handleComponentDirective(vNode, ctx, completionListener = null) {
+      // --- FIX: Isolate context for each component instance ---
+      // 1. Start with a shallow copy of parent ctx (or empty if none)
+      let componentCtx = Object.create(ctx || null);
+      // 2. Add/override with any #props (scopedVars) from the <component> tag
+      if (vNode.scopedVars && typeof vNode.scopedVars === 'object') {
+        for (const [k, v] of Object.entries(vNode.scopedVars)) {
+          let val = v;
+          try {
+            val = this.evaluator.evalExpr(v, ctx);
+          } catch {}
+          componentCtx[k] = val;
+        }
+      }
+      // 3. Render the component with this new context
       const componentDirective = this.directiveManager.directives.get('@component');
       const stateWithInstance = { ...this.state, _ayishaInstance: this };
-      return componentDirective.apply(vNode, ctx, stateWithInstance, null, completionListener);
+      return componentDirective.apply(vNode, componentCtx, stateWithInstance, null, completionListener);
     }
 
     _processComponentInitBlocks(tempDiv) {
@@ -6723,7 +6751,6 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
 
     _hydrateBindings() {
-      // Re-establish model bindings for form elements
       const formElements = this.root.querySelectorAll('input, textarea, select');
       formElements.forEach(el => {
         const modelAttr = el.getAttribute('@model') || el.getAttribute('data-model');
@@ -6734,17 +6761,14 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
   }
 
-  // Export for browser
   if (typeof window !== 'undefined') {
     window.AyishaVDOM = AyishaVDOM;
   }
 
-  // Export for Node.js (SSR support)
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = AyishaVDOM;
   }
 
-  // Static method for SSR usage
   AyishaVDOM.createSSRInstance = function (options = {}) {
     const mockRoot = {
       childNodes: [],
@@ -6755,7 +6779,6 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     return new AyishaVDOM(mockRoot, { ...options, ssr: true });
   };
 
-  // Static method for easy hydration
   AyishaVDOM.hydrate = function (root = document.body, hydrationData = null) {
     return new AyishaVDOM(root, { hydration: true }).hydrate(hydrationData);
   };
@@ -6818,7 +6841,6 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
   };
 
-  // Browser-only initialization
   if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
