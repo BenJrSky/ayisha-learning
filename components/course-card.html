@@ -1,4 +1,6 @@
-<div class="course-card" @for="course in (Array.isArray(courses) ? courses : [courses])" @key="course.slug">
+
+<div class="course-card" @json="/courses/{data}.json" @result="#course">
+    <p @text="data"></p>
     <div class="course-card-inner">
         <div class="course-card-header">
             <span class="ayisha-badge" @text="course.level"></span>

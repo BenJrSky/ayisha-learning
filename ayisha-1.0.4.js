@@ -606,6 +606,10 @@
           } else {
             vNode.directives[attr.name] = attr.value;
           }
+        } else if (attr.name.startsWith('#')) {
+          // Node-scoped prop/variable
+          if (!vNode.scopedVars) vNode.scopedVars = {};
+          vNode.scopedVars[attr.name.slice(1)] = attr.value;
         } else {
           vNode.attrs[attr.name] = attr.value;
         }
@@ -776,7 +780,14 @@
           }
 
           const old = obj[prop];
+          // Prevent infinite render loop: do not trigger render if value is unchanged (deep equality)
           if (this._safeStringify(old) === this._safeStringify(val)) {
+            obj[prop] = val;
+            return true;
+          }
+
+          // Prevent infinite render loop: do not trigger render if the property is being set during render
+          if (this._isRendering) {
             obj[prop] = val;
             return true;
           }
@@ -820,7 +831,17 @@
           this._renderTimeout = setTimeout(() => {
             this._isUpdating = false;
             this._renderTimeout = null;
-            this.renderCallback();
+            if (typeof this.renderCallback === 'function') {
+              // Prevent infinite render loop: do not re-render if already rendering
+              if (!this._isRendering) {
+                this._isRendering = true;
+                try {
+                  this.renderCallback();
+                } finally {
+                  this._isRendering = false;
+                }
+              }
+            }
           }, 10);
 
           return true;
@@ -5977,12 +5998,29 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
 
     _renderVNode(vNode, ctx) {
+
       if (!vNode) return null;
+
+      // --- Node-scoped variable propagation ---
+      // If this node has scopedVars, merge them into a new context for children
+      let mergedCtx = ctx;
+      if (vNode.scopedVars && typeof vNode.scopedVars === 'object') {
+        mergedCtx = Object.assign(Object.create(ctx || null), mergedCtx);
+        for (const [k, v] of Object.entries(vNode.scopedVars)) {
+          // Evaluate the value in the current context
+          let val = v;
+          try {
+            // If the value is an expression, evaluate it
+            val = this.evaluator.evalExpr(v, ctx);
+          } catch {}
+          mergedCtx[k] = val;
+        }
+      }
 
       // Create completion listener if @then or @finally are present
       let completionListener = null;
       if (vNode && (vNode.directives?.['@then'] || vNode.directives?.['@finally'])) {
-        completionListener = new DirectiveCompletionListener(vNode, ctx, this);
+        completionListener = new DirectiveCompletionListener(vNode, mergedCtx, this);
 
         // Register @then expressions
         if (vNode.directives['@then']) {
@@ -6012,7 +6050,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
             while ((match = assignmentRegex.exec(expr)) !== null) {
               const varName = match[1];
               if (!(varName in this.state) || this.state[varName] === undefined) {
-                this.state[varName] = this.evaluator.evalExpr(match[2], ctx);
+                this.state[varName] = this.evaluator.evalExpr(match[2], mergedCtx);
               }
             }
           } catch (e) {
@@ -6157,7 +6195,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       }
 
       Object.entries(vNode.attrs).forEach(([k, v]) => {
-        el.setAttribute(k, this.evaluator.evalAttrValue(v, ctx));
+        el.setAttribute(k, this.evaluator.evalAttrValue(v, mergedCtx));
       });
 
       // Pre-save original text for @text:hover and similar sub-directives
@@ -6172,13 +6210,13 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         }
       }
 
-      this._handleSpecialDirectives(el, vNode, ctx);
+      this._handleSpecialDirectives(el, vNode, mergedCtx);
 
       // Use the modular directive manager to apply all directives
-      this.directiveManager.applyDirectives(vNode, ctx, this.state, el, completionListener);
+      this.directiveManager.applyDirectives(vNode, mergedCtx, this.state, el, completionListener);
 
       vNode.children.forEach(child => {
-        const node = this._renderVNode(child, ctx);
+        const node = this._renderVNode(child, mergedCtx);
         if (node) el.appendChild(node);
       });
 
