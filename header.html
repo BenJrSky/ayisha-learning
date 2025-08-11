@@ -26,7 +26,7 @@
         <a href="index.html" 
            @class="{active: location.pathname === '/' || location.pathname.includes('index')}" 
            @click="mobileNavOpen = false">Home</a>
-        <a href="courses.html"
+        <a @link="course"
            @class="{active: location.pathname.includes('courses') || location.pathname.includes('course-detail') || location.pathname.includes('lesson') || location.pathname.includes('enroll')}"
            @click="mobileNavOpen = false">Courses</a>
         <a href="wiki.html" 

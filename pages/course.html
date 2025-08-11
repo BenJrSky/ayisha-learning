@@ -1,15 +1,3 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Course Detail — Ayisha.js</title>
-  <link rel="stylesheet" href="site.css">
-  <meta name="color-scheme" content="light dark">
-</head>
-<body>
-  <component @src="header.html"></component>
-
   <main class="container" @json="/courses/html.json" @result="course">
     <section class="hero">
       <div class="hero-background"></div>
@@ -81,17 +69,3 @@
       <a @link="course?.hero?.ctaUrl || 'enroll.html'" @text="(course?.hero?.ctaText || 'Enroll now') + ' →'"></a>
     </nav>
   </main>
-
-  <init>
-    _currentPage = 'courses';
-    course = {};
-    // Read course slug from the URL, fallback to html-master
-    const _p = new URLSearchParams(location.search);
-    courseSlug = _p.get('course') || 'html-master';
-  </init>
-  <script src="/ayisha-1.0.4.js"></script>
-  <component @src="footer.html"></component>
-      <span @state="course"></span>
-
-</body>
-</html>
