@@ -879,13 +879,41 @@
         p = '';
       }
 
-      if (!this.state._currentPage) {
-        this.state._currentPage = p;
+      // Split path for _currentPage e _params
+      let segments = p.split('/').filter(Boolean);
+      // Fallback: se non c'è segmento, cerca la prima pagina con @page o usa 'home'
+      if (!segments[0]) {
+        let firstPage = null;
+        if (typeof document !== 'undefined') {
+          try {
+            const allWithPage = document.querySelectorAll('[\@page]');
+            if (allWithPage.length > 0) {
+              firstPage = allWithPage[0].getAttribute('@page');
+            }
+          } catch (e) {}
+        }
+        segments = [(firstPage || (this.state._currentPage && this.state._currentPage !== '' ? this.state._currentPage : 'home'))];
       }
+      this.state._currentPage = segments[0] || '';
+      this.state._params = segments.slice(1);
 
       window.addEventListener('popstate', () => {
         const newPath = location.pathname.replace(/^\//, '') || '';
-        this.state._currentPage = newPath;
+        let segs = newPath.split('/').filter(Boolean);
+        if (!segs[0]) {
+          let firstPage = null;
+          if (typeof document !== 'undefined') {
+            try {
+              const allWithPage = document.querySelectorAll('[\@page]');
+              if (allWithPage.length > 0) {
+                firstPage = allWithPage[0].getAttribute('@page');
+              }
+            } catch (e) {}
+          }
+          segs = [(firstPage || (this.state._currentPage && this.state._currentPage !== '' ? this.state._currentPage : 'home'))];
+        }
+        this.state._currentPage = segs[0] || '';
+        this.state._params = segs.slice(1);
         this.renderCallback();
       });
     }
@@ -908,11 +936,15 @@
 
     // Nuovo metodo per navigare programmaticamente
     navigate(path) {
-      if (path.startsWith('/')) {
-        this.state._currentPage = path.substring(1);
-      } else {
-        this.state._currentPage = path;
-      }
+      // Accepts: "course/html/1" or "/course/html/1"
+      let clean = path.startsWith('/') ? path.substring(1) : path;
+      const segments = clean.split('/').filter(Boolean);
+      this.state._currentPage = segments[0] || '';
+      this.state._params = segments.slice(1);
+      // Update URL
+      const url = '/' + segments.join('/');
+      history.pushState({}, '', url);
+      this.renderCallback();
     }
   }
 
@@ -3727,7 +3759,6 @@
 
   class InitialDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
-      // InitialDirective: usato da ReduceDirective
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
@@ -3753,25 +3784,23 @@
         el.addEventListener('click', e => {
           e.preventDefault();
           const targetPage = vNode.directives['@link'];
-
           let finalPage = this.resolvePath(targetPage);
-
-          state._currentPage = finalPage;
-
+          // Split segments for _currentPage and _params
+          const segments = finalPage.split('/').filter(Boolean);
+          state._currentPage = segments[0] || '';
+          state._params = segments.slice(1);
+          // Update URL
+          const url = '/' + segments.join('/');
           if (window && window.history && typeof window.history.pushState === 'function') {
-            const url = finalPage ? '/' + finalPage : '/';
             window.history.pushState({}, '', url);
             window.dispatchEvent(new PopStateEvent('popstate'));
           }
-
           setTimeout(() => {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
           }, 10);
-
           if (typeof window.ayisha?.render === 'function') {
             setTimeout(() => window.ayisha.render(), 0);
           }
-
           if (done) done();
         });
       }
@@ -5380,11 +5409,12 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         }
       });
 
-      const essentialVars = ['_validate', '_currentPage', '_version', '_locale'];
+      const essentialVars = ['_validate', '_currentPage', '_params', '_version', '_locale'];
       essentialVars.forEach(varName => {
         if (!(varName in this.state)) {
           if (varName === '_validate') this.state[varName] = {};
           else if (varName === '_currentPage') this.state[varName] = '';
+          else if (varName === '_params') this.state[varName] = [];
           else if (varName === '_version') this.state[varName] = AyishaVDOM.version;
           else if (varName === '_locale') {
             this.state[varName] = typeof navigator !== 'undefined'
@@ -6545,18 +6575,30 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       this.root.addEventListener('click', e => {
         let el = e.target;
         while (el && el !== this.root) {
+          // SPA navigation for @link
           if (el.hasAttribute('@link')) {
             e.preventDefault();
             const targetPage = el.getAttribute('@link');
-
-            // Determina il percorso corretto
             let finalPage = targetPage;
             if (targetPage.startsWith('/')) {
               finalPage = targetPage.substring(1);
             }
-
             this.state._currentPage = finalPage;
             this.render();
+            return;
+          }
+          if (el.tagName === 'A' && el.hasAttribute('href')) {
+            const href = el.getAttribute('href');
+            if (href && (href === 'index.html' || href === './index.html' || href === '/index.html')) {
+              e.preventDefault();
+              window.location.href = '/index.html';
+              return;
+            }
+            if (href && !/^(https?:|ftp:|mailto:|tel:|#|javascript:)/i.test(href)) {
+              e.preventDefault();
+              window.location.href = '/' + href.replace(/^\/+/, '');
+              return;
+            }
             return;
           }
           el = el.parentNode;

@@ -1,3 +1,223 @@
+.courses-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem 2rem;
+  margin-top: 2.5rem;
+  justify-content: flex-start;
+}
+.course-card {
+  background: var(--surface-color);
+  border-radius: 1.3rem;
+  box-shadow: 0 4px 24px 0 rgba(255,193,7,0.10);
+  border: 2px solid var(--primary-color);
+  padding: 2.1rem 1.5rem 1.5rem 1.5rem;
+  min-width: 270px;
+  max-width: 340px;
+  flex: 1 1 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow .22s, border-color .22s;
+  margin-bottom: 1.5rem;
+}
+.course-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(255,193,7,0.18);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px) scale(1.025);
+}
+.course-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.course-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .7rem;
+}
+.course-badge {
+  background: var(--accent-color);
+  color: #fff;
+  border-radius: 0.5em;
+  padding: 0.22em 0.85em;
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 8px rgba(13,110,253,0.08);
+}
+.course-hours {
+  color: var(--primary-dark);
+  font-size: 1em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+}
+.course-title {
+  font-size: 1.35em;
+  margin: 0.3em 0 0.15em 0;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.course-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.05em;
+  margin-bottom: 0.8em;
+  font-weight: 500;
+}
+.course-meta {
+  display: flex;
+  gap: 1.3em;
+  font-size: 1em;
+  color: var(--secondary-dark);
+  margin-bottom: 0.8em;
+  align-items: center;
+}
+.course-lessons {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  font-weight: 600;
+}
+.course-language {
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+  font-size: 0.98em;
+}
+.course-tags {
+  margin-bottom: 0.8em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+}
+.course-tag {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border-radius: 0.4em;
+  padding: 0.18em 0.7em;
+  font-size: 0.97em;
+  font-weight: 600;
+  margin-right: 0.1em;
+  margin-bottom: 0.1em;
+  letter-spacing: 0.01em;
+}
+.course-link {
+  display: inline-block;
+  margin-top: 0.7em;
+  background: var(--accent-color);
+  color: #fff;
+  border-radius: 0.6em;
+  padding: 0.55em 1.4em;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.08em;
+  transition: background .2s, box-shadow .2s;
+  box-shadow: 0 2px 8px rgba(13,110,253,0.08);
+  letter-spacing: 0.01em;
+}
+.course-link:hover {
+  background: var(--primary-color);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px rgba(255,193,7,0.13);
+}
+@media (max-width: 900px) {
+  .courses-grid {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .course-card {
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+/* Ayisha Learning Home - Courses Grid and Cards */
+.courses-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.course-card {
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  min-width: 260px;
+  max-width: 320px;
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow .2s;
+}
+.course-card:hover {
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.13);
+}
+.course-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+.course-badge {
+  background: var(--primary, #2b7cff);
+  color: #fff;
+  border-radius: 0.5em;
+  padding: 0.2em 0.7em;
+  font-size: 0.9em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.course-hours {
+  color: #888;
+  font-size: 0.95em;
+}
+.course-title {
+  font-size: 1.3em;
+  margin: 0.2em 0 0.1em 0;
+  font-weight: 700;
+}
+.course-subtitle {
+  color: #555;
+  font-size: 1em;
+  margin-bottom: 0.7em;
+}
+.course-meta {
+  display: flex;
+  gap: 1.2em;
+  font-size: 0.98em;
+  color: #444;
+  margin-bottom: 0.7em;
+}
+.course-tags {
+  margin-bottom: 0.7em;
+}
+.course-tag {
+  background: #f0f4fa;
+  color: #2b7cff;
+  border-radius: 0.4em;
+  padding: 0.15em 0.6em;
+  font-size: 0.92em;
+  margin-right: 0.3em;
+}
+.course-link {
+  display: inline-block;
+  margin-top: 0.5em;
+  background: var(--primary, #2b7cff);
+  color: #fff;
+  border-radius: 0.5em;
+  padding: 0.45em 1.2em;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1em;
+  transition: background .2s;
+}
+.course-link:hover {
+  background: #195bb5;
+}
 /* Course content (general description) box */
 .course-content {
   background: var(--surface-secondary);
