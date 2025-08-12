@@ -6672,116 +6672,11 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       }, true);
     }
 
-    // NEW: Hydration method for client-side
-    hydrate(hydrationData = null) {
-      // Check if we're in browser and have SSR data
-      if (typeof window !== 'undefined') {
-        const ssrData = hydrationData || window.__AYISHA_HYDRATION_DATA__;
-        if (ssrData && ssrData.state) {
-          // Merge SSR state with current state
-          this.state = { ...this.state, ...ssrData.state };
-          this._isHydrationMode = true;
-        }
-      }
-
-      // Parse existing DOM structure
-      this._vdom = this.parse(this.root);
-
-      // Initialize without re-rendering DOM
-      this._preInitializeEssentialVariables();
-      this._makeReactive();
-      this._runInitBlocks();
-      this.reactivitySystem.enableWatchers();
-      this._setupRouting();
-      this.router.setupCurrentPageProperty();
-
-      // Hydrate event listeners and bindings
-      this._hydrateEventListeners();
-      this._hydrateBindings();
-
-      // Set up component loading
-      this.preloadComponents();
-
-      console.log('🌊 Ayisha.js hydrated successfully');
-      return this;
-    }
-
-    _hydrateEventListeners() {
-      // Find all elements with directives and re-attach event listeners
-      const elementsWithDirectives = this.root.querySelectorAll('[data-ayisha-hydrate="true"]');
-
-      elementsWithDirectives.forEach(el => {
-        try {
-          const directivesAttr = el.getAttribute('data-ayisha-directives');
-          if (directivesAttr) {
-            const directives = JSON.parse(directivesAttr);
-            const vNode = {
-              tag: el.tagName.toLowerCase(),
-              directives,
-              subDirectives: {}
-            };
-
-            // Apply interactive directives only
-            this._hydrateInteractiveDirectives(vNode, this.state, el);
-          }
-        } catch (e) {
-          console.warn('Failed to hydrate element:', e, el);
-        }
-      });
-    }
-
-    _hydrateInteractiveDirectives(vNode, ctx, el) {
-      // Only hydrate interactive directives that need event listeners
-      const interactiveDirectives = [
-        '@click', '@input', '@change', '@focus', '@blur', '@hover', '@model'
-      ];
-
-      interactiveDirectives.forEach(directive => {
-        if (vNode.directives[directive]) {
-          const directiveInstance = this.directiveManager.getDirective(directive);
-          if (directiveInstance) {
-            try {
-              directiveInstance.apply(vNode, ctx, this.state, el);
-            } catch (e) {
-              console.warn(`Failed to hydrate directive ${directive}:`, e);
-            }
-          }
-        }
-      });
-    }
-
-    _hydrateBindings() {
-      const formElements = this.root.querySelectorAll('input, textarea, select');
-      formElements.forEach(el => {
-        const modelAttr = el.getAttribute('@model') || el.getAttribute('data-model');
-        if (modelAttr) {
-          this.bindingManager.bindModel(el, modelAttr, this.state);
-        }
-      });
-    }
   }
 
   if (typeof window !== 'undefined') {
     window.AyishaVDOM = AyishaVDOM;
   }
-
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AyishaVDOM;
-  }
-
-  AyishaVDOM.createSSRInstance = function (options = {}) {
-    const mockRoot = {
-      childNodes: [],
-      querySelectorAll: () => [],
-      addEventListener: () => { },
-      innerHTML: ''
-    };
-    return new AyishaVDOM(mockRoot, { ...options, ssr: true });
-  };
-
-  AyishaVDOM.hydrate = function (root = document.body, hydrationData = null) {
-    return new AyishaVDOM(root, { hydration: true }).hydrate(hydrationData);
-  };
 
   const addDefaultAnimationStyles = () => {
     if (typeof document === 'undefined') return; // Skip in Node.js
@@ -6841,27 +6736,15 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
   };
 
-  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         addDefaultAnimationStyles();
-
-        // Check if we need to hydrate or mount fresh
-        if (typeof window !== 'undefined' && window.__AYISHA_HYDRATION_DATA__) {
-          new AyishaVDOM(document.body).hydrate();
-        } else {
-          new AyishaVDOM(document.body).mount();
-        }
+        new AyishaVDOM(document.body).mount();
       });
     } else {
       addDefaultAnimationStyles();
-
-      // Check if we need to hydrate or mount fresh
-      if (typeof window !== 'undefined' && window.__AYISHA_HYDRATION_DATA__) {
-        new AyishaVDOM(document.body).hydrate();
-      } else {
-        new AyishaVDOM(document.body).mount();
-      }
+      new AyishaVDOM(document.body).mount();
     }
   }
 
