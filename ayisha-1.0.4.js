@@ -323,7 +323,14 @@
       try {
         if (this.executeMultipleExpressions(processedCode, ctx, event)) {
           if (triggerRender) {
-            setTimeout(() => window.ayisha && window.ayisha.render(), 0);
+            if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
+              clearTimeout(window.ayisha?._componentRenderTimeout);
+              window.ayisha._componentRenderQueued = true;
+              window.ayisha._componentRenderTimeout = setTimeout(() => {
+                window.ayisha._componentRenderQueued = false;
+                window.ayisha.render();
+              }, 0);
+            }
           }
           return true;
         }
@@ -333,7 +340,14 @@
           (this.state, ctx || {}, event);
 
         if (triggerRender) {
-          setTimeout(() => window.ayisha && window.ayisha.render(), 0);
+          if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
+            clearTimeout(window.ayisha?._componentRenderTimeout);
+            window.ayisha._componentRenderQueued = true;
+            window.ayisha._componentRenderTimeout = setTimeout(() => {
+              window.ayisha._componentRenderQueued = false;
+              window.ayisha.render();
+            }, 0);
+          }
         }
         return true;
       } catch (error) {
@@ -1196,6 +1210,7 @@
         '@result': `Esempio: <div @fetch="'url'" @result="data">Carica</div>`,
         '@watch': `Esempio: <div @watch="user"></div>`,
         '@text': `Esempio: <span @text="nome"></span>`,
+        '@scope': `Esempio: <component @src="comp.html" @scope="course"></component> (isola la variabile 'course' per ogni istanza del componente, aggiungendo un suffisso numerico incrementale)`,
         '@date': `Esempio: <li @date="data"></li> (formatta una data ISO come "1 agosto 2025, 08:37")`,
         '@dateonly': `Esempio: <li @dateonly="data"></li> (mostra solo giorno, mese e anno)`,
         '@time': `Esempio: <li @time="data"></li> (mostra solo ora e minuti)`,
@@ -1681,6 +1696,52 @@
 
   // All Directive Classes
 
+  class ScopeDirective extends Directive {
+    apply(vNode, ctx, state, el, completionListener = null) {
+      // Se la direttiva @scope è già stata processata, non fare niente
+      if (!vNode.directives || !vNode.directives['@scope']) {
+        if (completionListener) {
+          completionListener.addTask(() => Promise.resolve());
+        }
+        return;
+      }
+
+      const scopeVar = vNode.directives['@scope'].trim();
+
+      // Usa l'indice del nodo per creare una chiave stabile (non random!)
+      if (!vNode._scopeKey) {
+        const nodeIndex = vNode.parent ? vNode.parent.children.indexOf(vNode) : 0;
+        vNode._scopeKey = scopeVar + '_' + String(nodeIndex + 1).padStart(3, '0');
+      }
+
+      // Sostituisci nei discendenti solo se non è già stato fatto
+      function replaceInDescendants(node, oldVar, newVar) {
+        if (node.scopedVars && node.scopedVars[oldVar] !== undefined) {
+          node.scopedVars[newVar] = node.scopedVars[oldVar];
+          delete node.scopedVars[oldVar];
+        }
+        if (node.children) {
+          node.children.forEach(child => replaceInDescendants(child, oldVar, newVar));
+        }
+      }
+
+      replaceInDescendants(vNode, scopeVar, vNode._scopeKey);
+
+      // Salva nello state solo se non esiste già
+      if (state[vNode._scopeKey] === undefined && vNode.scopedVars && vNode.scopedVars[vNode._scopeKey] !== undefined) {
+        state[vNode._scopeKey] = vNode.scopedVars[vNode._scopeKey];
+      }
+
+      // Rimuovi la direttiva per evitare re-processing
+      delete vNode.directives['@scope'];
+
+      if (completionListener) {
+        completionListener.addTask(() => Promise.resolve());
+      }
+    }
+  }
+
+
   // @form Directive: aggregates @model fields and computes validation status
   class FormDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
@@ -1849,6 +1910,8 @@
       this.lastJsonUrl = {};
       this.fetched = {};
       this.readyPromise = {};
+      this.cacheByUrl = new Map();
+      this.inflightByUrl = new Map();
     }
 
     setupJson(expr, rk, ctx, event, force) {
@@ -1876,21 +1939,30 @@
 
       const fid = `${url}::${rk}`;
 
-      if (!force && !event && this.lastJsonUrl[fid]) {
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-          return this.readyPromise[fid];
-        }
-        return;
+      // Se c'è già una fetch per questo URL e non è forzata/evento, riusa la stessa
+      if (!force && !event && this.inflightByUrl.has(url)) {
+        const p = this.inflightByUrl.get(url);
+        this.readyPromise[fid] = p;
+        return p;
       }
-      if (!force && this.lastJsonUrl[fid] && JSON.stringify(this.lastJsonUrl[fid]) === JSON.stringify({ url, value: this.evaluator.state[rk] })) {
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-          return this.readyPromise[fid];
+
+      // Se abbiamo cache valida per URL e non è forzata/evento → evita refetch
+      if (!force && !event && this.cacheByUrl.has(url)) {
+        const cached = this.cacheByUrl.get(url);
+        if (this.evaluator.state[rk] !== cached) {
+          this.evaluator.state[rk] = cached;
         }
-        return;
+        if (!this.readyPromise[fid]) {
+          this.readyPromise[fid] = Promise.resolve(cached);
+        }
+        return this.readyPromise[fid];
       }
-      if (this.pendingJsons[fid]) return Promise.resolve(this.evaluator.state[rk]);
+
+      // Evita duplicati per stesso fid
+      if (this.pendingJsons[fid]) {
+        const existing = this.readyPromise[fid] || Promise.resolve(this.evaluator.state[rk]);
+        return existing;
+      }
 
       if (rk && typeof rk === 'string' && rk in this.evaluator.state) {
         this.evaluator.state[rk] = null;
@@ -1939,6 +2011,10 @@
           if (!isEqual) {
             this.evaluator.state[rk] = data;
           }
+          // Cache per URL
+          this.cacheByUrl.set(url, data);
+          // Aggiorna readyPromise per questo fid
+          this.readyPromise[fid] = Promise.resolve(data);
           if (this.fetched[url]) delete this.fetched[url].error;
           this.evaluator.state['_error'] = null;
           let errorVar = '_error';
@@ -1969,7 +2045,11 @@
         })
         .finally(() => {
           this.pendingJsons[fid] = false;
+          this.inflightByUrl.delete(url);
         });
+
+      // Registra come inflight per URL
+      this.inflightByUrl.set(url, fetchPromise);
       return fetchPromise;
     }
   }
@@ -2587,7 +2667,14 @@
           }
           state[varName] = value;
         }
-        setTimeout(() => window.ayisha && window.ayisha.render(), 0);
+        if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
+          clearTimeout(window.ayisha?._componentRenderTimeout);
+          window.ayisha._componentRenderQueued = true;
+          window.ayisha._componentRenderTimeout = setTimeout(() => {
+            window.ayisha._componentRenderQueued = false;
+            window.ayisha.render();
+          }, 0);
+        }
 
         // Patch: propagate assignments to global state if needed
         // Find assignments in the expression (e.g. foo=bar, page=index+1)
@@ -2598,7 +2685,14 @@
           // Only propagate if the variable exists in global state and differs
           if (varName in state && ctx[varName] !== undefined && ctx[varName] !== state[varName]) {
             state[varName] = ctx[varName];
-            setTimeout(() => window.ayisha && window.ayisha.render(), 0);
+            if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
+              clearTimeout(window.ayisha?._componentRenderTimeout);
+              window.ayisha._componentRenderQueued = true;
+              window.ayisha._componentRenderTimeout = setTimeout(() => {
+                window.ayisha._componentRenderQueued = false;
+                window.ayisha.render();
+              }, 0);
+            }
           }
         }
 
@@ -3432,7 +3526,15 @@
         }
 
         if (typeof window.ayisha?.render === 'function') {
-          setTimeout(() => window.ayisha.render(), 0);
+          // setTimeout(() => window.ayisha.render(), 0);
+          if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
+            clearTimeout(window.ayisha?._componentRenderTimeout);
+            window.ayisha._componentRenderQueued = true;
+            window.ayisha._componentRenderTimeout = setTimeout(() => {
+              window.ayisha._componentRenderQueued = false;
+              window.ayisha.render();
+            }, 0);
+          }
         }
       }
 
@@ -3580,6 +3682,8 @@
   }
 
   class ComponentDirective extends Directive {
+    static _scopeCounter = 1;
+    static _scopeMap = new WeakMap(); // el/vNode -> { scopedNames: {}, htmlPatched: false }
     apply(vNode, ctx, state, el, completionListener = null) {
       // Modular VDOM component loading (for <component @src="...">)
       const src = vNode.directives['@src'];
@@ -3605,9 +3709,57 @@
       }
       if (srcUrl.startsWith('./')) srcUrl = srcUrl.substring(2);
 
+      // Chiave sicura per WeakMap (el se presente, altrimenti vNode)
+      const mapKey = el || vNode;
+
+      // --- SCOPE LOGIC (STABILE PER ELEMENTO HOST) ---
+      if (vNode.directives['@scope']) {
+        const scopeVars = String(vNode.directives['@scope'])
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean);
+
+        // Ottieni/crea mappa per questo host
+        let scopeEntry = ComponentDirective._scopeMap.get(mapKey);
+        if (!scopeEntry) {
+          scopeEntry = { scopedNames: {}, htmlPatched: false };
+          ComponentDirective._scopeMap.set(mapKey, scopeEntry);
+        }
+
+        vNode._scopedNames = vNode._scopedNames || {};
+        scopeVars.forEach((varName) => {
+          if (!scopeEntry.scopedNames[varName]) {
+            const scopedName = `${varName}_${String(ComponentDirective._scopeCounter).padStart(4, '0')}`;
+            scopeEntry.scopedNames[varName] = scopedName;
+
+            if (vNode.scopedVars && vNode.scopedVars[varName] !== undefined) {
+              vNode.scopedVars[scopedName] = vNode.scopedVars[varName];
+            }
+            if (state[varName] !== undefined && state[scopedName] === undefined) {
+              state[scopedName] = state[varName];
+            }
+            ComponentDirective._scopeCounter++;
+          }
+          vNode._scopedNames[varName] = scopeEntry.scopedNames[varName];
+        });
+      }
+
       const cm = window.ayisha?.componentManager;
       if (cm && cm.getCachedComponent(srcUrl)) {
-        const componentHtml = cm.getCachedComponent(srcUrl);
+        let componentHtml = cm.getCachedComponent(srcUrl);
+
+        // Patch HTML solo la prima volta su questo host
+        if (vNode._scopedNames && !ComponentDirective._scopeMap.get(mapKey)?.htmlPatched) {
+          Object.entries(vNode._scopedNames).forEach(([varName, scopedName]) => {
+            const resultRegex = new RegExp(`@result=["']${varName}(?!_\\d+)["']`, 'g');
+            const bindingRegex = new RegExp(`\\b${varName}(?!_\\d+)\\.`, 'g');
+            componentHtml = componentHtml.replace(resultRegex, `@result="${scopedName}"`);
+            componentHtml = componentHtml.replace(bindingRegex, `${scopedName}.`);
+          });
+          const entry = ComponentDirective._scopeMap.get(mapKey);
+          if (entry) entry.htmlPatched = true;
+        }
+
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = componentHtml;
         window.ayisha?._processComponentInitBlocks(tempDiv);
@@ -3643,12 +3795,31 @@
       if (cm && !cm.getCachedComponent(srcUrl)) {
         const loadPromise = cm.loadExternalComponent(srcUrl).then(html => {
           if (html) {
+            let patchedHtml = html;
+
+            // Patch HTML solo la prima volta su questo host
+            if (vNode._scopedNames && !ComponentDirective._scopeMap.get(mapKey)?.htmlPatched) {
+              Object.entries(vNode._scopedNames).forEach(([varName, scopedName]) => {
+                const resultRegex = new RegExp(`@result=["']${varName}(?!_\\d+)["']`, 'g');
+                const bindingRegex = new RegExp(`\\b${varName}(?!_\\d+)\\.`, 'g');
+
+                patchedHtml = patchedHtml.replace(resultRegex, `@result="${scopedName}"`);
+                patchedHtml = patchedHtml.replace(bindingRegex, `${scopedName}.`);
+              });
+              const entry = ComponentDirective._scopeMap.get(mapKey);
+              if (entry) entry.htmlPatched = true;
+            }
+
             const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
+            tempDiv.innerHTML = patchedHtml;
             window.ayisha?._processComponentInitBlocks(tempDiv);
-            if (!window.ayisha?._isRendering) {
+            if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
               clearTimeout(window.ayisha?._componentRenderTimeout);
-              window.ayisha._componentRenderTimeout = setTimeout(() => window.ayisha.render(), 10);
+              window.ayisha._componentRenderQueued = true;
+              window.ayisha._componentRenderTimeout = setTimeout(() => {
+                window.ayisha._componentRenderQueued = false;
+                window.ayisha.render();
+              }, 10);
             }
           } else {
             console.error(`ComponentManager: Failed to load component ${srcUrl}`);
@@ -3656,9 +3827,13 @@
         }).catch(err => {
           console.error('Error loading component:', err);
           cm.cache[srcUrl] = `<div class='component-error' style='padding: 10px; background: #ffe6e6; border: 1px solid #ff6b6b; border-radius: 4px; color: #d32f2f;'>Errore: ${err.message}</div>`;
-          if (!window.ayisha?._isRendering) {
+          if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
             clearTimeout(window.ayisha?._componentRenderTimeout);
-            window.ayisha._componentRenderTimeout = setTimeout(() => window.ayisha.render(), 10);
+            window.ayisha._componentRenderQueued = true;
+            window.ayisha._componentRenderTimeout = setTimeout(() => {
+              window.ayisha._componentRenderQueued = false;
+              window.ayisha.render();
+            }, 10);
           }
         });
 
@@ -3943,7 +4118,8 @@
     '@hover': HoverDirective,
     '@date': DateDirective,
     '@dateonly': DateOnlyDirective,
-    '@time': TimeDirective
+    '@time': TimeDirective,
+    '@scope': ScopeDirective
   };
 
   // Enhanced Directive Manager
@@ -4008,6 +4184,7 @@
       this.register('@prev', new PrevDirective(this.evaluator, this.bindingManager, this.errorHandler));
       this.register('@link', new LinkDirective(this.evaluator, this.bindingManager, this.errorHandler));
       this.register('@hover', new HoverDirective(this.evaluator, this.bindingManager, this.errorHandler));
+      this.register('@scope', new ScopeDirective(this.evaluator, this.bindingManager, this.errorHandler));
     }
 
     register(name, directive) {

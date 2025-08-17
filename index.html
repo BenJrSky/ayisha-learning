@@ -9,14 +9,9 @@
 </head>
 
 <body>
-  <component @src="header.html"></component>
- 
-
+    <component @src="header.html"></component>
     <component @page="home" @src="/pages/home.html"></component>
     <component @page="course" @src="/pages/course.html"></component>
-
-
-
   <init>
     _currentPage = 'home';
   </init>
@@ -25,7 +20,7 @@
 </body>
 
 
-<span @state="_params"></span>
+<span @state></span>
 
 </html>
 

@@ -1,31 +1,23 @@
 
-<div class="course-card" @json="/courses/{data}.json" @result="course">
+<div class="course-card" @json="/courses/{data}.json" @result="course" >
     <p @text="data"></p>
-    
-
-    <p @text="uno"></p>
-    <p @text="due"></p>
-    <p @text="tre"></p>
 
 
-    <p style="color:red;" @if="course === undefined">Errore: corso non trovato o fetch fallita!</p>
-    <p style="color:orange;" @if="course && course.error">Fetch error: <span @text="course.error"></span></p>
-    <div class="course-card-inner">
-        <div class="course-card-header">
-            <span class="ayisha-badge" @text="course.level"></span>
-            <span class="course-hours">⏱️ <span @text="course.hours"></span>h</span>
-        </div>
-        <h3 class="course-title" @text="course.title"></h3>
-        <div class="course-subtitle" @text="course.subtitle"></div>
-        <div class="course-meta">
-            <span class="course-lessons">📚 <span @text="(course.lessons || []).length"></span> lezioni</span>
-            <span class="course-language">🌐 <span @text="course.language"></span></span>
-        </div>
-        <div class="course-tags">
-            <span class="ayisha-tag" @for="tag in (course.tags || [])" @key="tag" @text="tag"></span>
-        </div>
-        <a class="ayisha-btn" @link="course/{data}">Vai al corso →</a>
+
+        <p @text="uno"></p>
+        <p @text="due"></p>
+        <p @text="tre"></p>
+
+    <h3 class="course-title" @text="course.title"></h3>
+    <div class="course-subtitle" @text="course.subtitle"></div>
+    <div class="course-meta">
+        <span class="course-lessons">📚 <span @text="(course.lessons || []).length"></span> lezioni</span>
+        <span class="course-language">🌐 <span @text="course.language"></span></span>
     </div>
+    <div class="course-tags">
+        <span class="ayisha-tag" @for="tag in (course.tags || [])" @key="tag" @text="tag"></span>
+    </div>
+    <a class="ayisha-btn" @link="course/{data}">Vai al corso →</a>
 </div>
 
 
