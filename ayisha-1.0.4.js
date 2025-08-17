@@ -962,15 +962,40 @@
 
     setupFetch(expr, rk, ctx, event, force) {
       let url = this.evaluator.evalExpr(expr, ctx, event);
+      
+      const isInvalidUrlString = (s) => {
+        if (s == null) return true;
+        const str = String(s).trim();
+        if (!str) return true;
+        if (/\{[^}]+\}/.test(str)) return true;               
+        if (/(^|\/)(undefined|null)(\/|$)/i.test(str)) return true; 
+        if (/\/\.(?:[a-z0-9]+)?(\?|$|#)/i.test(str)) return true;  
+        return false;
+      };
+
       if (url === undefined) {
+        let missingPlaceholder = false;
         url = expr.replace(/\{([^}]+)\}/g, (_, key) => {
           const val = this.evaluator.evalExpr(key, ctx, event);
-          return val != null ? val : '';
+          if (val === undefined || val === null || (typeof val === 'string' && val.trim() === '')) {
+            missingPlaceholder = true;
+            return '';
+          }
+          return String(val);
         });
+        if (missingPlaceholder) {
+          return Promise.resolve(undefined);
+        }
       }
       if (url === undefined || url === null) {
         url = expr;
       }
+
+      // Se l'URL finale è "non popolato", non avviare la richiesta
+      if (isInvalidUrlString(url)) {
+        return Promise.resolve(undefined);
+      }
+
       if (!url) return Promise.resolve(undefined);
 
       if (typeof url === 'string') {
@@ -1052,6 +1077,14 @@
         }
         if (!this.readyPromise[fid]) {
           this.readyPromise[fid] = Promise.resolve(cached);
+        }
+        return this.readyPromise[fid];
+      }
+
+      // Se lo stesso URL ha già dato errore, non ripetere automaticamente (a meno di force/event)
+      if (!force && !event && this.fetched[url]?.error) {
+        if (!this.readyPromise[fid]) {
+          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
         }
         return this.readyPromise[fid];
       }
@@ -1879,19 +1912,47 @@
       this.readyPromise = {};
       this.cacheByUrl = new Map();
       this.inflightByUrl = new Map();
+      this.errorInfoByUrl = new Map();
+      this.errorCooldownMs = 3000;
     }
 
     setupJson(expr, rk, ctx, event, force) {
       let url = this.evaluator.evalExpr(expr, ctx, event);
+
+      // Heuristica: funzione per rilevare URL "non popolato"
+      const isInvalidUrlString = (s) => {
+        if (s == null) return true;
+        const str = String(s).trim();
+        if (!str) return true;
+        if (/\{[^}]+\}/.test(str)) return true;               // placeholder non risolti
+        if (/(^|\/)(undefined|null)(\/|$)/i.test(str)) return true; // segmenti undefined/null
+        if (/\/\.(?:[a-z0-9]+)?(\?|$|#)/i.test(str)) return true;   // '/.json' o '/.'
+        return false;
+      };
+
       if (url === undefined) {
+        let missingPlaceholder = false;
         url = expr.replace(/\{([^}]+)\}/g, (_, key) => {
           const val = this.evaluator.evalExpr(key, ctx, event);
-          return val != null ? val : '';
+          if (val === undefined || val === null || (typeof val === 'string' && val.trim() === '')) {
+            missingPlaceholder = true;
+            return '';
+          }
+          return String(val);
         });
+        if (missingPlaceholder) {
+          return Promise.resolve(undefined);
+        }
       }
       if (url === undefined || url === null) {
         url = expr;
       }
+
+      // Se l'URL finale è "non popolato", non avviare la richiesta
+      if (isInvalidUrlString(url)) {
+        return Promise.resolve(undefined);
+      }
+
       if (!url) return Promise.resolve(undefined);
 
       if (/^https?:\/\//.test(url)) {
@@ -1903,6 +1964,26 @@
       url = location.origin + url;
 
       const fid = `${url}::${rk}`;
+
+      if (!force && !event && this.errorInfoByUrl.has(url)) {
+        const info = this.errorInfoByUrl.get(url);
+        if (Date.now() - info.ts < this.errorCooldownMs) {
+          if (!this.readyPromise[fid]) {
+            this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
+          }
+          return this.readyPromise[fid];
+        } else {
+          this.errorInfoByUrl.delete(url);
+        }
+      }
+
+      // Se lo stesso URL ha già dato errore, non ripetere automaticamente (a meno di force/event)
+      if (!force && !event && this.fetched[url]?.error) {
+        if (!this.readyPromise[fid]) {
+          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
+        }
+        return this.readyPromise[fid];
+      }
 
       if (!force && !event && this.inflightByUrl.has(url)) {
         const p = this.inflightByUrl.get(url);
@@ -1983,6 +2064,7 @@
           if (errorVar !== '_error') {
             this.evaluator.state[errorVar] = null;
           }
+          this.errorInfoByUrl.delete(url);
           return data;
         })
         .catch(err => {
@@ -1993,14 +2075,32 @@
           if (ctx && ctx._vNode && ctx._vNode.directives && ctx._vNode.directives['@error']) {
             errorVar = ctx._vNode.directives['@error'] || '_error';
           }
-          this.evaluator.state['_error'] = {
+
+          this.errorInfoByUrl.set(url, {
+            ts: Date.now(),
+            error: err && err.message ? err.message : String(err)
+          });
+
+          const newErrorObj = {
             error: err && err.message ? err.message : (err || 'Errore sconosciuto'),
             details: err && err.stack ? err.stack : undefined
           };
+
+          const prevError = this.evaluator.state['_error'];
+          const prevStr = JSON.stringify(prevError);
+          const newStr = JSON.stringify(newErrorObj);
+          if (prevStr !== newStr) {
+            this.evaluator.state['_error'] = newErrorObj;
+          }
           if (errorVar !== '_error') {
             this.evaluator.state[errorVar] = this.evaluator.state['_error'];
           }
+
           console.error('@json error:', err);
+
+          if (!this.readyPromise[fid]) {
+            this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
+          }
         })
         .finally(() => {
           this.pendingJsons[fid] = false;
@@ -3909,7 +4009,13 @@
         const done = completionListener ? completionListener.addAsyncTask() : null;
         el.addEventListener('click', e => {
           e.preventDefault();
-          const targetPage = vNode.directives['@link'];
+          const raw = vNode.directives['@link'];
+          let targetPage = raw;
+          try {
+            if (this.evaluator && typeof raw === 'string' && this.evaluator.hasInterpolation(raw)) {
+              targetPage = this.evaluator.evalAttrValue(raw, ctx);
+            }
+          } catch {}
           let finalPage = this.resolvePath(targetPage);
           const segments = finalPage.split('/').filter(Boolean);
           state._currentPage = segments[0] || '';
@@ -6210,7 +6316,6 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
           const pageName = vNode.directives['@page'];
           const currentPage = this.state._currentPage || this.state.currentPage;
           if (String(pageName) !== String(currentPage)) {
-            this._handleComponentDirective(vNode, ctx, completionListener);
             return null;
           }
         }

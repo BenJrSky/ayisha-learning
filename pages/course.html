@@ -1,4 +1,4 @@
-  <main class="container">
+  <main   class="container" @json="/courses/{_params[0]}.json" @result="course">
     <section class="hero">
       <div class="hero-background"></div>
       <div class="hero-content">
@@ -65,7 +65,8 @@
     </section>
 
     <nav class="page-nav">
-      <a href="courses.html">← Back to Courses</a>
+      <a @link="home">← Back to Courses</a>
       <a @link="course?.hero?.ctaUrl || 'enroll.html'" @text="(course?.hero?.ctaText || 'Enroll now') + ' →'"></a>
     </nav>
+    <component @src="components/sections/courses-section.html"></component>
   </main>
