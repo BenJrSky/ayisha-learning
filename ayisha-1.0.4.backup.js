@@ -6,6 +6,7 @@
  */
 
 (function () {
+  // Allow loading in Node.js for SSR
   if (typeof window !== 'undefined' && window.AyishaVDOM) return;
 
   class AyishaErrorBus {
@@ -69,6 +70,7 @@
         this.thenQueue.push(expr);
       }
 
+      // NUOVO: Pre-inizializza le variabili target degli assignment
       this._preInitializeVariablesFromExpressions(expr);
     }
 
@@ -81,9 +83,11 @@
         this.finallyQueue.push(expr);
       }
 
+      // NUOVO: Pre-inizializza le variabili target degli assignment
       this._preInitializeVariablesFromExpressions(expr);
     }
 
+    // NUOVO METODO: Estrae e pre-inizializza le variabili target degli assignment
     _preInitializeVariablesFromExpressions(expr) {
       if (!expr || !this.ayisha?.evaluator) return;
 
@@ -100,29 +104,40 @@
       expressions.forEach(expression => {
         if (typeof expression !== 'string') return;
 
+        // Estrai tutte le assegnazioni: variabile = valore
         const assignmentRegex = /([a-zA-Z_$][a-zA-Z0-9_$]*(?:\.[a-zA-Z_$][a-zA-Z0-9_$]*)*)\s*=\s*[^=]/g;
         let match;
 
         while ((match = assignmentRegex.exec(expression)) !== null) {
           const fullVariablePath = match[1].trim();
 
+          // Gestisci sia variabili semplici che nested (es: user.name)
           if (fullVariablePath.includes('.')) {
+            // Per variabili nested come "user.name", inizializza l'oggetto root
             const rootVar = fullVariablePath.split('.')[0];
             this._ensureVariableInState(rootVar, 'object');
 
+            // Crea la struttura nested se necessario
             this._ensureNestedPath(fullVariablePath);
           } else {
+            // Per variabili semplici, prova a indovinare il tipo dal contesto
             this._ensureVariableInState(fullVariablePath, 'auto');
           }
         }
       });
     }
 
+    // NUOVO: Helper per assicurarsi che una variabile esista nello state
     _ensureVariableInState(varName, type = 'auto') {
       if (!varName || !this.ayisha?.evaluator?.state) return;
+
+      // Verifica che sia un nome di variabile valido
       if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(varName)) return;
+
+      // Non sovrascrivere se esiste già
       if (varName in this.ayisha.evaluator.state) return;
 
+      // Skip variabili globali JavaScript
       const jsGlobals = [
         'JSON', 'Object', 'Array', 'String', 'Number', 'Boolean', 'Date', 'Math', 'RegExp',
         'console', 'window', 'document', 'setTimeout', 'setInterval', 'fetch', 'localStorage',
@@ -154,12 +169,13 @@
     }
 
     _ensureNestedPath(fullPath) {
+      // Usa la utility centralizzata per la gestione dei path annidati
       if (!fullPath || !this.ayisha?.evaluator?.state) return;
       AyishaNestedUtil.setNested(this.ayisha.evaluator.state, fullPath, undefined);
     }
 
     _onComplete() {
-      if (this.done) return; 
+      if (this.done) return; // Prevent further completions if already done
       this.completed++;
       if (this.completed > this.total) this.completed = this.total;
       this._checkCompletion();
@@ -460,6 +476,7 @@
     ensureVarInState(expr, forceString = false, inputType = null) {
       if (typeof expr !== 'string') return;
 
+      // Reject expressions that contain operators or invalid characters
       if (expr.includes('=') || expr.includes('<') || expr.includes('>') ||
         expr.includes('!') || expr.includes('&') || expr.includes('|') ||
         expr.includes("'") || expr.includes('"') || expr.includes('(') ||
@@ -468,7 +485,7 @@
         expr.includes('%') || expr.includes('[') || expr.includes(']') ||
         expr.includes('{') || expr.includes('}') || expr.includes('?') ||
         expr.includes(':') || expr.includes(';') || expr.includes(',')) {
-        return; 
+        return; // Don't create variables for complex expressions
       }
 
       const jsGlobals = [
@@ -488,8 +505,9 @@
 
       const varName = expr.split('.')[0];
 
+      // Additional check: only allow valid JavaScript identifier names
       if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(varName)) {
-        return; 
+        return; // Don't create variables with invalid names
       }
 
       if (!jsGlobals.includes(varName) && !(varName in this.state)) {
@@ -521,6 +539,7 @@
 
         if (jsGlobals.includes(rootVar)) return;
 
+        // Additional check for dot notation
         if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(rootVar)) {
           return;
         }
@@ -602,6 +621,7 @@
             vNode.directives[attr.name] = attr.value;
           }
         } else if (attr.name.startsWith('#')) {
+          // Node-scoped prop/variable
           if (!vNode.scopedVars) vNode.scopedVars = {};
           vNode.scopedVars[attr.name.slice(1)] = attr.value;
         } else {
@@ -728,6 +748,7 @@
         configurable: true
       });
 
+      // Helper to wrap array mutating methods
       const renderCallback = this.renderCallback;
       const wrapArray = (arr, prop) => {
         if (!Array.isArray(arr) || arr._ayishaWrapped) return arr;
@@ -761,9 +782,11 @@
             return true;
           }
 
+          // --- Track previous value in a parallel state ---
           if (!obj._prevValues) obj._prevValues = {};
           obj._prevValues[prop] = obj[prop];
 
+          // --- Track history (optional, legacy) ---
           if (!this._historyValues[prop]) this._historyValues[prop] = [];
           if (Object.prototype.hasOwnProperty.call(obj, prop)) {
             this._historyValues[prop].push(obj[prop]);
@@ -771,11 +794,13 @@
           }
 
           const old = obj[prop];
+          // Prevent infinite render loop: do not trigger render if value is unchanged (deep equality)
           if (this._safeStringify(old) === this._safeStringify(val)) {
             obj[prop] = val;
             return true;
           }
 
+          // Prevent infinite render loop: do not trigger render if the property is being set during render
           if (this._isRendering) {
             obj[prop] = val;
             return true;
@@ -785,6 +810,7 @@
           obj[prop] = val;
 
           if (this.watchersReady && this.watchers[prop]) {
+            // Check watcher type: oneShot or reactive
             if (this._watcherTypes[prop] === 'oneShot') {
               if (!this._watcherOneShotFired[prop]) {
                 this._watcherOneShotFired[prop] = true;
@@ -798,6 +824,7 @@
                 });
               }
             } else {
+              // reactive: trigger on every change
               if (this._safeStringify(this._prevValues[prop]) !== this._safeStringify(val)) {
                 this._prevValues[prop] = val;
                 this.watchers[prop].forEach(fn => {
@@ -819,6 +846,7 @@
             this._isUpdating = false;
             this._renderTimeout = null;
             if (typeof this.renderCallback === 'function') {
+              // Prevent infinite render loop: do not re-render if already rendering
               if (!this._isRendering) {
                 this._isRendering = true;
                 try {
@@ -854,6 +882,7 @@
       if (!(prop in this._prevValues)) {
         this._prevValues[prop] = this.state[prop];
       }
+      // NEW: set watcher type
       if (options.oneShot) {
         this._watcherTypes[prop] = 'oneShot';
         this._watcherOneShotFired[prop] = false;
@@ -865,6 +894,7 @@
 
     enableWatchers() {
       this.watchersReady = true;
+      // reset all one-shot flags on enable (e.g. on remount)
       Object.keys(this._watcherOneShotFired).forEach(k => {
         this._watcherOneShotFired[k] = false;
       });
@@ -884,7 +914,9 @@
         p = '';
       }
 
+      // Split path for _currentPage e _params
       let segments = p.split('/').filter(Boolean);
+      // Fallback: se non c'è segmento, cerca la prima pagina con @page o usa 'home'
       if (!segments[0]) {
         let firstPage = null;
         if (typeof document !== 'undefined') {
@@ -937,11 +969,14 @@
       });
     }
 
+    // Nuovo metodo per navigare programmaticamente
     navigate(path) {
+      // Accepts: "course/html/1" or "/course/html/1"
       let clean = path.startsWith('/') ? path.substring(1) : path;
       const segments = clean.split('/').filter(Boolean);
       this.state._currentPage = segments[0] || '';
       this.state._params = segments.slice(1);
+      // Update URL
       const url = '/' + segments.join('/');
       history.pushState({}, '', url);
       this.renderCallback();
@@ -973,6 +1008,7 @@
       }
       if (!url) return Promise.resolve(undefined);
 
+      // Normalizza URL: trim + rimozione di backtick/virgolette esterne
       if (typeof url === 'string') {
         url = url.trim();
         const first = url[0], last = url[url.length - 1];
@@ -981,14 +1017,16 @@
         }
       }
 
+      // FIX: Se l'URL è assoluto (http/https), non modificarlo
       if (!/^https?:\/\//.test(url)) {
-        url = url.replace(/\/+$/, ''); 
-        url = url.replace(/\?$/, ''); 
-        url = url.replace(/\?&/, '?'); 
-        url = url.replace(/\?$/, ''); 
-        url = url.replace(/\&+$/, ''); 
-        url = url.replace(/\?page=(&|$)/, '?').replace(/\?$/, ''); 
-        url = url.replace(/\/\//g, '/'); 
+        url = url.replace(/\/+$/, ''); // rimuove slash finale
+        url = url.replace(/\?$/, ''); // rimuove ? finale
+        url = url.replace(/\?&/, '?'); // rimuove & subito dopo ?
+        url = url.replace(/\?$/, ''); // rimuove ? finale ancora
+        url = url.replace(/\&+$/, ''); // rimuove & finale
+        url = url.replace(/\?page=(&|$)/, '?').replace(/\?$/, ''); // rimuove page vuoto
+        url = url.replace(/\/\//g, '/'); // rimuove doppio slash
+        // Se l'URL non inizia con "/", aggiungi la base
         if (!url.startsWith('/')) {
           url = '/' + url;
         }
@@ -997,6 +1035,7 @@
 
       const fid = `${url}::${rk}`;
 
+      // Calcolo method/payload/headers prima della dedup per creare una firma stabile
       let method = 'GET';
       let payload = null;
       let customHeaders = null;
@@ -1017,6 +1056,7 @@
             method = 'GET';
           }
         }
+        // PATCH: payload anche per PUT/PATCH/DELETE oltre che POST
         if (ctx._vNode.directives && ctx._vNode.directives['@payload']) {
           payload = this.evaluator.evalExpr(ctx._vNode.directives['@payload'], ctx, event);
         }
@@ -1025,6 +1065,7 @@
         }
       }
 
+      // Firma stabile della richiesta: method + url + payload + headers (ordinati)
       const sortObject = (o) => {
         if (Array.isArray(o)) return o.map(sortObject);
         if (o && typeof o === 'object') {
@@ -1039,12 +1080,14 @@
       const normPayloadStr = payload != null && typeof payload === 'object' ? stableStringify(payload) : (payload != null ? String(payload) : '');
       const signature = `${method} ${url} ${normPayloadStr} ${normHeaders ? stableStringify(normHeaders) : ''}`;
 
+      // 1) Se identica richiesta è già in volo e NON è evento/forzata → riusa Promise
       if (!force && !event && this.inflightBySignature.has(signature)) {
         const p = this.inflightBySignature.get(signature);
         this.readyPromise[fid] = p;
         return p;
       }
 
+      // 2) Se esiste cache per la stessa firma e NON è evento/forzata → usa cache
       if (!force && !event && this.cacheBySignature.has(signature)) {
         const cached = this.cacheBySignature.get(signature);
         if (this.evaluator.state[rk] !== cached) {
@@ -1056,6 +1099,7 @@
         return this.readyPromise[fid];
       }
 
+      // 3) Se la richiesta (fid) risulta pendente → riusa promise disponibile o stato
       if (this.pendingFetches[fid]) {
         const p =
           this.inflightBySignature.get(signature) ||
@@ -1083,6 +1127,7 @@
 
       const fetchOptions = { method };
       let headers = {};
+      // PATCH: payload per tutti i metodi diversi da GET/HEAD
       if (payload != null && method && !['GET', 'HEAD'].includes(method.toUpperCase())) {
         if (typeof payload === 'object') {
           fetchOptions.body = JSON.stringify(payload);
@@ -1114,6 +1159,7 @@
               } catch (e) {
                 parsedError = errorBody || `${res.status} ${res.statusText || 'errore di rete'}`;
               }
+              // Always set _error and custom errorVar, and also window._error for debugging
               const errorObj = {
                 error: parsedError && parsedError.error ? parsedError.error : `${res.status} ${res.statusText}`,
                 details: parsedError && parsedError.details ? parsedError.details : parsedError
@@ -1135,9 +1181,12 @@
           if (!isEqual) {
             this.evaluator.state[rk] = data;
           }
+          // Cache per firma richiesta
           this.cacheBySignature.set(signature, data);
+          // Allinea readyPromise per fid
           this.readyPromise[fid] = Promise.resolve(data);
           if (this.fetched[url]) delete this.fetched[url].error;
+          // Always clear both _error and custom errorVar
           this.evaluator.state['_error'] = null;
           let errorVar = '_error';
           if (ctx && ctx._vNode && ctx._vNode.directives && ctx._vNode.directives['@error']) {
@@ -1156,6 +1205,7 @@
           if (ctx && ctx._vNode && ctx._vNode.directives && ctx._vNode.directives['@error']) {
             errorVar = ctx._vNode.directives['@error'] || '_error';
           }
+          // Always set _error as well as custom errorVar
           this.evaluator.state['_error'] = {
             error: err && err.message ? err.message : (err || 'Errore sconosciuto'),
             details: err && err.stack ? err.stack : undefined
@@ -1340,6 +1390,7 @@
       this.modelBindings = [];
     }
 
+    // Utility for setting nested values (used for validation)
     static setNestedValidate(obj, path, value) {
       const keys = path.split('.');
       let current = obj;
@@ -1353,6 +1404,7 @@
     }
 
     bindModel(el, key, ctx) {
+      // ...existing code...
       let inputTypeForInit = null;
       if (el.type === 'number') {
         inputTypeForInit = 'number';
@@ -1407,8 +1459,10 @@
       const update = () => {
         const val = this.evaluator.evalExpr(key, ctx);
         if (el.type === 'checkbox') {
+          // Gestione checkbox: true/false
           el.checked = !!val;
         } else if (el.type === 'radio') {
+          // Gestione radio: checked se valore === value
           el.checked = val === el.value || val === true && el.value === 'true' || val === false && el.value === 'false';
         } else if (el.type === 'color') {
           if (val && typeof val === 'string' && val.match(/^#[0-9A-Fa-f]{6}$/)) {
@@ -1440,8 +1494,10 @@
         let value;
 
         if (el.type === 'checkbox') {
+          // Gestione checkbox: true/false
           value = el.checked;
         } else if (el.type === 'radio') {
+          // Gestione radio: "true"/"false"/string
           if (el.value === 'true') value = true;
           else if (el.value === 'false') value = false;
           else value = el.value;
@@ -1516,6 +1572,7 @@
         this.evaluator.state._validate = {};
       }
 
+      // Inizializza a null invece che false
       BindingManager.setNestedValidate(this.evaluator.state._validate, modelVar, null);
       const keys = modelVar.split('.');
       let current = this.evaluator.state._validate;
@@ -1530,6 +1587,7 @@
       }
 
       const validate = () => {
+        // Se il campo è vuoto, la validazione è null
         if (el.value === '' || el.value == null) {
           BindingManager.setNestedValidate(this.evaluator.state._validate, modelVar, null);
           el.classList.remove('invalid');
@@ -1650,6 +1708,7 @@
   }
 
 
+  // Base Directive Class
   class Directive {
     constructor(evaluator, bindingManager, errorHandler) {
       this.evaluator = evaluator;
@@ -1658,9 +1717,11 @@
     }
 
     apply(vNode, ctx, state, el, completionListener = null) {
+      // To be implemented by subclasses
     }
 
     handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
+      // Default implementation - può essere sovrascritto
       return false;
     }
 
@@ -1676,8 +1737,12 @@
       this.errorHandler.showAyishaError(el, error, expression);
     }
   }
+
+  // All Directive Classes
+
   class ScopeDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // Se la direttiva @scope è già stata processata, non fare niente
       if (!vNode.directives || !vNode.directives['@scope']) {
         if (completionListener) {
           completionListener.addTask(() => Promise.resolve());
@@ -1687,11 +1752,13 @@
 
       const scopeVar = vNode.directives['@scope'].trim();
 
+      // Usa l'indice del nodo per creare una chiave stabile (non random!)
       if (!vNode._scopeKey) {
         const nodeIndex = vNode.parent ? vNode.parent.children.indexOf(vNode) : 0;
         vNode._scopeKey = scopeVar + '_' + String(nodeIndex + 1).padStart(3, '0');
       }
 
+      // Sostituisci nei discendenti solo se non è già stato fatto
       function replaceInDescendants(node, oldVar, newVar) {
         if (node.scopedVars && node.scopedVars[oldVar] !== undefined) {
           node.scopedVars[newVar] = node.scopedVars[oldVar];
@@ -1704,10 +1771,12 @@
 
       replaceInDescendants(vNode, scopeVar, vNode._scopeKey);
 
+      // Salva nello state solo se non esiste già
       if (state[vNode._scopeKey] === undefined && vNode.scopedVars && vNode.scopedVars[vNode._scopeKey] !== undefined) {
         state[vNode._scopeKey] = vNode.scopedVars[vNode._scopeKey];
       }
 
+      // Rimuovi la direttiva per evitare re-processing
       delete vNode.directives['@scope'];
 
       if (completionListener) {
@@ -1717,11 +1786,13 @@
   }
 
 
+  // @form Directive: aggregates @model fields and computes validation status
   class FormDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
       const formName = vNode.directives['@form'];
       if (!formName) return;
 
+      // Recursively collect all @model fields in this form subtree
       const modelFields = [];
       const validationFields = [];
       function collectModels(node) {
@@ -1737,6 +1808,7 @@
       }
       collectModels(vNode);
 
+      // Build state[formName] object with all model values
       if (!state[formName]) state[formName] = {};
       modelFields.forEach(modelVar => {
         try {
@@ -1746,11 +1818,13 @@
         }
       });
 
+      // Compute overall validation status for the form
       if (!state._validate) state._validate = {};
       if (!state._validate[formName]) state._validate[formName] = null;
       if (validationFields.length === 0) {
         state._validate[formName] = null;
       } else {
+        // All fields must be valid (true), if any is false, form is invalid
         let allValid = true;
         for (const modelVar of validationFields) {
           if (state._validate[modelVar] === false) {
@@ -1769,6 +1843,7 @@
       }
     }
   }
+  // @date Directive: formats ISO date strings to human readable
   class DateDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
       let value = this.evaluator.evalExpr(vNode.directives['@date'], ctx);
@@ -1793,6 +1868,7 @@
     }
   }
 
+  // @dateonly Directive: formats ISO date strings to day/month/year
   class DateOnlyDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
       let value = this.evaluator.evalExpr(vNode.directives['@dateonly'], ctx);
@@ -1853,6 +1929,7 @@
     }
   }
 
+  // NOT Directive: renders node only if expression is falsy
   class NotDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
       const expr = vNode.directives['@not'];
@@ -1894,9 +1971,11 @@
       }
       if (!url) return Promise.resolve(undefined);
 
+      // Solo file locali (iniziano con / o ./ o ../)
       if (/^https?:\/\//.test(url)) {
         return Promise.reject(new Error('@json accetta solo file locali'));
       }
+      // Normalizza path locale
       if (!url.startsWith('/')) {
         url = '/' + url.replace(/^\.\//, '');
       }
@@ -1904,12 +1983,14 @@
 
       const fid = `${url}::${rk}`;
 
+      // Se c'è già una fetch per questo URL e non è forzata/evento, riusa la stessa
       if (!force && !event && this.inflightByUrl.has(url)) {
         const p = this.inflightByUrl.get(url);
         this.readyPromise[fid] = p;
         return p;
       }
 
+      // Se abbiamo cache valida per URL e non è forzata/evento → evita refetch
       if (!force && !event && this.cacheByUrl.has(url)) {
         const cached = this.cacheByUrl.get(url);
         if (this.evaluator.state[rk] !== cached) {
@@ -1921,6 +2002,7 @@
         return this.readyPromise[fid];
       }
 
+      // Evita duplicati per stesso fid
       if (this.pendingJsons[fid]) {
         const existing = this.readyPromise[fid] || Promise.resolve(this.evaluator.state[rk]);
         return existing;
@@ -1938,6 +2020,7 @@
         this.evaluator.state[rk] = null;
       }
 
+      // Solo GET locale, nessun header/payload
       const fetchOptions = { method: 'GET' };
       const fetchPromise = fetch(url, fetchOptions)
         .then(res => {
@@ -1972,7 +2055,9 @@
           if (!isEqual) {
             this.evaluator.state[rk] = data;
           }
+          // Cache per URL
           this.cacheByUrl.set(url, data);
+          // Aggiorna readyPromise per questo fid
           this.readyPromise[fid] = Promise.resolve(data);
           if (this.fetched[url]) delete this.fetched[url].error;
           this.evaluator.state['_error'] = null;
@@ -2007,6 +2092,7 @@
           this.inflightByUrl.delete(url);
         });
 
+      // Registra come inflight per URL
       this.inflightByUrl.set(url, fetchPromise);
       return fetchPromise;
     }
@@ -2193,6 +2279,7 @@
       return false;
     }
   }
+  // Utility class for nested object/array path operations
   class AyishaNestedUtil {
     static setNested(obj, path, value) {
       const keys = path.split('.');
@@ -2361,7 +2448,9 @@
     }
 
     handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
+      // CRITICAL: Save original text BEFORE any modifications
       if (!el._ayishaOriginalText) {
+        // Get the text content from the original vNode children if available
         if (vNode.children && vNode.children.length > 0) {
           el._ayishaOriginalText = vNode.children
             .filter(child => child.type === 'text')
@@ -2418,16 +2507,20 @@
         let result = this.evalExpr(expr, ctx);
         if (typeof result === 'string') {
           let str = result.trim();
+          // Remove outer quotes if present
           if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
             str = str.slice(1, -1);
           }
+          // If looks like an object: {key:val,...}
           if (str.startsWith('{') && str.endsWith('}')) {
             str = str.slice(1, -1);
+            // Split by comma, handle quoted and unquoted keys
             str.split(',').forEach(pair => {
               let [key, val] = pair.split(':');
               if (key && val !== undefined) {
                 key = key.trim().replace(/^['"]|['"]$/g, '');
                 try {
+                  // Try to eval val as JS
                   val = this.evaluator.evalExpr(val.trim(), ctx);
                 } catch {
                   val = !!val.trim();
@@ -2436,6 +2529,7 @@
               }
             });
           } else {
+            // fallback: treat as single class name
             clsMap = { [str]: true };
           }
         } else if (typeof result === 'object' && result !== null) {
@@ -2452,6 +2546,7 @@
       Object.entries(clsMap).forEach(([cls, cond]) => {
         el.classList.toggle(cls, !!cond);
       });
+      // Force update of class attribute
       el.setAttribute('class', el.className);
 
       if (completionListener) {
@@ -2563,6 +2658,7 @@
       const expr = vNode.directives['@click'];
       if (!expr) return;
 
+      // Only ensure simple variable names, not complex expressions
       if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expr.trim()) &&
         !expr.includes('=') && !expr.includes('<') && !expr.includes('>') &&
         !expr.includes('!') && !expr.includes('&') && !expr.includes('|') &&
@@ -2597,11 +2693,13 @@
 
         this.executeExpression(processedCode, ctx, e);
 
+        // Ensure all assignments update the global state
         const ayishaAssignmentRegex = /([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*([^;,]+)/g;
         let ayishaMatch;
         while ((ayishaMatch = ayishaAssignmentRegex.exec(processedCode)) !== null) {
           const varName = ayishaMatch[1].trim();
           let value;
+          // Prefer value from local context if available
           if (ctx[varName] !== undefined) {
             value = ctx[varName];
           } else {
@@ -2622,10 +2720,13 @@
           }, 0);
         }
 
+        // Patch: propagate assignments to global state if needed
+        // Find assignments in the expression (e.g. foo=bar, page=index+1)
         const assignmentRegex = /([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*([^;]+)/g;
         let match;
         while ((match = assignmentRegex.exec(processedCode)) !== null) {
           const varName = match[1].trim();
+          // Only propagate if the variable exists in global state and differs
           if (varName in state && ctx[varName] !== undefined && ctx[varName] !== state[varName]) {
             state[varName] = ctx[varName];
             if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
@@ -2805,6 +2906,7 @@
 
       const fetchPromise = this.fetchManager.setupFetch(autoExpr, resultVar, ctxWithVNode);
       if (completionListener && fetchPromise && typeof fetchPromise.then === 'function') {
+        // Wrap the fetchPromise to also store the result in ctx._eventResult for @then
         completionListener.addTask(
           fetchPromise.then(data => {
             console.log('Fetch result:', data);
@@ -3013,6 +3115,7 @@
           }
         }
 
+        // Se undefined/null, mostra un valore di default generico
         if (stateValue === undefined) stateValue = null;
 
         function removeCircular(obj) {
@@ -3091,6 +3194,7 @@
       const expr = vNode.directives['@focus'];
       if (!expr) return;
 
+      // Only ensure simple variable names, not complex expressions
       if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expr.trim()) &&
         !expr.includes('=') && !expr.includes('<') && !expr.includes('>') &&
         !expr.includes('!') && !expr.includes('&') && !expr.includes('|') &&
@@ -3113,6 +3217,7 @@
 
     handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
       if (event === 'focus') {
+        // Only ensure simple variable names, not complex expressions
         if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expression.trim()) &&
           !expression.includes('=') && !expression.includes('<') && !expression.includes('>') &&
           !expression.includes('!') && !expression.includes('&') && !expression.includes('|') &&
@@ -3140,6 +3245,7 @@
       const expr = vNode.directives['@blur'];
       if (!expr) return;
 
+      // Only ensure simple variable names, not complex expressions
       if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expr.trim()) &&
         !expr.includes('=') && !expr.includes('<') && !expr.includes('>') &&
         !expr.includes('!') && !expr.includes('&') && !expr.includes('|') &&
@@ -3162,6 +3268,7 @@
 
     handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
       if (event === 'blur') {
+        // Only ensure simple variable names, not complex expressions
         if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expression.trim()) &&
           !expression.includes('=') && !expression.includes('<') && !expression.includes('>') &&
           !expression.includes('!') && !expression.includes('&') && !expression.includes('|') &&
@@ -3189,6 +3296,7 @@
       const expr = vNode.directives['@change'];
       if (!expr) return;
 
+      // Only ensure simple variable names, not complex expressions
       if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expr.trim()) &&
         !expr.includes('=') && !expr.includes('<') && !expr.includes('>') &&
         !expr.includes('!') && !expr.includes('&') && !expr.includes('|') &&
@@ -3211,6 +3319,7 @@
 
     handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
       if (event === 'change') {
+        // Only ensure simple variable names, not complex expressions
         if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expression.trim()) &&
           !expression.includes('=') && !expression.includes('<') && !expression.includes('>') &&
           !expression.includes('!') && !expression.includes('&') && !expression.includes('|') &&
@@ -3238,6 +3347,7 @@
       const expr = vNode.directives['@input'];
       if (!expr) return;
 
+      // Only ensure simple variable names, not complex expressions
       if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expr.trim()) &&
         !expr.includes('=') && !expr.includes('<') && !expr.includes('>') &&
         !expr.includes('!') && !expr.includes('&') && !expr.includes('|') &&
@@ -3260,6 +3370,7 @@
 
     handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
       if (event === 'input') {
+        // Only ensure simple variable names, not complex expressions
         if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expression.trim()) &&
           !expression.includes('=') && !expression.includes('<') && !expression.includes('>') &&
           !expression.includes('!') && !expression.includes('&') && !expression.includes('|') &&
@@ -3284,9 +3395,12 @@
 
   class DoDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // PATCH: esegui @do solo se NON c'è @watch, @when, @fetch, @click, @input, @change, @blur, @focus, @hover, @go, @set, @model, @validate, @key, @result, @then, @finally, @error, @payload, @headers, @method, @page, @component, @src, @state, @log, @text, @class, @style, @show, @hide, @if, @for, @switch, @case, @default, @source, @map, @filter, @reduce, @initial, @animate, @link, @key, @set, @model, @validate, @key, @result, @then, @finally, @error, @payload, @headers, @method, @page, @component, @src, @state, @log, @text, @class, @style, @show, @hide, @if, @for, @switch, @case, @default, @source, @map, @filter, @reduce, @initial, @animate, @link, @key, @set, @model, @validate, @key, @result, @then, @finally, @error, @payload, @headers, @method, @page, @component, @src, @state, @log, @text, @class, @style, @show, @hide, @if, @for, @switch, @case, @default, @source, @map, @filter, @reduce, @initial, @animate, @link
+      // (in pratica: SOLO se @do è l'unica direttiva, o se usata con @when)
       const expr = vNode.directives['@do'];
       if (!expr) return;
 
+      // Se c'è una direttiva triggerante, NON eseguire qui (sarà il watcher/evento a triggerare)
       const triggerDirectives = [
         '@watch', '@when', '@fetch', '@click', '@input', '@change', '@blur', '@focus', '@hover', '@go', '@set', '@model', '@validate', '@key', '@result', '@then', '@finally', '@error', '@payload', '@headers', '@method', '@page', '@component', '@src', '@state', '@log', '@text', '@class', '@style', '@show', '@hide', '@if', '@for', '@switch', '@case', '@default', '@source', '@map', '@filter', '@reduce', '@initial', '@animate', '@link'
       ];
@@ -3294,6 +3408,7 @@
         if (vNode.directives[dir] && dir !== '@do') return;
       }
 
+      // Se siamo qui, @do è "standalone" (o solo con @when)
       this.executeExpression(expr, ctx);
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
@@ -3316,8 +3431,10 @@
       const directiveKey = `when_${whenExpr}_${doExpr || ''}_${goExpr || ''}`;
       if (!window._ayishaWhenLastState) window._ayishaWhenLastState = {};
 
+      // Setup watcher only once per vNode
       if (!vNode._ayishaWhenWatcherSetup) {
         vNode._ayishaWhenWatcherSetup = true;
+        // Estrarre tutte le dipendenze (variabili) usate nell'espressione @when
         const deps = this.evaluator.extractDependencies(whenExpr);
         if (window.ayisha && typeof window.ayisha.addWatcher === 'function') {
           deps.forEach(dep => {
@@ -3342,6 +3459,7 @@
       const isTrue = !!condition;
       let wasTrue = window._ayishaWhenLastState[directiveKey];
       if (typeof wasTrue !== 'boolean') wasTrue = false;
+      // PATCH: trigger @do/@go solo su rising edge (da false a true), MAI su ogni render o su update di variabili non rilevanti
       if (isTrue && !wasTrue) {
         let executed = false;
         const executeNow = () => {
@@ -3360,6 +3478,7 @@
                 page = goExpr.trim().replace(/^['"]|['"]$/g, '');
               }
               if (typeof page === 'string' && page.length > 0) {
+                // Solo se cambia davvero la pagina
                 if (state._currentPage !== page) {
                   state._currentPage = page;
                   if (window && window.history && typeof window.history.pushState === 'function') {
@@ -3439,6 +3558,7 @@
       let page = this.evaluator ? this.evaluator.evalExpr(expr, ctx) : expr;
 
       if (typeof page === 'string') {
+        // Gestisci i percorsi relativi e assoluti
         let finalPage = this.resolvePath(page);
 
         state._currentPage = finalPage;
@@ -3450,6 +3570,7 @@
         }
 
         if (typeof window.ayisha?.render === 'function') {
+          // setTimeout(() => window.ayisha.render(), 0);
           if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
             clearTimeout(window.ayisha?._componentRenderTimeout);
             window.ayisha._componentRenderQueued = true;
@@ -3469,16 +3590,19 @@
     resolvePath(targetPage) {
       if (!targetPage) return '';
 
+      // Se il percorso inizia con '/', è un percorso assoluto
       if (targetPage.startsWith('/')) {
-        return targetPage.substring(1); 
+        return targetPage.substring(1); // Rimuovi il '/' iniziale
       }
 
+      // Se il percorso è relativo, sostituisce completamente il percorso corrente
       return targetPage;
     }
   }
 
   class WaitDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // handled reactively in AyishaVDOM, no-op for SEO
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
@@ -3543,6 +3667,8 @@
 
   class ThenDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // @then is handled by the completion listener system
+      // This directive just marks that completion tracking is needed
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
@@ -3551,6 +3677,8 @@
 
   class FinallyDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // @finally is handled by the completion listener system
+      // This directive just marks that completion tracking is needed
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
@@ -3606,8 +3734,8 @@
       this._instanceIdMap = new WeakMap();
     }
     static _scopeCounter = 1;
-    static _scopeMap = new WeakMap(); 
-    static _elementInstanceMap = new WeakMap(); 
+    static _scopeMap = new WeakMap(); // el/vNode -> { scopedNames: {}, htmlPatched: false }
+    static _elementInstanceMap = new WeakMap(); // NUOVO: elemento host -> instanceId stabile
     apply(vNode, ctx, state, el, completionListener = null) {
       const src = vNode.directives['@src'];
       if (!src) {
@@ -3632,6 +3760,7 @@
 
       const mapKey = el || vNode;
 
+      // NUOVO: instanceId stabile per questo host element
       let instanceId = ComponentDirective._elementInstanceMap.get(mapKey);
       if (!instanceId) {
         instanceId = ComponentDirective._scopeCounter++;
@@ -3653,6 +3782,7 @@
         vNode._scopedNames = vNode._scopedNames || {};
         scopeVars.forEach((varName) => {
           if (!scopeEntry.scopedNames[varName]) {
+            // FIX: usa l'instanceId stabile invece del contatore globale a ogni render
             const scopedName = `${varName}_${String(instanceId).padStart(4, '0')}`;
             scopeEntry.scopedNames[varName] = scopedName;
 
@@ -3671,6 +3801,7 @@
       if (cm && cm.getCachedComponent(srcUrl)) {
         let componentHtml = cm.getCachedComponent(srcUrl);
 
+        // Patch HTML solo la prima volta su questo host
         if (vNode._scopedNames && !ComponentDirective._scopeMap.get(mapKey)?.htmlPatched) {
           Object.entries(vNode._scopedNames).forEach(([varName, scopedName]) => {
             const resultRegex = new RegExp(`@result=["']${varName}(?!_\\d+)["']`, 'g');
@@ -3687,6 +3818,7 @@
         window.ayisha?._processComponentInitBlocks(tempDiv);
         const componentVNode = window.ayisha?.parse(tempDiv);
         if (componentVNode && componentVNode.children) {
+          // --- STRICT SCOPE: ONLY scopedVars, parent ctx as prototype, NO global state fallback ---
           let componentCtx;
           if (vNode.scopedVars && typeof vNode.scopedVars === 'object') {
             componentCtx = Object.create(ctx || null);
@@ -3698,6 +3830,7 @@
               componentCtx[k] = val;
             }
           } else {
+            // No scopedVars: use a context that does NOT fallback to global state
             componentCtx = Object.create(null);
           }
           const frag = document.createDocumentFragment();
@@ -3717,6 +3850,7 @@
           if (html) {
             let patchedHtml = html;
 
+            // Patch HTML solo la prima volta su questo host
             if (vNode._scopedNames && !ComponentDirective._scopeMap.get(mapKey)?.htmlPatched) {
               Object.entries(vNode._scopedNames).forEach(([varName, scopedName]) => {
                 const resultRegex = new RegExp(`@result=["']${varName}(?!_\\d+)["']`, 'g');
@@ -3771,6 +3905,7 @@
 
   class SwitchDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // VDOM switch logic
       const swVal = this.evaluator.evalExpr(vNode.directives['@switch'], ctx);
       let defaultNode = null;
       for (const child of vNode.children) {
@@ -3797,6 +3932,7 @@
 
   class CaseDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // CaseDirective: gestito dal parent SwitchDirective
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
@@ -3805,6 +3941,7 @@
 
   class DefaultDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
+      // DefaultDirective: gestito dal parent SwitchDirective
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
@@ -3911,9 +4048,11 @@
           e.preventDefault();
           const targetPage = vNode.directives['@link'];
           let finalPage = this.resolvePath(targetPage);
+          // Split segments for _currentPage and _params
           const segments = finalPage.split('/').filter(Boolean);
           state._currentPage = segments[0] || '';
           state._params = segments.slice(1);
+          // Update URL
           const url = '/' + segments.join('/');
           if (window && window.history && typeof window.history.pushState === 'function') {
             window.history.pushState({}, '', url);
@@ -3983,6 +4122,7 @@
     }
   }
 
+  // Modular Directives Object
   const ModularDirectives = {
     '@if': IfDirective,
     '@not': NotDirective,
@@ -4035,6 +4175,7 @@
     '@scope': ScopeDirective
   };
 
+  // Enhanced Directive Manager
   class DirectiveManager {
     constructor(evaluator, bindingManager, errorHandler, fetchManager) {
       this.directives = new Map();
@@ -4164,6 +4305,7 @@
         }
       });
 
+      // Apply sub-directives
       Object.entries(vNode.subDirectives || {}).forEach(([directiveName, events]) => {
         const directive = this.getDirective(directiveName);
         if (directive) {
@@ -4860,6 +5002,8 @@
     }
   }
 
+  // === MAIN AYISHA VDOM CLASS ===
+
   class AyishaVDOM {
     showAllErrors(container = document.body) {
       if (!this.errorBus) return;
@@ -4963,6 +5107,7 @@
         let done = false;
         Promise.all(fetchPromises).then(() => { done = true; });
         while (!done && Date.now() - start < 2000) {
+          // Block
         }
       }
     }
@@ -4981,21 +5126,27 @@
       }
     }
 
+    // NEW: SSR Methods
     renderToString(template, initialState = {}) {
       if (!this.isServerSide() && !this.options.ssr) {
         throw new Error('renderToString can only be called in SSR mode');
       }
 
+      // Set SSR mode
       this._isSSRMode = true;
       this.state = { ...this.state, ...initialState };
 
+      // Initialize state
       this._preInitializeEssentialVariables();
       this._runInitBlocks();
 
+      // Parse template directly for SSR
       this._vdom = this._parseTemplateForSSR(template);
 
+      // Render to string
       const rendered = this._renderVNodeToString(this._vdom, this.state);
 
+      // Prepare hydration data
       this._hydrationData = {
         state: this._serializeState(this.state),
         version: AyishaVDOM.version
@@ -5009,15 +5160,18 @@
     }
 
     _parseTemplateForSSR(template) {
+      // Basic HTML parser for SSR
       const stack = [];
       const root = { tag: 'fragment', children: [], directives: {} };
       let current = root;
 
+      // Simple regex-based HTML parsing
       const htmlRegex = /<(\/?[a-zA-Z][a-zA-Z0-9]*)((?:\s+[^>]*)?)>/g;
       let lastIndex = 0;
       let match;
 
       while ((match = htmlRegex.exec(template)) !== null) {
+        // Add text content before this tag
         const textBefore = template.slice(lastIndex, match.index).trim();
         if (textBefore) {
           current.children.push({
@@ -5030,10 +5184,12 @@
         const attributes = match[2];
 
         if (tagName.startsWith('/')) {
+          // Closing tag
           if (stack.length > 0) {
             current = stack.pop();
           }
         } else {
+          // Opening tag
           const element = {
             tag: tagName.toLowerCase(),
             children: [],
@@ -5041,7 +5197,9 @@
             attrs: {}
           };
 
+          // Parse attributes
           if (attributes) {
+            // Handle double-quoted attributes
             const quotedAttrRegex = /([a-zA-Z@][a-zA-Z0-9_-]*)\s*=\s*"([^"]*)"/g;
             let quotedMatch;
             while ((quotedMatch = quotedAttrRegex.exec(attributes)) !== null) {
@@ -5055,6 +5213,7 @@
               }
             }
 
+            // Handle single-quoted attributes
             const singleQuotedAttrRegex = /([a-zA-Z@][a-zA-Z0-9_-]*)\s*=\s*'([^']*)'/g;
             let singleMatch;
             while ((singleMatch = singleQuotedAttrRegex.exec(attributes)) !== null) {
@@ -5068,6 +5227,7 @@
               }
             }
 
+            // Also handle attributes without quotes for simple values
             const simpleAttrRegex = /([a-zA-Z@][a-zA-Z0-9_-]*)\s*=\s*([^"'\s>]+)/g;
             let simpleMatch;
             while ((simpleMatch = simpleAttrRegex.exec(attributes)) !== null) {
@@ -5084,6 +5244,7 @@
 
           current.children.push(element);
 
+          // Check if it's a self-closing tag
           const selfClosingTags = ['img', 'br', 'hr', 'input', 'meta', 'link'];
           if (!selfClosingTags.includes(tagName.toLowerCase()) && !attributes.includes('/')) {
             stack.push(current);
@@ -5094,6 +5255,7 @@
         lastIndex = htmlRegex.lastIndex;
       }
 
+      // Add remaining text
       const remainingText = template.slice(lastIndex).trim();
       if (remainingText) {
         current.children.push({
@@ -5106,6 +5268,7 @@
     }
 
     _createVirtualElement(tagName) {
+      // Enhanced DOM-like object for SSR
       const element = {
         tagName: tagName.toUpperCase(),
         innerHTML: '',
@@ -5131,6 +5294,7 @@
           }
         },
         querySelector: function (selector) {
+          // Basic implementation for SSR
           return null;
         },
         querySelectorAll: function (selector) {
@@ -5138,6 +5302,7 @@
         }
       };
 
+      // When innerHTML is set, parse it into child nodes
       Object.defineProperty(element, 'innerHTML', {
         get: function () {
           return this._innerHTML || '';
@@ -5148,12 +5313,14 @@
           this.children = [];
 
           if (html) {
+            // Simple HTML parsing for SSR
             this._parseHTML(html);
           }
         }
       });
 
       element._parseHTML = function (html) {
+        // Basic HTML parsing - create text nodes for now
         if (html.trim()) {
           const textNode = {
             nodeType: 3,
@@ -5178,29 +5345,36 @@
         return vNode.children.map(child => this._renderVNodeToString(child, ctx)).join('');
       }
 
+      // Handle conditional rendering
       if (vNode.directives && vNode.directives['@if'] && !this.evaluator.evalExpr(vNode.directives['@if'], ctx)) return '';
       if (vNode.directives && vNode.directives['@show'] && !this.evaluator.evalExpr(vNode.directives['@show'], ctx)) return '';
       if (vNode.directives && vNode.directives['@hide'] && this.evaluator.evalExpr(vNode.directives['@hide'], ctx)) return '';
 
+      // Handle @for directive in SSR
       if (vNode.directives && vNode.directives['@for']) {
         return this._handleForDirectiveSSR(vNode, ctx);
       }
 
+      // Handle @switch directive in SSR
       if (vNode.directives && vNode.directives['@switch']) {
         return this._handleSwitchDirectiveSSR(vNode, ctx);
       }
 
+      // Handle component directive in SSR
       if (vNode.tag === 'component') {
         return this._handleComponentDirectiveSSR(vNode, ctx);
       }
 
+      // Regular element rendering
       let html = `<${vNode.tag}`;
 
+      // Add attributes
       Object.entries(vNode.attrs || {}).forEach(([k, v]) => {
         const value = this.evaluator.evalAttrValue ? this.evaluator.evalAttrValue(v, ctx) : v;
         html += ` ${k}="${this._escapeHtml(value)}"`;
       });
 
+      // Add data attributes for hydration
       if (vNode.directives && Object.keys(vNode.directives).length > 0) {
         html += ` data-ayisha-hydrate="true"`;
         html += ` data-ayisha-directives="${this._escapeHtml(JSON.stringify(vNode.directives))}"`;
@@ -5208,10 +5382,12 @@
 
       html += '>';
 
+      // Handle @text directive
       if (vNode.directives && vNode.directives['@text']) {
         const textValue = this.evaluator.evalExpr(vNode.directives['@text'], ctx);
         html += this._escapeHtml(String(textValue || ''));
       } else {
+        // Render children
         if (vNode.children) {
           vNode.children.forEach(child => {
             html += this._renderVNodeToString(child, ctx);
@@ -5274,10 +5450,11 @@
     }
 
     _handleComponentDirectiveSSR(vNode, ctx) {
+      // For SSR, we'll need to have components pre-loaded or return a placeholder
       const src = vNode.directives['@src'];
       if (src && this.componentManager?.getCachedComponent(src)) {
         const componentHtml = this.componentManager.getCachedComponent(src);
-        return componentHtml; 
+        return componentHtml; // In real SSR, this would be parsed and rendered
       }
       return `<!-- Component: ${src || 'unknown'} -->`;
     }
@@ -5294,6 +5471,7 @@
     }
 
     _serializeState(state) {
+      // Remove non-serializable properties
       const serializable = {};
       Object.keys(state).forEach(key => {
         if (typeof state[key] !== 'function' && key !== '_ayishaInstance') {
@@ -5301,6 +5479,7 @@
             JSON.stringify(state[key]);
             serializable[key] = state[key];
           } catch (e) {
+            // Skip non-serializable values
           }
         }
       });
@@ -5316,6 +5495,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
 
     static version = "1.0.4";
 
+    // SSR Detection and Configuration
     isServerSide() {
       return typeof window === 'undefined' || typeof document === 'undefined' || typeof global !== 'undefined';
     }
@@ -5325,6 +5505,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
 
     constructor(root = document.body, options = {}) {
+      // SSR Configuration
       this.options = {
         ssr: false,
         hydration: false,
@@ -5346,6 +5527,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       this._componentRenderTimeout = null;
       this._setNodes = new WeakSet();
 
+      // SSR specific properties
       this._isSSRMode = this.options.ssr || this.isServerSide();
       this._isHydrationMode = this.options.hydration;
       this._ssrOutput = '';
@@ -5363,6 +5545,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       this.centralLogger = new CentralLogger();
       this.centralLogger.initializeLoggers(this.evaluator, this.fetchManager, this.componentManager);
 
+      // Initialize the modular directive system
       this.directiveManager = new DirectiveManager(
         this.evaluator,
         this.bindingManager,
@@ -5506,10 +5689,12 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         }
       });
 
+      // Remove any _ayishaInstance that might have been accidentally added
       if ('_ayishaInstance' in this.state) {
         delete this.state._ayishaInstance;
       }
 
+      // Clean up invalid variable names that contain operators
       const stateKeysToRemove = Object.keys(this.state).filter(key => {
         return key.includes('=') || key.includes('<') || key.includes('>') ||
           key.includes('!') || key.includes('&') || key.includes('|') ||
@@ -5532,6 +5717,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
           : 'en';
       }
 
+      // Remove any circular references
       if ('_ayishaInstance' in this.state) {
         delete this.state._ayishaInstance;
       }
@@ -5549,6 +5735,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
           this.state._currentBreakpoint = getBreakpoint(window.innerWidth);
           this.state._screenSize = window.innerWidth;
         } else {
+          // SSR defaults
           this.state._currentBreakpoint = 'lg';
           this.state._screenSize = 1200;
         }
@@ -5629,10 +5816,12 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       if (this._isRendering) return;
       this._isRendering = true;
 
+      // Preventive cleanup of circular references
       if ('_ayishaInstance' in this.state) {
         delete this.state._ayishaInstance;
       }
 
+      // Clean up invalid variable names that contain operators (aggressive cleanup)
       const stateKeysToRemove = Object.keys(this.state).filter(key => {
         return key.includes('=') || key.includes('<') || key.includes('>') ||
           key.includes('!') || key.includes('&') || key.includes('|') ||
@@ -5735,6 +5924,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         try {
           const savedDirectiveInfo = JSON.parse(el.getAttribute('data-ayisha-log-info') || '{}');
 
+          // Crea il display del log
           const logDisplay = document.createElement('div');
           logDisplay.className = 'ayisha-log-display';
           logDisplay.style.cssText = `
@@ -5764,6 +5954,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         }
       });
 
+      // Gestisci gli elementi con errori di log
       const logErrorElements = this.root.querySelectorAll('[data-ayisha-log-error]');
 
       logErrorElements.forEach(el => {
@@ -5854,6 +6045,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         });
       });
 
+      // Se non ci sono direttive tracciate ma ci sono direttive totali
       if (directiveCount === 0) {
         html += `<div style="color: #ff9966; font-style: italic; margin: 4px 0;">
           ⚠️ Element has @log but no other directives
@@ -6053,26 +6245,33 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
 
       if (!vNode) return null;
 
+      // --- Node-scoped variable propagation ---
+      // If this node has scopedVars, merge them into a new context for children
       let mergedCtx = ctx;
       if (vNode.scopedVars && typeof vNode.scopedVars === 'object') {
         mergedCtx = Object.assign(Object.create(ctx || null), mergedCtx);
         for (const [k, v] of Object.entries(vNode.scopedVars)) {
+          // Evaluate the value in the current context
           let val = v;
           try {
+            // If the value is an expression, evaluate it
             val = this.evaluator.evalExpr(v, ctx);
           } catch {}
           mergedCtx[k] = val;
         }
       }
 
+      // Create completion listener if @then or @finally are present
       let completionListener = null;
       if (vNode && (vNode.directives?.['@then'] || vNode.directives?.['@finally'])) {
         completionListener = new DirectiveCompletionListener(vNode, mergedCtx, this);
 
+        // Register @then expressions
         if (vNode.directives['@then']) {
           completionListener.addThen(vNode.directives['@then']);
         }
 
+        // Register @finally expressions
         if (vNode.directives['@finally']) {
           completionListener.addFinally(vNode.directives['@finally']);
         }
@@ -6089,6 +6288,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         }
         setExprs.forEach(expr => {
           try {
+            // Only assign if variable does not exist or is undefined
             const assignmentRegex = /([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=([^=].*)/g;
             let match;
             while ((match = assignmentRegex.exec(expr)) !== null) {
@@ -6108,6 +6308,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       }
 
       Object.entries(vNode.directives || {}).forEach(([dir, expr]) => {
+        // Only ensure variables for simple variable names (no operators, quotes, etc.)
         if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expr.trim()) &&
           !expr.includes('=') && !expr.includes('<') && !expr.includes('>') &&
           !expr.includes('!') && !expr.includes('&') && !expr.includes('|') &&
@@ -6119,6 +6320,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
 
       Object.values(vNode.subDirectives || {}).forEach(ev =>
         Object.values(ev).forEach(expr => {
+          // Only ensure variables for simple variable names
           if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(expr.trim()) &&
             !expr.includes('=') && !expr.includes('<') && !expr.includes('>') &&
             !expr.includes('!') && !expr.includes('&') && !expr.includes('|') &&
@@ -6190,12 +6392,14 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       if (vNode.directives['@hide'] && this.evaluator.evalExpr(vNode.directives['@hide'], ctx)) return null;
 
       if (vNode.directives['@for']) {
+        // Usa la classe ForDirective tramite il manager
         const forDirective = this.directiveManager.directives.get('@for');
         const stateWithInstance = { ...this.state, _ayishaInstance: this };
         return forDirective.apply(vNode, ctx, stateWithInstance, null, completionListener);
       }
 
       if (vNode.directives['@switch']) {
+        // Usa la classe SwitchDirective tramite il manager
         const switchDirective = this.directiveManager.directives.get('@switch');
         const stateWithInstance = { ...this.state, _ayishaInstance: this };
         return switchDirective.apply(vNode, ctx, stateWithInstance, null, completionListener);
@@ -6222,11 +6426,13 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       }
 
       const el = document.createElement(vNode.tag);
+      // Prevent default submit for all forms (Ayisha global patch)
       if (vNode.tag === 'form') {
         el.addEventListener('submit', function (e) {
           e.preventDefault();
         });
       }
+      // PATCH: Se c'è @go, aggiungi attributo identificativo
       if (vNode.directives && vNode.directives['@go'] && vNode._goId) {
         el.setAttribute('data-ayisha-go-id', vNode._goId);
         el.style.cursor = 'pointer';
@@ -6236,6 +6442,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         el.setAttribute(k, this.evaluator.evalAttrValue(v, mergedCtx));
       });
 
+      // Pre-save original text for @text:hover and similar sub-directives
       if (vNode.subDirectives?.['@text']) {
         if (vNode.children && vNode.children.length > 0) {
           el._ayishaOriginalText = vNode.children
@@ -6248,6 +6455,8 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       }
 
       this._handleSpecialDirectives(el, vNode, mergedCtx);
+
+      // Use the modular directive manager to apply all directives
       this.directiveManager.applyDirectives(vNode, mergedCtx, this.state, el, completionListener);
 
       vNode.children.forEach(child => {
@@ -6255,6 +6464,8 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         if (node) el.appendChild(node);
       });
 
+      // Mark completion for sync directives if using completion listener
+      // ULTRA-FIX: markSyncDone() must be called only ONCE and only if not already done, and only if total > 0
       if (completionListener && !completionListener.done && completionListener.total > 0) {
         completionListener.markSyncDone();
       }
@@ -6362,7 +6573,10 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
     }
 
     _handleComponentDirective(vNode, ctx, completionListener = null) {
+      // --- FIX: Isolate context for each component instance ---
+      // 1. Start with a shallow copy of parent ctx (or empty if none)
       let componentCtx = Object.create(ctx || null);
+      // 2. Add/override with any #props (scopedVars) from the <component> tag
       if (vNode.scopedVars && typeof vNode.scopedVars === 'object') {
         for (const [k, v] of Object.entries(vNode.scopedVars)) {
           let val = v;
@@ -6372,6 +6586,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
           componentCtx[k] = val;
         }
       }
+      // 3. Render the component with this new context
       const componentDirective = this.directiveManager.directives.get('@component');
       const stateWithInstance = { ...this.state, _ayishaInstance: this };
       return componentDirective.apply(vNode, componentCtx, stateWithInstance, null, completionListener);
@@ -6513,6 +6728,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
         if (!this._processedSetDirectives.has(setId)) {
           this._processedSetDirectives.add(setId);
           try {
+            // Only assign if variable does not exist or is undefined
             const assignmentRegex = /([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=([^=].*)/g;
             let match;
             while ((match = assignmentRegex.exec(setExpr)) !== null) {
@@ -6526,12 +6742,14 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
             el.setAttribute('data-ayisha-set-error', e.message);
           }
         }
+        // Remove @set from VDOM so it doesn't interfere with other directives
         vNode._setProcessed = true;
         delete vNode.directives['@set'];
+        // Remove element from DOM (if possible)
         if (el.parentNode) {
           el.parentNode.removeChild(el);
         }
-        return; 
+        return; // Do not process further directives for this node
       }
 
       if (vNode.directives.hasOwnProperty('@attr')) {
@@ -6635,6 +6853,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       }
 
       this._preInitializeEssentialVariables();
+      // PATCH: Make state reactive BEFORE running <init> blocks, so all assignments are tracked
       this._makeReactive();
       this._runInitBlocks();
       this.reactivitySystem.enableWatchers();
@@ -6652,6 +6871,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       this.root.addEventListener('click', e => {
         let el = e.target;
         while (el && el !== this.root) {
+          // SPA navigation for @link
           if (el.hasAttribute('@link')) {
             e.preventDefault();
             const targetPage = el.getAttribute('@link');
@@ -6689,7 +6909,7 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
   }
 
   const addDefaultAnimationStyles = () => {
-    if (typeof document === 'undefined') return; 
+    if (typeof document === 'undefined') return; // Skip in Node.js
 
     const existingStyle = document.getElementById('ayisha-default-animations');
     if (!existingStyle) {
