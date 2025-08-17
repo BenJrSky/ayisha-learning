@@ -990,6 +990,8 @@
       this.lastFetchUrl = {};
       this.fetched = {};
       this.readyPromise = {};
+      this.cacheBySignature = new Map();
+      this.inflightBySignature = new Map();
     }
 
 
@@ -1005,6 +1007,15 @@
         url = expr;
       }
       if (!url) return Promise.resolve(undefined);
+
+      // Normalizza URL: trim + rimozione di backtick/virgolette esterne
+      if (typeof url === 'string') {
+        url = url.trim();
+        const first = url[0], last = url[url.length - 1];
+        if (first && first === last && (first === '`' || first === '"' || first === "'")) {
+          url = url.slice(1, -1).trim();
+        }
+      }
 
       // FIX: Se l'URL è assoluto (http/https), non modificarlo
       if (!/^https?:\/\//.test(url)) {
@@ -1024,41 +1035,7 @@
 
       const fid = `${url}::${rk}`;
 
-
-      if (!force && !event && this.lastFetchUrl[fid]) {
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-          return this.readyPromise[fid];
-        }
-        return;
-      }
-
-      if (!force && this.lastFetchUrl[fid] && JSON.stringify(this.lastFetchUrl[fid]) === JSON.stringify({ url, value: this.evaluator.state[rk] })) {
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-          return this.readyPromise[fid];
-        }
-        return;
-      }
-
-      if (this.pendingFetches[fid]) return Promise.resolve(this.evaluator.state[rk]);
-
-      if (rk && typeof rk === 'string' && rk in this.evaluator.state) {
-        this.evaluator.state[rk] = null;
-      }
-
-      if (this.readyPromise[fid]) delete this.readyPromise[fid];
-
-      this.pendingFetches[fid] = true;
-      this.lastFetchUrl[fid] = { url, value: this.evaluator.state[rk] };
-
-      this.pendingFetches[fid] = true;
-      this.lastFetchUrl[rk] = url;
-
-      if (!(rk in this.evaluator.state)) {
-        this.evaluator.state[rk] = null;
-      }
-
+      // Calcolo method/payload/headers prima della dedup per creare una firma stabile
       let method = 'GET';
       let payload = null;
       let customHeaders = null;
@@ -1086,6 +1063,66 @@
         if (ctx._vNode.directives && ctx._vNode.directives['@headers']) {
           customHeaders = this.evaluator.evalExpr(ctx._vNode.directives['@headers'], ctx, event);
         }
+      }
+
+      // Firma stabile della richiesta: method + url + payload + headers (ordinati)
+      const sortObject = (o) => {
+        if (Array.isArray(o)) return o.map(sortObject);
+        if (o && typeof o === 'object') {
+          return Object.keys(o).sort().reduce((acc, k) => (acc[k] = sortObject(o[k]), acc), {});
+        }
+        return o;
+      };
+      const stableStringify = (o) => {
+        try { return JSON.stringify(sortObject(o)); } catch { return JSON.stringify(o); }
+      };
+      const normHeaders = (customHeaders && typeof customHeaders === 'object') ? sortObject(customHeaders) : customHeaders;
+      const normPayloadStr = payload != null && typeof payload === 'object' ? stableStringify(payload) : (payload != null ? String(payload) : '');
+      const signature = `${method} ${url} ${normPayloadStr} ${normHeaders ? stableStringify(normHeaders) : ''}`;
+
+      // 1) Se identica richiesta è già in volo e NON è evento/forzata → riusa Promise
+      if (!force && !event && this.inflightBySignature.has(signature)) {
+        const p = this.inflightBySignature.get(signature);
+        this.readyPromise[fid] = p;
+        return p;
+      }
+
+      // 2) Se esiste cache per la stessa firma e NON è evento/forzata → usa cache
+      if (!force && !event && this.cacheBySignature.has(signature)) {
+        const cached = this.cacheBySignature.get(signature);
+        if (this.evaluator.state[rk] !== cached) {
+          this.evaluator.state[rk] = cached;
+        }
+        if (!this.readyPromise[fid]) {
+          this.readyPromise[fid] = Promise.resolve(cached);
+        }
+        return this.readyPromise[fid];
+      }
+
+      // 3) Se la richiesta (fid) risulta pendente → riusa promise disponibile o stato
+      if (this.pendingFetches[fid]) {
+        const p =
+          this.inflightBySignature.get(signature) ||
+          this.readyPromise[fid] ||
+          Promise.resolve(this.evaluator.state[rk]);
+        this.readyPromise[fid] = p;
+        return p;
+      }
+
+      if (rk && typeof rk === 'string' && rk in this.evaluator.state) {
+        this.evaluator.state[rk] = null;
+      }
+
+      if (this.readyPromise[fid]) delete this.readyPromise[fid];
+
+      this.pendingFetches[fid] = true;
+      this.lastFetchUrl[fid] = { url, value: this.evaluator.state[rk] };
+
+      this.pendingFetches[fid] = true;
+      this.lastFetchUrl[rk] = url;
+
+      if (!(rk in this.evaluator.state)) {
+        this.evaluator.state[rk] = null;
       }
 
       const fetchOptions = { method };
@@ -1144,6 +1181,10 @@
           if (!isEqual) {
             this.evaluator.state[rk] = data;
           }
+          // Cache per firma richiesta
+          this.cacheBySignature.set(signature, data);
+          // Allinea readyPromise per fid
+          this.readyPromise[fid] = Promise.resolve(data);
           if (this.fetched[url]) delete this.fetched[url].error;
           // Always clear both _error and custom errorVar
           this.evaluator.state['_error'] = null;
@@ -1176,7 +1217,10 @@
         })
         .finally(() => {
           this.pendingFetches[fid] = false;
+          this.inflightBySignature.delete(signature);
         });
+
+      this.inflightBySignature.set(signature, fetchPromise);
 
       return fetchPromise;
     }
@@ -3682,10 +3726,17 @@
   }
 
   class ComponentDirective extends Directive {
+    constructor(evaluator, bindingManager, errorHandler, componentManager) {
+      super(evaluator, bindingManager, errorHandler);
+      this.componentManager = componentManager;
+      this._scopeCounter = 0;
+      this._scopeMap = new WeakMap();
+      this._instanceIdMap = new WeakMap();
+    }
     static _scopeCounter = 1;
     static _scopeMap = new WeakMap(); // el/vNode -> { scopedNames: {}, htmlPatched: false }
+    static _elementInstanceMap = new WeakMap(); // NUOVO: elemento host -> instanceId stabile
     apply(vNode, ctx, state, el, completionListener = null) {
-      // Modular VDOM component loading (for <component @src="...">)
       const src = vNode.directives['@src'];
       if (!src) {
         return this.errorHandler.createErrorElement(`Error: <b>&lt;component&gt;</b> requires the <b>@src</b> attribute`);
@@ -3697,10 +3748,8 @@
       } catch (e) {
         srcUrl = src;
       }
-      // Fallback to raw attribute if still falsy
       if (!srcUrl) srcUrl = src;
       if (typeof srcUrl === 'string') srcUrl = srcUrl.trim();
-      // Normalize quotes (single or double)
       if (typeof srcUrl === 'string' && /^['"].*['"]$/.test(srcUrl)) {
         srcUrl = srcUrl.slice(1, -1);
       }
@@ -3709,17 +3758,21 @@
       }
       if (srcUrl.startsWith('./')) srcUrl = srcUrl.substring(2);
 
-      // Chiave sicura per WeakMap (el se presente, altrimenti vNode)
       const mapKey = el || vNode;
 
-      // --- SCOPE LOGIC (STABILE PER ELEMENTO HOST) ---
+      // NUOVO: instanceId stabile per questo host element
+      let instanceId = ComponentDirective._elementInstanceMap.get(mapKey);
+      if (!instanceId) {
+        instanceId = ComponentDirective._scopeCounter++;
+        ComponentDirective._elementInstanceMap.set(mapKey, instanceId);
+      }
+
       if (vNode.directives['@scope']) {
         const scopeVars = String(vNode.directives['@scope'])
           .split(',')
           .map(s => s.trim())
           .filter(Boolean);
 
-        // Ottieni/crea mappa per questo host
         let scopeEntry = ComponentDirective._scopeMap.get(mapKey);
         if (!scopeEntry) {
           scopeEntry = { scopedNames: {}, htmlPatched: false };
@@ -3729,7 +3782,8 @@
         vNode._scopedNames = vNode._scopedNames || {};
         scopeVars.forEach((varName) => {
           if (!scopeEntry.scopedNames[varName]) {
-            const scopedName = `${varName}_${String(ComponentDirective._scopeCounter).padStart(4, '0')}`;
+            // FIX: usa l'instanceId stabile invece del contatore globale a ogni render
+            const scopedName = `${varName}_${String(instanceId).padStart(4, '0')}`;
             scopeEntry.scopedNames[varName] = scopedName;
 
             if (vNode.scopedVars && vNode.scopedVars[varName] !== undefined) {
@@ -3738,7 +3792,6 @@
             if (state[varName] !== undefined && state[scopedName] === undefined) {
               state[scopedName] = state[varName];
             }
-            ComponentDirective._scopeCounter++;
           }
           vNode._scopedNames[varName] = scopeEntry.scopedNames[varName];
         });

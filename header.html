@@ -23,7 +23,7 @@
           <span class="mobile-logo-title">Ayisha.js</span>
           <a href="versions.html" class="ayisha-version-badge" style="margin-left:8px; background:#222; color:#fff; border-radius:4px; padding:2px 8px; font-size:12px; font-family:monospace; vertical-align:middle; opacity:0.85; letter-spacing:0.5px; text-decoration:none; cursor:pointer;">v{{ state._version }}</a>
         </div>
-        <a href="index.html" 
+        <a @link="home" 
            @class="{active: location.pathname === '/' || location.pathname.includes('index')}" 
            @click="mobileNavOpen = false">Home</a>
         <a @link="course/pippo/3"
