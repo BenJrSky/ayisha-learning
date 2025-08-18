@@ -187,9 +187,9 @@
                 expr();
               } else {
                 if (this.ctx && typeof this.ctx._eventResult !== 'undefined') {
-                  this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, this.ctx._eventResult, true);
+                  this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, this.ctx._eventResult, false);
                 } else {
-                  this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, null, true);
+                  this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, null, false);
                 }
               }
             } catch (e) {
@@ -203,7 +203,7 @@
                   if (typeof expr === 'function') {
                     expr();
                   } else {
-                    this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, null, true);
+                    this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, null, false);
                   }
                 } catch (e) {
                   console.error('Error executing @finally:', e, 'Expression:', expr);
@@ -220,7 +220,7 @@
                 if (typeof expr === 'function') {
                   expr();
                 } else {
-                  this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, null, true);
+                  this.ayisha.evaluator.executeDirectiveExpression(expr, this.ctx, null, false);
                 }
               } catch (e) {
                 console.error('Error executing @finally:', e, 'Expression:', expr);
