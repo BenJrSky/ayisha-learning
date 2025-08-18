@@ -4033,7 +4033,7 @@
           }
           setTimeout(() => {
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-          }, 10);
+          }, 100);
           if (typeof window.ayisha?.render === 'function') {
             setTimeout(() => window.ayisha.render(), 0);
           }

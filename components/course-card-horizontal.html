@@ -1,0 +1,31 @@
+
+<div class="course-card-horizontal" @json="/courses/{data}.json" @result="course">
+  <div class="cch-body">
+    <div class="cch-header">
+      <h3 class="course-title" @text="course.title"></h3>
+      <span class="ayisha-badge text-capitalize" @text="course.level"></span>
+    </div>
+
+    <div class="course-subtitle" @text="course.subtitle"></div>
+
+    <div class="cch-meta">
+      <span class="course-hours">⏱
+        <span @text="(course.hours ? course.hours + 'h ' : '') + ((course.minutes || 0)) + 'm'"></span>
+      </span>
+      <span class="course-lessons">📚 <span @text="(course.lessons || []).length"></span> lezioni</span>
+      <span class="course-language">🌐 <span @text="course.language"></span></span>
+    </div>
+
+    <div class="course-tags">
+      <span class="ayisha-tag" @for="tag in (course.tags || [])" @key="tag" @text="tag"></span>
+    </div>
+
+    <div class="cch-actions">
+      <a class="ayisha-btn" @link="course/{data}">Vai al corso →</a>
+    </div>
+  </div>
+</div>
+
+
+
+

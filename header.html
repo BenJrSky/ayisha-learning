@@ -23,22 +23,24 @@
           <span class="mobile-logo-title">Ayisha.js</span>
           <a href="versions.html" class="ayisha-version-badge" style="margin-left:8px; background:#222; color:#fff; border-radius:4px; padding:2px 8px; font-size:12px; font-family:monospace; vertical-align:middle; opacity:0.85; letter-spacing:0.5px; text-decoration:none; cursor:pointer;">v{{ state._version }}</a>
         </div>
-        <a @link="home" 
+        <a href="#" 
+           @link="home" 
            @class="{active: location.pathname === '/' || location.pathname.includes('index')}" 
            @click="mobileNavOpen = false">Home</a>
-        <a @link="course/pippo/3"
+        <a href="#" 
+           @link="courses"
            @class="{active: location.pathname.includes('courses') || location.pathname.includes('course-detail') || location.pathname.includes('lesson') || location.pathname.includes('enroll')}"
            @click="mobileNavOpen = false">Courses</a>
-        <a href="wiki.html" 
+        <a href="#" 
            @class="{active: location.pathname.includes('wiki')}" 
            @click="mobileNavOpen = false">Wiki</a>
-        <a href="tutorial.html" 
+        <a href="#" 
            @class="{active: location.pathname.includes('tutorial')}" 
            @click="mobileNavOpen = false">Tutorial</a>
-        <a href="faq.html" 
+        <a href="#" 
            @class="{active: location.pathname.includes('faq')}" 
            @click="mobileNavOpen = false">FAQ</a>
-        <a href="examples.html" 
+        <a href="#" 
            @class="{active: location.pathname.includes('examples')}" 
            @click="mobileNavOpen = false">Examples</a>
       </div>

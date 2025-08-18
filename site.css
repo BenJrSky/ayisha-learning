@@ -143,6 +143,68 @@
 .course-link:hover {
 color: #fff;
 }
+
+/* Horizontal Course Card - full width */
+.course-card-horizontal {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  flex: 1 1 100%;
+  background: var(--surface-color);
+  border-radius: 1.2rem;
+  border: 2px solid var(--primary-color);
+  padding: 1.25rem 1.25rem;
+  box-shadow: 0 4px 24px 0 rgba(255,193,7,0.10);
+  transition: box-shadow .22s, border-color .22s;
+  margin-bottom: 1.1rem;
+}
+.course-card-horizontal:hover {
+  box-shadow: 0 8px 32px 0 rgba(255,193,7,0.18);
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.course-card-horizontal .cch-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: .35rem;
+}
+
+.cch-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.1em;
+  font-size: 1em;
+  color: var(--secondary-dark);
+  margin: .4em 0 .7em 0;
+}
+
+.cch-actions {
+  margin-top: .4rem;
+}
+
+/* Responsive: su mobile stack verticale */
+@media (max-width: 768px) {
+  .course-card-horizontal {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+  .cch-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .25rem;
+  }
+}
 @media (max-width: 900px) {
   .courses-grid {
     display: grid;
@@ -1200,6 +1262,28 @@ code {
   border-radius: var(--radius-sm);
   font-size: 1em;
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+/* Code block - dark theme */
+.pre-code {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.95em;
+  line-height: 1.55;
+  overflow: auto;
+  white-space: pre;
+  tab-size: 2;
+}
+
+/* mantieni lo sfondo e il colore sul <code> interno */
+.pre-code code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
 }
 
 /* Hello World Interactive Demo */
