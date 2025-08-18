@@ -6361,10 +6361,19 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       this._handleSpecialDirectives(el, vNode, mergedCtx);
       this.directiveManager.applyDirectives(vNode, mergedCtx, this.state, el, completionListener);
 
-      vNode.children.forEach(child => {
-        const node = this._renderVNode(child, mergedCtx);
-        if (node) el.appendChild(node);
-      });
+      if (vNode.directives && vNode.directives['@text']) {
+        vNode.children.forEach(child => {
+          if (child.type !== 'text') {
+            const node = this._renderVNode(child, mergedCtx);    
+            if (node) el.appendChild(node);
+          }
+        });
+      } else {
+        vNode.children.forEach(child => {
+          const node = this._renderVNode(child, mergedCtx);
+          if (node) el.appendChild(node);
+        });
+      }
 
       if (completionListener && !completionListener.done && completionListener.total > 0) {
         completionListener.markSyncDone();

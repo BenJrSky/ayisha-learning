@@ -3,41 +3,30 @@
     <section class="hero">
       <div class="hero-background"></div>
       <div class="hero-content">
-        <img src="ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+        <img src="/ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
 
         <!-- Breadcrumb statico -->
         <nav class="breadcrumbs text-capitalize" style="margin-bottom: 0.75rem;">
           <a href="#" @link="home">Home</a>
           <span> › </span>
           <a href="#" @link="course/{_params[0]}" title="Vai alla pagina del corso">{{_params[0]}}</a>
-          <span> › </span>
-          <span>{{currentLesson.title}}</span>
         </nav>
 
-
-     
-
-
         <h1 @text="currentLesson.title">Titolo della Lezione</h1>
-        <p class="hero-subtitle">Sottotitolo/riassunto breve della lezione: cosa imparerai in questa unità.</p>
+        <p @text="currentLesson.summary" class="hero-subtitle">Sottotitolo/riassunto breve della lezione: cosa imparerai in questa unità.</p>
 
         <!-- Meta lezione -->
         <div class="course-meta" style="justify-content:center;">
-          <span class="course-lessons">⏱ 12 min</span>
-          <span class="course-language">📖 Lezione 2 di 10</span>
+          <span class="course-lessons">⏱ {{currentLesson.minutes}} min</span>
+          <span class="course-language">📖 Lesson {{currentLesson.order + 1}} of {{course.lessons.length}}</span>
         </div>
 
-        <a class="cta" href="#" title="Torna alla pagina del corso">Torna al corso</a>
+        <a class="cta" href="#" @link="/course/{_params[0]}" title="Back to course page">Back to course</a>
       </div>
     </section>
 
-       <h1 @text="lessondata"></h1>
-
-
-        <h1>-----></h1>
-
     <section class="philosophy">
-      <h2>Cosa imparerai</h2>
+      <h2>What you'll learn</h2>
       <ul>
         <li><span>Obiettivo principale: risultato concreto della lezione.</span></li>
         <li><span>Concetto chiave 1 che affronterai.</span></li>
