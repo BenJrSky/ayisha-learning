@@ -1,4 +1,4 @@
-  <main   class="container" @json="/courses/{_params[0]}.json" @result="course">
+  <main class="container" @json="/courses/{_params[0]}.json" @result="course">
     <section class="hero">
       <div class="hero-background"></div>
       <div class="hero-content">
@@ -42,9 +42,7 @@
       <h2>Lessons</h2>
       <ol>
         <li @for="lesson in (course?.lessons || []).sort((a,b)=> (a.order||0)-(b.order||0))" @key="lesson.id" class="lesson-item">
-          <a @link="'lesson.html?course=' + (course?.slug || '') + '&lesson=' + lesson.slug" class="lesson-link" @text="lesson.title"></a>
-          <span> — </span>
-          <span @text="lesson.summary"></span>
+          <component @src="/components/sections/lesson-ltem.html" #slugcourse="_params[0]" #datalesson="lesson"></component>
         </li>
       </ol>
       <p class="tip" style="margin-top:1.5rem;">All lessons are accessible, keyboard-friendly, and use semantic HTML.</p>
@@ -68,5 +66,7 @@
       <a @link="home">← Back to Courses</a>
       <a @link="course?.hero?.ctaUrl || 'enroll.html'" @text="(course?.hero?.ctaText || 'Enroll now') + ' →'"></a>
     </nav>
+
     <component @src="components/sections/courses-section.html"></component>
+
   </main>

@@ -1,3 +1,10 @@
+
+.breadcrumbs, .breadcrumbs a { 
+  color: #fff;
+}
+.text-capitalize{
+  text-transform: capitalize;
+}
 .courses-grid {
   display: flex;
   flex-wrap: wrap;

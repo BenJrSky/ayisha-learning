@@ -1,0 +1,85 @@
+<main class="container" @json="/courses/{_params[0]}.json" @result="course" @then="currentLesson=course.lessons.find(lesson => lesson.id==_params[1])">
+
+    <section class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <img src="/ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+
+        <!-- Breadcrumb statico -->
+        <nav class="breadcrumbs text-capitalize" style="margin-bottom: 0.75rem;">
+          <a href="#" @link="home">Home</a>
+          <span> › </span>
+          <a href="#" @link="course/{_params[0]}" title="Vai alla pagina del corso">{{_params[0]}}</a>
+          <span> › </span>
+          <span>{{currentLesson.title}}</span>
+        </nav>
+
+
+     
+
+
+        <h1 @text="currentLesson.title">Titolo della Lezione</h1>
+        <p class="hero-subtitle">Sottotitolo/riassunto breve della lezione: cosa imparerai in questa unità.</p>
+
+        <!-- Meta lezione -->
+        <div class="course-meta" style="justify-content:center;">
+          <span class="course-lessons">⏱ 12 min</span>
+          <span class="course-language">📖 Lezione 2 di 10</span>
+        </div>
+
+        <a class="cta" href="#" title="Torna alla pagina del corso">Torna al corso</a>
+      </div>
+    </section>
+
+       <h1 @text="lessondata"></h1>
+
+
+        <h1>-----></h1>
+
+    <section class="philosophy">
+      <h2>Cosa imparerai</h2>
+      <ul>
+        <li><span>Obiettivo principale: risultato concreto della lezione.</span></li>
+        <li><span>Concetto chiave 1 che affronterai.</span></li>
+        <li><span>Concetto chiave 2 con esempio pratico.</span></li>
+      </ul>
+      <div class="tip">
+        <strong>Tempo stimato:</strong> <span>12 minuti</span>
+      </div>
+    </section>
+
+    <section class="install">
+      <h2>Contenuti della lezione</h2>
+
+      <p>Introduzione al tema della lezione con contesto e obiettivi.</p>
+
+      <div class="tip">Suggerimento: ricordati di applicare questo pattern per evitare errori comuni.</div>
+
+      <p>Spiegazione dettagliata con passaggi pratici e note utili.</p>
+
+      <pre><code>
+/* Esempio di codice */
+.selector {
+  display: grid;
+  gap: 1rem;
+}
+      </code></pre>
+
+      <p>Conclusione con una breve sintesi e un invito all’approfondimento nel materiale del corso.</p>
+    </section>
+
+    <section class="install">
+      <h2>Risorse</h2>
+      <ul>
+        <li><a href="#" target="_blank" rel="noopener">Documentazione ufficiale</a></li>
+        <li><a href="#" target="_blank" rel="noopener">Esempi correlati</a></li>
+        <li><a href="#" target="_blank" rel="noopener">Approfondimenti consigliati</a></li>
+      </ul>
+    </section>
+
+    <nav class="page-nav">
+      <a href="#" title="Torna al corso">← Torna al corso</a>
+      <a href="#" title="Vai alla lezione precedente">← Lezione precedente</a>
+      <a href="#" title="Vai alla lezione successiva">Lezione successiva →</a>
+    </nav>
+  </main>

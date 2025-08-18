@@ -454,7 +454,7 @@
     }
 
     hasInterpolation(expr) {
-      return /\{\{.*?\}\}|\{[\w$.]+\}/.test(expr);
+      return /\{\{.*?\}\}|\{[\w$][\w\d$]*(?:\.[\w$][\w\d$]*|\[[^\]]+\])*\}/.test(expr);
     }
 
     ensureVarInState(expr, forceString = false, inputType = null) {
@@ -4012,11 +4012,17 @@
           const raw = vNode.directives['@link'];
           let targetPage = raw;
           try {
-            if (this.evaluator && typeof raw === 'string' && this.evaluator.hasInterpolation(raw)) {
-              targetPage = this.evaluator.evalAttrValue(raw, ctx);
+            if (this.evaluator && typeof raw === 'string') {
+              const evaluated = this.evaluator.evalAttrValue(raw, ctx);
+              if (evaluated === raw) {
+                const exprVal = this.evaluator.evalExpr(raw, ctx);
+                targetPage = (exprVal != null && exprVal !== undefined) ? exprVal : evaluated;
+              } else {
+                targetPage = evaluated;
+              }
             }
           } catch {}
-          let finalPage = this.resolvePath(targetPage);
+          let finalPage = this.resolvePath(String(targetPage));
           const segments = finalPage.split('/').filter(Boolean);
           state._currentPage = segments[0] || '';
           state._params = segments.slice(1);
