@@ -2,14 +2,13 @@
   "id": "course_html_master",
   "slug": "html-master",
   "title": "HTML Master",
-  "subtitle": "Dalle basi ai segreti della semantica e delle best practice HTML.",
+  "subtitle": "Dalle basi alla semantica avanzata: accessibilità, SEO, performance, i18n e componenti moderni.",
   "category": "Development",
   "level": "Beginner to Advanced",
-  "hours": 14,
+  "hours": 28,
   "language": "it",
-  
-  "lastUpdated": "2025-08-10",
-  "tags": ["HTML", "Semantica", "Accessibilità", "Web"],
+  "lastUpdated": "2025-08-18",
+  "tags": ["HTML", "Semantica", "Accessibilità", "Web", "SEO", "Performance", "Form", "Media", "I18n", "Sicurezza"],
 
   "hero": {
     "image": "images/img_2.jpg",
@@ -18,14 +17,19 @@
     "ctaUrl": "enroll.html"
   },
 
-  "overview": "HTML Master è il corso definitivo per imparare HTML da zero fino alle tecniche avanzate di semantica, accessibilità e best practice. Perfetto per chi vuole costruire solide basi e diventare un esperto del markup web.",
-  "content": "Questo corso copre tutto ciò che serve per diventare un vero esperto di HTML. Partirai dalle basi della sintassi e della struttura delle pagine web, per poi approfondire i tag principali, la semantica HTML5, l'accessibilità, le best practice e le tecniche moderne come custom elements, microdata e shadow DOM. Ogni lezione include esempi pratici, quiz e casi reali per consolidare l'apprendimento. Al termine sarai in grado di creare pagine web accessibili, SEO-friendly e pronte per il web moderno, con una solida comprensione sia teorica che pratica del markup HTML.",
-  "prerequisites": ["Nessuno"],
+  "overview": "HTML Master è il corso completo per costruire solide basi e padroneggiare l’HTML moderno: struttura, semantica, landmark, accessibilità, SEO, immagini e media, tabelle e form accessibili, internazionalizzazione, performance e sicurezza. Imparerai a progettare pagine robuste, accessibili e pronte per la produzione.",
+  "content": "Partirai dalla struttura e dai tag fondamentali, per poi approfondire semantica e landmark, ARIA, immagini responsive (picture, srcset, sizes), tabelle e form avanzati, metadati per SEO, i18n e direzioni del testo, performance (preload, preconnect, fetchpriority) e sicurezza (noopener, sandbox). Ogni lezione include esempi pratici e quiz per consolidare l’apprendimento.",
+  "prerequisites": ["Nessuno", "Facoltativo: basi di CSS e JS"],
   "outcomes": [
-    "Comprendere la struttura di una pagina HTML",
-    "Utilizzare correttamente tutti i tag HTML",
-    "Applicare la semantica e le best practice",
-    "Creare pagine accessibili e SEO-friendly"
+    "Comprendere la struttura e la semantica HTML, con landmark corretti",
+    "Creare contenuti accessibili con ARIA dove necessario",
+    "Gestire immagini e media in modo responsive e performante",
+    "Progettare tabelle e form accessibili e validati",
+    "Applicare metadati e buone pratiche SEO",
+    "Supportare i18n, direzioni del testo e attributi lang/dir",
+    "Ottimizzare performance con resource hints e caricamento efficiente",
+    "Migliorare sicurezza con rel, sandbox e contenuti fallback",
+    "Concludere con un progetto finale pronto per la produzione"
   ],
 
   "pricing": { "free": true, "price": 0, "currency": "EUR" },

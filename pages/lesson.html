@@ -38,13 +38,44 @@
 
   </section>
 
-  <section class="install">
-    <h2>Risorse</h2>
-    <ul>
-      <li><a href="#" target="_blank" rel="noopener">Documentazione ufficiale</a></li>
-      <li><a href="#" target="_blank" rel="noopener">Esempi correlati</a></li>
-      <li><a href="#" target="_blank" rel="noopener">Approfondimenti consigliati</a></li>
-    </ul>
+  <section class="install" @if="currentLesson.examples.length">
+    <h2>Examples</h2>
+    <span @for="example in currentLesson.examples">
+      <p>{{example.description}}</p>
+      <pre class="pre-code"><code>{{example.code}}</code></pre>
+    </span>
+  </section>
+
+  <!-- Quiz con radio -->
+  <section class="lesson-quiz" @if="(currentLesson.quiz || []).length">
+    <h2 class="quiz-title">Quiz</h2>
+    <ol class="quiz-list">
+      <li class="quiz-item" @for="q in currentLesson.quiz" @key="q.id">
+        <p class="quiz-prompt">{{q.prompt}}</p>
+
+        <div class="quiz-options">
+          <label class="quiz-option"  @class="{'true':q.answer==q.check, 'false':q.answer!=q.check}" @for="i, opt in q.options" @click="q.check=i">
+            <span class="quiz-option-text">{{opt}}</span>
+          </label>
+        </div>
+
+        <h2>{{q.answer}}</h2>
+        <h2>{{q.check}}</h2>
+
+        <div class="quiz-actions">
+          <button class="quiz-toggle-btn ayisha-btn" @click="q.revealed = !q.revealed">
+            {{ q?.revealed ? 'Nascondi soluzione' : 'Mostra soluzione' }}
+          </button>
+        </div>
+
+        <div class="quiz-feedback" @show="q.revealed">
+          <p class="quiz-result success" @show="q.selected==q.answer">Corretto! ✅</p>
+          <p class="quiz-result error" @show="q.selected!=q.answer">
+            Risposta corretta: <strong>{{ q.options[q.answer] }}</strong>
+          </p>
+        </div>
+      </li>
+    </ol>
   </section>
 
   <section class="section">
