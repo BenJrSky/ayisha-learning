@@ -2870,8 +2870,8 @@ no::before {
 
 .quiz-item + .quiz-item {
   border-top: 1px solid var(--border-color);
-  margin-top: 1.25rem;
-  padding-top: 1.25rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
 }
 
 .quiz-prompt {

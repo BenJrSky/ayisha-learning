@@ -54,6 +54,20 @@
         { "type": "text", "value": "\nCaratteristiche principali:\n- Routing SPA avanzato\n- Direttive modulari (@if, @for, @json, @link, @page, @model, ecc.)\n- Componenti HTML-first\n- Stato reattivo e binding\n- Fetch dati e validazione\n- Logging, error handling, overlay\n- SSR e hydration\n- Zero dipendenze, zero build, solo HTML+JS\n" },
         { "type": "tip", "value": "Ayisha.js è open source e pensato per la didattica e la prototipazione rapida." }
       ],
+      "examples": [
+        {
+          "description": "Inclusione rapida di Ayisha.js e sezione iniziale.",
+          "code": "<script src=\\\"/ayisha-1.0.4.js\\\"></script>\\n<section @page=\\\"home\\\">Benvenuto in Ayisha.js</section>"
+        },
+        {
+          "description": "Mini SPA con due pagine e navigazione.",
+          "code": "<nav>\\n  <a @link=\\\"home\\\">Home</a>\\n  <a @link=\\\"about\\\">About</a>\\n</nav>\\n<section @page=\\\"home\\\"><h1>Home</h1></section>\\n<section @page=\\\"about\\\"><h1>About</h1></section>"
+        },
+        {
+          "description": "Direttiva condizionale semplice.",
+          "code": "<div @if=\\\"loggedIn\\\">Area riservata</div>\\n<div @hide=\\\"loggedIn\\\">Effettua l'accesso</div>"
+        }
+      ],
       "quiz": [
         {
           "id": "q1",
@@ -68,6 +82,13 @@
           "prompt": "Quale direttiva si usa per caricare dati JSON?",
           "options": ["@json", "@fetch", "@for"],
           "answer": 0
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "Serve una toolchain di build complessa per iniziare con Ayisha.js?",
+          "options": ["Sì", "No"],
+          "answer": 1
         }
       ]
     },
@@ -83,12 +104,40 @@
         { "type": "code", "language": "html", "value": "<section @page=\"home\">Benvenuto!</section>\n<a @link=\"course/html\">Vai al corso</a>" },
         { "type": "tip", "value": "I link con @link non ricaricano la pagina, quelli con href sì." }
       ],
+      "examples": [
+        {
+          "description": "Navigazione base tra pagine SPA.",
+          "code": "<nav>\\n  <a @link=\\\"home\\\">Home</a>\\n  <a @link=\\\"about\\\">About</a>\\n</nav>\\n<section @page=\\\"home\\\">Benvenuto nella Home</section>\\n<section @page=\\\"about\\\">Pagina About</section>"
+        },
+        {
+          "description": "Link SPA verso sotto-sezioni del corso.",
+          "code": "<ul>\\n  <li><a @link=\\\"course/html\\\">HTML</a></li>\\n  <li><a @link=\\\"course/css\\\">CSS</a></li>\\n</ul>\\n<section @page=\\\"course/html\\\"><h2>Corso HTML</h2></section>\\n<section @page=\\\"course/css\\\"><h2>Corso CSS</h2></section>"
+        },
+        {
+          "description": "Layout semplice con header e contenuti multipagina.",
+          "code": "<header><a @link=\\\"home\\\">Logo</a></header>\\n<main>\\n  <section @page=\\\"home\\\">Home</section>\\n  <section @page=\\\"about\\\">Chi siamo</section>\\n</main>"
+        }
+      ],
       "quiz": [
         {
           "id": "q1",
           "type": "single",
           "prompt": "Come si crea un link SPA in Ayisha.js?",
           "options": ["<a href=\"pagina.html\">", "<a @link=\"pagina\">"],
+          "answer": 1
+        },
+        {
+          "id": "q2",
+          "type": "single",
+          "prompt": "Quale attributo identifica una ‘pagina’ SPA?",
+          "options": ["@page", "data-route", "role=\"route\""],
+          "answer": 0
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "I link con @link…",
+          "options": ["Ricaricano la pagina", "Non ricaricano la pagina (navigazione SPA)"],
           "answer": 1
         }
       ]
@@ -135,6 +184,20 @@
         { "type": "tip", "value": "I componenti possono ricevere dati tramite attributi, variabili e direttive. Puoi anche annidare componenti e usare @for per renderizzare liste di componenti." },
         { "type": "code", "language": "html", "value": "<component @src=\"components/card.html\" @for=\"item in items\" :item=\"item\"></component>" }
       ],
+      "examples": [
+        {
+          "description": "Inclusione di un componente esterno.",
+          "code": "<component @src=\\\"components/card.html\\\" user=\\\"user\\\"></component>"
+        },
+        {
+          "description": "Render di una lista di componenti con @for.",
+          "code": "<component @src=\\\"components/card.html\\\" @for=\\\"u in users\\\" :user=\\\"u\\\"></component>"
+        },
+        {
+          "description": "Passaggio di più proprietà al componente.",
+          "code": "<component @src=\\\"components/card.html\\\" :user=\\\"user\\\" :theme=\\\"'dark'\\\"></component>"
+        }
+      ],
       "quiz": [
         {
           "id": "q1",
@@ -149,6 +212,13 @@
           "prompt": "Come si passa una variabile a un componente?",
           "options": ["user=\"user\"", "@text=\"user\"", "@for=\"user\""],
           "answer": 0
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "Come renderizzi un elenco di componenti?",
+          "options": ["Con @if", "Con @for", "Con @json"],
+          "answer": 1
         }
       ]
     },
@@ -164,6 +234,20 @@
         { "type": "code", "language": "html", "value": "<input @model=\"user.name\">\n<div @text=\"user.name\"></div>\n<div @watch=\"user.name\" @do=\"console.log('Cambiato!')\"></div>" },
         { "type": "tip", "value": "Lo stato è sempre reattivo: ogni modifica aggiorna la UI. I watcher sono utili per side effect e logica avanzata." }
       ],
+      "examples": [
+        {
+          "description": "Binding bidirezionale con @model.",
+          "code": "<input @model=\\\"form.email\\\" placeholder=\\\"Email\\\">\\n<p @text=\\\"form.email\\\"></p>"
+        },
+        {
+          "description": "Watcher con effetto collaterale.",
+          "code": "<div @watch=\\\"form.email\\\" @do=\\\"validateEmail(form.email)\\\"></div>"
+        },
+        {
+          "description": "Contatore reattivo.",
+          "code": "<button @click=\\\"count++\\\">+1</button>\\n<p>Valore: <span @text=\\\"count\\\"></span></p>"
+        }
+      ],
       "quiz": [
         {
           "id": "q1",
@@ -178,6 +262,13 @@
           "prompt": "A cosa serve la direttiva @watch?",
           "options": ["Eseguire azioni al variare di una variabile", "Mostrare/nascondere elementi", "Routing"],
           "answer": 0
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "Il binding è…",
+          "options": ["Manuale", "Automatico e reattivo"],
+          "answer": 1
         }
       ]
     },
@@ -193,6 +284,20 @@
         { "type": "code", "language": "html", "value": "<div @json=\"/api/courses.json\" @result=\"corsi\"></div>\n<ul>\n  <li @for=\"corso in corsi\" @text=\"corso.title\"></li>\n</ul>\n<div @fetch=\"{ url: '/api/user', method: 'POST', body: { id: 1 } }\" @result=\"user\" @error=\"fetchError\" @loading=\"isLoading\"></div>" },
         { "type": "tip", "value": "@fetch è più avanzato: supporta POST, header, body, error handling e loading state. Puoi gestire errori e loading con variabili dedicate." }
       ],
+      "examples": [
+        {
+          "description": "GET semplice con @json e render lista.",
+          "code": "<div @json=\\\"/api/posts.json\\\" @result=\\\"posts\\\"></div>\\n<article @for=\\\"p in posts\\\">\\n  <h3 @text=\\\"p.title\\\"></h3>\\n</article>"
+        },
+        {
+          "description": "POST con @fetch e body JSON.",
+          "code": "<div @fetch=\\\"{ url: '/api/login', method: 'POST', body: { email: form.email } }\\\" @result=\\\"session\\\"></div>"
+        },
+        {
+          "description": "Gestione loading ed errori.",
+          "code": "<div @fetch=\\\"{ url: '/api/data' }\\\" @result=\\\"data\\\" @loading=\\\"loading\\\" @error=\\\"err\\\"></div>\\n<p @show=\\\"loading\\\">Caricamento…</p>\\n<p @show=\\\"err\\\">Si è verificato un errore</p>"
+        }
+      ],
       "quiz": [
         {
           "id": "q1",
@@ -207,6 +312,13 @@
           "prompt": "Come gestisci lo stato di loading con @fetch?",
           "options": ["@loading=\"var\"", "@show=\"isLoading\"", "Entrambe"],
           "answer": 2
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "Per inviare dati in POST con @fetch, cosa imposti?",
+          "options": ["href", "body (ed eventualmente method)"],
+          "answer": 1
         }
       ]
     },
@@ -222,6 +334,20 @@
         { "type": "code", "language": "html", "value": "<form @form @validate=\"userForm\">...</form>\n<div @log=\"userForm\"></div>\n<button @click=\"throw new Error('Test')\">Test errore</button>" },
         { "type": "tip", "value": "Gli errori sono visibili in overlay, nel log delle direttive e puoi forzare errori per testare il sistema." }
       ],
+      "examples": [
+        {
+          "description": "Form con @validate e regole personalizzate.",
+          "code": "<form @form @validate=\\\"userForm\\\">\\n  <label>Email</label>\\n  <input @model=\\\"user.email\\\" required>\\n  <button type=\\\"submit\\\">Invia</button>\\n</form>"
+        },
+        {
+          "description": "Log dello stato del form.",
+          "code": "<div @log=\\\"userForm\\\"></div>"
+        },
+        {
+          "description": "Forzare un errore per testare l’overlay.",
+          "code": "<button @click=\\\"throw new Error('Errore di test')\\\">Forza errore</button>"
+        }
+      ],
       "quiz": [
         {
           "id": "q1",
@@ -235,6 +361,13 @@
           "type": "single",
           "prompt": "Dove puoi vedere gli errori in Ayisha.js?",
           "options": ["Overlay, log direttive, console", "Solo console", "Solo overlay"],
+          "answer": 0
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "A cosa serve @log?",
+          "options": ["A tracciare lo stato di una sorgente (es. form)", "A definire animazioni"],
           "answer": 0
         }
       ]
@@ -251,6 +384,20 @@
         { "type": "tip", "value": "Evita logica JS custom: usa sempre le direttive per coerenza e manutenibilità. Usa lazy loading e fetch ottimizzati per performance." },
         { "type": "tip", "value": "Testa sempre l'accessibilità con strumenti come Lighthouse e screen reader." }
       ],
+      "examples": [
+        {
+          "description": "Skip link per accessibilità da tastiera.",
+          "code": "<a href=\\\"#main\\\" class=\\\"skip\\\">Salta al contenuto</a>\\n<main id=\\\"main\\\">…</main>"
+        },
+        {
+          "description": "Bottone accessibile con aria-label.",
+          "code": "<button aria-label=\\\"Apri menu\\\">☰</button>"
+        },
+        {
+          "description": "Lista lunga caricata in modo progressivo.",
+          "code": "<div @json=\\\"/api/items?page=1\\\" @result=\\\"items\\\"></div>\\n<ul>\\n  <li @for=\\\"i in items\\\" @text=\\\"i.title\\\"></li>\\n</ul>"
+        }
+      ],
       "quiz": [
         {
           "id": "q1",
@@ -264,6 +411,13 @@
           "type": "single",
           "prompt": "Come migliori la performance di una SPA Ayisha.js?",
           "options": ["Lazy loading componenti e fetch ottimizzati", "Aggiungendo JS custom ovunque", "Usando solo immagini grandi"],
+          "answer": 0
+        },
+        {
+          "id": "q3",
+          "type": "single",
+          "prompt": "A cosa serve uno “skip link”?",
+          "options": ["A saltare direttamente al contenuto principale", "A ricaricare la pagina"],
           "answer": 0
         }
       ]

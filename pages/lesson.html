@@ -50,8 +50,8 @@
   <section class="lesson-quiz" @if="(currentLesson.quiz || []).length">
     <h2 class="quiz-title">Quiz</h2>
     <ol class="quiz-list">
-      <li class="quiz-item" @for="q in currentLesson.quiz" @key="q.id">
-        <p class="quiz-prompt">{{q.prompt}}</p>
+      <li class="quiz-item" @for="ind, q in currentLesson.quiz" @key="q.id">
+        <p class="quiz-prompt">{{ind+1}}) - {{q.prompt}}</p>
 
         <div class="quiz-options" @set="testclass=true">
           <span @for="i, opt in q.options" @key="q.id + '-' + i">

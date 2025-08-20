@@ -1,0 +1,57 @@
+{
+  "id": "",
+  "slug": "",
+  "title": "",
+  "subtitle": "",
+  "category": "",
+  "level": "",
+  "hours": 0,
+  "language": "",
+  "lastUpdated": "",
+  "tags": [],
+
+  "hero": {
+    "image": "",
+    "logo": "",
+    "ctaText": "",
+    "ctaUrl": ""
+  },
+
+  "overview": "",
+  "content": "",
+  "prerequisites": [],
+  "outcomes": [],
+
+  "pricing": { "free": false, "price": 0, "currency": "EUR" },
+
+  "instructor": {
+    "name": "",
+    "avatar": "",
+    "bio": "",
+    "links": [
+      { "type": "", "url": "" }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "",
+      "slug": "",
+      "order": 0,
+      "title": "",
+      "minutes": 0,
+      "summary": "",
+      "content": [
+        { "type": "text", "value": "" },
+        { "type": "code", "language": "", "value": "" },
+        { "type": "tip", "value": "" }
+      ],
+      "examples": [
+        { "description": "", "code": "" }
+      ],
+      "quiz": [
+        { "id": "", "type": "single", "prompt": "", "options": ["", "", ""], "answer": 0 }
+      ]
+    }
+  ]
+}

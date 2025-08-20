@@ -1,34 +1,31 @@
 {
-  "id": "course_css_pro",
-  "slug": "css-pro",
-  "title": "CSS Pro",
-  "subtitle": "Dal layout base al CSS moderno: cascade, specificità, responsive, Flexbox, Grid, variabili, :has(), nesting e molto altro.",
+  "id": "course_css_mastery",
+  "slug": "css-from-zero-to-pro",
+  "title": "CSS From Zero to Pro",
+  "subtitle": "Learn modern CSS from first principles to advanced, production-grade techniques.",
   "category": "Development",
   "level": "Beginner to Advanced",
-  "hours": 32,
-  "language": "it",
-  "lastUpdated": "2025-08-18",
-  "tags": ["CSS", "Layout", "Responsive", "Flexbox", "Grid", "Design", "Accessibilità", "Colori", "Tipografia", "Prestazioni", "Nesting", "Container Queries", "Cascade Layers"],
+  "hours": 28,
+  "language": "en",
+  "lastUpdated": "2025-08-20",
+  "tags": ["CSS", "Selectors", "Cascade", "Box Model", "Typography", "Colors", "Flexbox", "Grid", "Responsive", "Media Queries", "Container Queries", "Variables", "Nesting", "Cascade Layers", ":has()", "Accessibility", "Performance", "Animations"],
 
   "hero": {
     "image": "images/img_1.jpg",
     "logo": "ayisha-logo-black.png",
-    "ctaText": "Iscriviti ora",
+    "ctaText": "Enroll Now",
     "ctaUrl": "enroll.html"
   },
 
-  "overview": "CSS Pro è il corso completo e aggiornato per dominare i fogli di stile moderne: comprenderai a fondo cascata, specificità ed ereditarietà; costruirai layout robusti con Flexbox e Grid (incluso subgrid); userai tipografia e colori moderni (LCH, Lab, relative color, color-mix); applicherai responsive avanzato con media e container queries; sfrutterai pseudo-classi come :has e focus-visible; organizzerai l’architettura con @layer e BEM; e ottimizzerai prestazioni con contain e content-visibility.",
-  "content": "Partendo dalle basi (selettori, box model) passerai a tecniche avanzate di layout, tipografia, colori, animazioni, accessibilità visiva e architettura CSS. Imparerai le novità del CSS moderno (nesting, :has, container queries, logical properties) con esempi pratici e quiz. Al termine saprai progettare interfacce accessibili, responsive e performanti, con una solida metodologia di scalabilità e manutenzione.",
-  "prerequisites": ["Conoscenze base di HTML", "Conoscenze base di CSS", "Facoltativo: nozioni base di JavaScript"],
+  "overview": "Master CSS step by step. Start with how CSS works, selectors and the cascade, then build solid layouts with the box model, Flexbox and Grid. Learn modern typography and color techniques, responsive design with media and container queries, custom properties, nesting, cascade layers, advanced selectors like :has(), and production performance and accessibility best practices. You’ll finish with a solid mental model and a toolbox to ship scalable, maintainable CSS.",
+  "content": "This course is project-oriented and explanation-heavy. Each lesson combines clear theory, small focused code snippets, and practical tips. Quizzes reinforce concepts from beginner to pro-level, ensuring you understand not just the how, but the why behind CSS decisions.",
+  "prerequisites": ["Basic HTML knowledge (elements, attributes)", "Optional: basic understanding of the browser devtools"],
   "outcomes": [
-    "Comprendere cascata, specificità ed ereditarietà e saperle usare a tuo favore",
-    "Realizzare layout complessi e responsive con Flexbox, Grid e subgrid",
-    "Usare tipografia avanzata e colori moderni (LCH/Lab, color-mix, relative color)",
-    "Applicare pseudo-classi e pseudo-elementi moderni (:is, :where, :has, :focus-visible)",
-    "Utilizzare variabili (custom properties), nesting e cascade layers (@layer) per un'architettura scalabile",
-    "Adottare container queries, logical properties e writing modes per UI adattive e internazionalizzate",
-    "Ottimizzare prestazioni e rendering (contain, content-visibility, will-change) e accessibilità visiva",
-    "Progettare componenti e CSS maintainable con BEM/utility e pattern di theming (dark/light)"
+    "Confidently write maintainable CSS with a strong grasp of the cascade, specificity and inheritance",
+    "Build responsive layouts with Flexbox and Grid using modern units and techniques",
+    "Craft accessible, readable interfaces with robust typography and color systems",
+    "Adopt modern CSS features: custom properties, container queries, nesting, cascade layers, and :has()",
+    "Optimize for performance and respect user preferences (reduced motion, dark mode)"
   ],
 
   "pricing": { "free": true, "price": 0, "currency": "EUR" },
@@ -36,498 +33,262 @@
   "instructor": {
     "name": "Ayisha Team",
     "avatar": "images/img_3.jpg",
-    "bio": "Team di esperti frontend e accessibilità.",
+    "bio": "Frontend engineers and accessibility advocates.",
     "links": [
       { "type": "site", "url": "https://example.com" }
     ]
   },
 
-"lessons": [
+  "lessons": [
     {
-      "id": "c0",
-      "slug": "introduzione-css",
+      "id": "l0",
+      "slug": "css-fundamentals",
       "order": 0,
-      "title": "Introduzione a CSS",
-      "minutes": 30,
-      "summary": "Cos'è CSS, perché la separazione tra contenuto e presentazione è fondamentale.",
+      "title": "CSS Fundamentals",
+      "minutes": 40,
+      "summary": "What CSS is, how it connects to HTML, rule syntax, basic selectors, and a first look at the cascade.",
       "content": [
-        { "type": "text", "value": "CSS (Cascading Style Sheets) definisce la presentazione delle pagine web. Separare HTML (contenuto) da CSS (stile) migliora riuso, accessibilità e manutenzione.\nRegola base: selector { property: value; }" },
-        { "type": "code", "language": "css", "value": "body {\n  background: #fafafa;\n  color: #222;\n}\n.main-title { font-size: 2rem; }" },
-        { "type": "tip", "value": "Scrivi CSS preferibilmente in file esterni per caching e riuso." }
+        { "type": "text", "value": "CSS (Cascading Style Sheets) controls presentation. Keep structure (HTML) separate from style (CSS) to improve reuse, accessibility, and maintainability. You usually link an external stylesheet from your HTML for caching and portability." },
+        { "type": "code", "language": "html", "value": "<!-- index.html -->\n<link rel=\"stylesheet\" href=\"styles.css\">\n<h1 class=\"title\">Hello CSS</h1>" },
+        { "type": "tip", "value": "Prefer external stylesheets over inline styles to benefit from caching and clearer separation of concerns." },
+
+        { "type": "text", "value": "The basic CSS rule shape is: selector { property: value; }. The selector targets elements; declarations set styles. Properties accept specific value types (keywords, lengths, colors)." },
+        { "type": "code", "language": "css", "value": "/* styles.css */\nh1.title { color: #111827; font-size: 2rem; }" },
+        { "type": "tip", "value": "Keep one declaration per line and group related rules to improve readability and diffs." },
+
+        { "type": "text", "value": "Core selectors: type (h1), class (.btn), id (#header). Prefer classes for styling because they scale and avoid specificity traps that ids can create." },
+        { "type": "code", "language": "css", "value": "button.btn { background: #111827; color: white; }\n#header { padding: 1rem; } /* Use sparingly */" },
+        { "type": "tip", "value": "Prefer classes for styling. Use ids for unique anchors or JS hooks only when necessary." },
+
+        { "type": "text", "value": "Attribute selectors and pseudo-classes target states and attributes. :hover and :focus-visible improve interaction and accessibility; prefer the latter for keyboard users." },
+        { "type": "code", "language": "css", "value": "input[type=\"email\"] { border: 1px solid #cbd5e1; }\nbutton:hover { filter: brightness(1.05); }\nbutton:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }" },
+        { "type": "tip", "value": "Use :focus-visible (not :focus) so mouse users aren’t shown outlines unnecessarily, while keyboard users still get a visible focus indicator." },
+
+        { "type": "text", "value": "The cascade decides which rule wins using: importance (!important), origin (user/author/UA), specificity, and source order. Understanding this prevents surprises." },
+        { "type": "code", "language": "css", "value": "p { color: #111; }\n.article p { color: #334155; }\n.article p.important { color: #000 !important; }" },
+        { "type": "tip", "value": "Avoid !important when possible. Favor good structure, lower specificity, and consistent layering to control priority." }
       ],
       "examples": [
-        { "description": "Regola base CSS.", "code": "h1 { color: #222; font-size: 2rem; }" },
-        { "description": "Inclusione di CSS esterno.", "code": "<link rel=\"stylesheet\" href=\"stile.css\">" }
+        { "description": "Linking a stylesheet and styling a heading.", "code": "<link rel=\"stylesheet\" href=\"styles.css\">\n<h1 class=\"title\">Hello</h1>\n/* styles.css */\n.title{color:#111827;font-size:2rem}" },
+        { "description": "Basic selectors: type, class, id.", "code": "h2{margin:0}\n.note{background:#fef3c7}\n#footer{padding:1rem}" },
+        { "description": "Pseudo-classes for accessibility.", "code": "button:focus-visible{outline:2px solid #2563eb;outline-offset:2px}" }
       ],
       "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Cosa definisce CSS?", "options": ["La struttura dei dati", "La presentazione grafica", "Il comportamento lato server"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Qual è la sintassi di base?", "options": ["selector: value { property; }", "selector { property: value; }", "{ selector: property: value }"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c1",
-      "slug": "selettori-e-specificita",
-      "order": 1,
-      "title": "Selettori e specificità",
-      "minutes": 45,
-      "summary": "Selettori di base e avanzati; come funziona la specificità.",
-      "content": [
-        { "type": "text", "value": "Selettori: tipo (div), classe (.btn), id (#main), attributo ([type='email']), combinatori (>, +, ~, spazio), pseudo-classi (:hover, :focus-visible, :is, :where, :has) e pseudo-elementi (::before, ::after). La specificità decide quali regole vincono." },
-        { "type": "code", "language": "css", "value": ".btn { color: white; }\n#main .btn.primary { background: #111827; }\nnav ul > li.active { font-weight: 700; }\narticle:has(h2) { border-top: 1px solid #eee; }" },
-        { "type": "tip", "value": "Usa :is() e :where() per scrivere selettori complessi mantenendo bassa la specificità." }
-      ],
-      "examples": [
-        { "description": "Selettore di classe.", "code": ".btn { color: white; }" },
-        { "description": "Selettore di attributo.", "code": "input[type=\"email\"] { border: 1px solid #ccc; }" },
-        { "description": "Uso di :has per selezione parent.", "code": "article:has(h2) { border-top: 1px solid #eee; }" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale selettore ha più specificità?", "options": [".card .title", "#header .title", "section h2"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale pseudo-classe consente il 'parent selector'?", "options": [":is()", ":has()", ":where()"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c2",
-      "slug": "box-model-e-dimensioni",
-      "order": 2,
-      "title": "Box model e dimensioni",
-      "minutes": 45,
-      "summary": "Content, padding, border, margin; box-sizing e misure.",
-      "content": [
-        { "type": "text", "value": "Il box model controlla spaziatura e dimensioni: content, padding, border, margin. Con box-sizing: border-box, width/height includono padding e border e si semplifica il layout." },
-        { "type": "code", "language": "css", "value": "*, *::before, *::after { box-sizing: border-box; }\n.card { width: 300px; padding: 1rem; border: 2px solid #ffc107; margin: 1rem auto; }" },
-        { "type": "tip", "value": "Preferisci unità relative quando possibile (rem, %), migliorano l’accessibilità." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Cosa include width con border-box?", "options": ["Solo content", "Content + padding + border", "Content + margin"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Dove agisce il margin?", "options": ["Spazio interno", "Spazio esterno", "Bordo colorato"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c3",
-      "slug": "colori-e-tipografia",
-      "order": 3,
-      "title": "Colori e tipografia",
-      "minutes": 40,
-      "summary": "Colori (hex, rgb, hsl, lch/lab) e basi tipografiche.",
-      "content": [
-        { "type": "text", "value": "Scegli schemi con buon contrasto. Oltre a hex/rgb/hsl, i moderni lch/lab consentono migliore uniformità percettiva. Cura gerarchia tipografica, interlinea e leggibilità." },
-        { "type": "code", "language": "css", "value": "h1 { color: lch(30% 50 30); font-size: 2.5rem; }\np { color: #374151; line-height: 1.7; }\n.important { color: color-mix(in lch, red 60%, white); font-weight: 700; }" },
-        { "type": "tip", "value": "Verifica contrasto minimo WCAG e dimensioni per dispositivi mobili." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale spazio colore è percettivamente più uniforme?", "options": ["RGB", "HSL", "LCH/Lab"], "answer": 2 },
-        { "id": "q2", "type": "single", "prompt": "Quale proprietà imposta il colore del testo?", "options": ["background", "color", "font-style"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c4",
-      "slug": "layout-flexbox-grid",
-      "order": 4,
-      "title": "Layout: Flexbox e Grid",
-      "minutes": 60,
-      "summary": "Sistemi di layout moderni: quando usare Flex e quando Grid.",
-      "content": [
-        { "type": "text", "value": "Flexbox per layout 1D (riga/colonna), Grid per layout 2D (righe+colonne). Gestisci gap, allineamenti e distribuzione dello spazio. Usa minmax e auto-fit/auto-fill con Grid." },
-        { "type": "code", "language": "css", "value": ".container { display: flex; gap: 1rem; }\n.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }" },
-        { "type": "tip", "value": "Mescola i due sistemi: ad es. Grid per il macro layout e Flex per componenti interni." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale proprietà attiva Flexbox?", "options": ["display: flex;", "display: grid;", "flex-flow: row wrap;"], "answer": 0 },
-        { "id": "q2", "type": "single", "prompt": "Come crei colonne fluide con Grid?", "options": ["grid-template-columns: 1fr;", "grid-template-columns: repeat(auto-fit, minmax(200px,1fr));", "grid-auto-flow: column;"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c5",
-      "slug": "responsive-design",
-      "order": 5,
-      "title": "Responsive design e media query",
-      "minutes": 45,
-      "summary": "Breakpoint, unità relative, prefers-color-scheme.",
-      "content": [
-        { "type": "text", "value": "Il responsive si basa su layout fluidi, immagini adattive e media query. Evita breakpoint fissi, progetta mobile-first e usa unità relative (rem, %) per tipografia e spaziatura." },
-        { "type": "code", "language": "css", "value": "@media (max-width: 600px) {\n  .container { padding: 0.5rem; }\n}\n@media (prefers-color-scheme: dark) {\n  :root { --bg: #0b0f19; --fg: #e5e7eb; }\n  body { background: var(--bg); color: var(--fg); }\n}" },
-        { "type": "tip", "value": "Considera anche prefers-reduced-motion per chi preferisce meno animazioni." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale approccio è consigliato?", "options": ["Desktop-first", "Mobile-first", "Solo tablet"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale media preferisce tema scuro/chiaro?", "options": ["prefers-contrast", "prefers-color-scheme", "color-gamut"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c6",
-      "slug": "animazioni-e-transizioni",
-      "order": 6,
-      "title": "Animazioni e transizioni",
-      "minutes": 40,
-      "summary": "Transizioni, keyframe, performance.",
-      "content": [
-        { "type": "text", "value": "Usa transition per cambiamenti graduali e @keyframes per animazioni complesse. Preferisci trasformazioni (transform/opacity) per prestazioni migliori, evita layout-thrashing." },
-        { "type": "code", "language": "css", "value": ".btn { transition: background-color .2s ease, transform .15s; }\n.btn:hover { transform: translateY(-2px); }\n@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }" },
-        { "type": "tip", "value": "Con prefers-reduced-motion, riduci o disattiva animazioni per accessibilità." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quali proprietà sono più economiche da animare?", "options": ["width/height", "left/top", "transform/opacity"], "answer": 2 },
-        { "id": "q2", "type": "single", "prompt": "Dove definisci animazioni complesse?", "options": ["@font-face", "@keyframes", "@layer"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c7",
-      "slug": "variabili-custom-properties",
-      "order": 7,
-      "title": "Variabili e custom properties",
-      "minutes": 35,
-      "summary": "Theming, riuso e fallback.",
-      "content": [
-        { "type": "text", "value": "Le custom properties consentono theming e riuso. Sono dinamiche e partecipano alla cascata. Puoi definire fallback con var(--token, fallback)." },
-        { "type": "code", "language": "css", "value": ":root { --brand: #ffc107; --gap: 1rem; }\n.btn { background: var(--brand); padding: var(--gap); }\n.card { color: var(--fg, #111827); }" },
-        { "type": "tip", "value": "Usale per design token (colori, spaziature, radius) e per passare valori tra componenti." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Come usi un fallback?", "options": ["var(--x) || red", "var(--x, red)", "fallback(--x, red)"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Le variabili CSS sono…", "options": ["Statiche", "Calcolate a runtime e influenzate dalla cascata", "Solo per SCSS"], "answer": 1 }
+        { "id": "q1", "type": "single", "prompt": "What does CSS primarily control?", "options": ["Data structure", "Presentation/visual style", "Server behavior"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Which selector type is generally best for scalable styling?", "options": ["Type selector", "Class selector", "ID selector"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Which factor is evaluated last in the cascade if all else ties?", "options": ["Specificity", "Importance", "Source order"], "answer": 2 },
+        { "id": "q4", "type": "single", "prompt": "Which pseudo-class should you prefer for keyboard focus states?", "options": [":focus", ":focus-visible", ":hover"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Where should you typically put your CSS for maintainability?", "options": ["Inline styles", "External stylesheet", "In the HTML head as style blocks only"], "answer": 1 }
       ]
     },
 
     {
-      "id": "c8",
-      "slug": "cascata-ed-ereditarieta",
-      "order": 8,
-      "title": "Cascata ed ereditarietà",
-      "minutes": 35,
-      "summary": "Ordine di origine, importanza, specificità e ordine di apparizione.",
-      "content": [
-        { "type": "text", "value": "La cascata stabilisce quale regola vince: importanza (!important), origine (user/author/UA), specificità e ordine. L’ereditarietà trasmette alcune proprietà (es. color) ai figli." },
-        { "type": "code", "language": "css", "value": "p { color: #111; }\n.article p { color: #333; }\n.article p.important { color: #000 !important; }" },
-        { "type": "tip", "value": "Evita !important: preferisci architetture e layering per gestire priorità." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale viene valutato per ultimo nella cascata?", "options": ["Importanza", "Origine", "Ordine di apparizione"], "answer": 2 },
-        { "id": "q2", "type": "single", "prompt": "Quale proprietà si eredita spesso?", "options": ["margin", "color", "border"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c9",
-      "slug": "unita-e-misure",
-      "order": 9,
-      "title": "Unità e misure",
-      "minutes": 30,
-      "summary": "px, em, rem, %, vw/vh, svh/lvh, ch, ex, etc.",
-      "content": [
-        { "type": "text", "value": "Scegli unità in base al contesto: rem per tipografia globale, em per componenti, % per layout fluido, vw/vh per full-viewport, e le nuove svh/lvh per viewport dinamici." },
-        { "type": "code", "language": "css", "value": "html { font-size: 100%; }\nh1 { font-size: 2.5rem; }\n.btn { padding: .75em 1em; }\n.hero { min-height: 100svh; }" },
-        { "type": "tip", "value": "Attenzione a em vs rem: em scala col font-size del contenitore, rem con quello root." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale unità segue il font-size root?", "options": ["em", "rem", "vh"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale unità gestisce viewport mobili moderni?", "options": ["vh", "svh/lvh", "px"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c10",
-      "slug": "background-bordi-ombre",
-      "order": 10,
-      "title": "Background, bordi e ombre",
-      "minutes": 35,
-      "summary": "Background multipli, gradienti, border-radius/clip.",
-      "content": [
-        { "type": "text", "value": "Lavora con gradienti, immagini responsive (image-set), shape radius e ombre morbide. Evita ombre troppo scure o larghe per non pesare sul rendering." },
-        { "type": "code", "language": "css", "value": ".card {\n  background: linear-gradient(180deg, #fff, #f8fafc);\n  border-radius: 12px;\n  box-shadow: 0 6px 24px rgba(0,0,0,.08);\n}\n.cover { background-image: image-set(url(img@1x.jpg) 1x, url(img@2x.jpg) 2x); }" },
-        { "type": "tip", "value": "Usa border-radius coerenti come parte del design system (es. 4, 8, 12px)." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale è un gradiente valido?", "options": ["gradient(blue, white)", "linear-gradient(blue, white)", "bg-gradient(blue, white)"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Cosa fa image-set?", "options": ["Carica font", "Seleziona immagine in base a densità", "Crea clip-path"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c11",
-      "slug": "posizionamento-zindex-stacking",
-      "order": 11,
-      "title": "Posizionamento e stacking context",
-      "minutes": 40,
-      "summary": "position, z-index, stacking context e sticky.",
-      "content": [
-        { "type": "text", "value": "Comprendi position static/relative/absolute/fixed/sticky e come nascono gli stacking context (z-index, opacity<1, transform, ecc.). Sticky per intestazioni/TOC." },
-        { "type": "code", "language": "css", "value": "header { position: sticky; top: 0; backdrop-filter: blur(8px); }\n.modal { position: fixed; inset: 0; z-index: 1000; }" },
-        { "type": "tip", "value": "Debugga stacking con strumenti DevTools e semplifica i contesti superflui." }
-      ],
-      "examples": [
-        { "description": "Header sticky con effetto blur.", "code": "header{position:sticky;top:0;backdrop-filter:blur(8px);z-index:10}" },
-        { "description": "Modal a pieno schermo con z-index alto.", "code": ".modal{position:fixed;inset:0;display:grid;place-items:center;z-index:1000;background:rgba(0,0,0,.5)}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Cosa crea uno stacking context?", "options": ["position: relative", "opacity < 1", "margin-top"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale posizione segue lo scroll?", "options": ["fixed", "absolute", "static"], "answer": 0 }
-      ]
-    },
-    {
-      "id": "c12",
-      "slug": "display-flow-bfc",
-      "order": 12,
-      "title": "Display, flow e BFC",
-      "minutes": 35,
-      "summary": "Flow normal, block formatting context, overflow.",
-      "content": [
-        { "type": "text", "value": "Capisci il flusso normale e i Block Formatting Context (BFC), che isolano float e margini. overflow, floats e clear sono ancora utili in casi legacy." },
-        { "type": "code", "language": "css", "value": ".wrap { overflow: auto; }\n.float { float: left; margin: 0 1rem 1rem 0; }" },
-        { "type": "tip", "value": "Preferisci Flex/Grid, ma conosci BFC per debug layout e casi particolari." }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale proprietà crea BFC?", "options": ["overflow: hidden", "display: inline", "position: static"], "answer": 0 },
-        { "id": "q2", "type": "single", "prompt": "I float…", "options": ["Sono obsoleti e inutili", "Possono servire in legacy e testo avvolto", "Sostituiscono Grid"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c13",
-      "slug": "flexbox-avanzato",
-      "order": 13,
-      "title": "Flexbox avanzato",
+      "id": "l1",
+      "slug": "box-model-and-units",
+      "order": 1,
+      "title": "Box Model and Units",
       "minutes": 45,
-      "summary": "Allineamenti, wrap, order, pattern comuni.",
+      "summary": "Understand content, padding, border, margin, box-sizing, margin collapsing, and modern units.",
       "content": [
-        { "type": "text", "value": "Gestisci allineamenti (align-items/content), gap, wrapping e ordinamento (order). Pattern: navbar, card row responsive, media object." },
-        { "type": "code", "language": "css", "value": ".row { display: flex; flex-wrap: wrap; gap: 1rem; }\n.item { flex: 1 1 240px; }\n.item.featured { order: -1; }" },
-        { "type": "tip", "value": "Evita di abusare di order per logiche semantiche: l’ordine DOM guida l’accessibilità." }
+        { "type": "text", "value": "Every element is a rectangular box. The box model consists of content, padding, border, and margin. Mastering it is key to predictable spacing and sizing." },
+        { "type": "code", "language": "css", "value": ".card { padding: 1rem; border: 2px solid #eab308; margin: 1rem 0; }" },
+        { "type": "tip", "value": "Sketch boxes when debugging layout. Visualizing padding/border/margin quickly reveals spacing issues." },
+
+        { "type": "text", "value": "box-sizing: border-box makes width/height include padding and border, simplifying layout math and preventing overflow." },
+        { "type": "code", "language": "css", "value": "*,*::before,*::after{box-sizing:border-box}\n.card{width:300px;padding:1rem;border:2px solid #eab308}" },
+        { "type": "tip", "value": "Set border-box globally to reduce surprises and simplify components across the app." },
+
+        { "type": "text", "value": "Adjacent vertical margins can collapse. This means the larger margin wins instead of adding up. Understanding this avoids unexpected gaps." },
+        { "type": "code", "language": "css", "value": "h1{margin:1rem 0}\nh2{margin:.5rem 0} /* The vertical margin between may collapse to 1rem */" },
+        { "type": "tip", "value": "Use padding on containers (not margin) to create internal spacing that doesn’t collapse with child margins." },
+
+        { "type": "text", "value": "Use the right unit for the job. rem for global typography, em for component-relative spacing, % for fluid containers, ch for character-based measures, and modern viewport units like svh/lvh for mobile viewports." },
+        { "type": "code", "language": "css", "value": "html{font-size:100%}\nh1{font-size:2.25rem}\n.btn{padding:.75em 1em}\n.hero{min-height:100svh}" },
+        { "type": "tip", "value": "Prefer relative units (rem/em/%) for accessibility and responsiveness; avoid locking layouts with px everywhere." },
+
+        { "type": "text", "value": "Logical properties adapt to writing modes and locales. Prefer inline/block logical margins/paddings over left/right/top/bottom for internationalized UIs." },
+        { "type": "code", "language": "css", "value": ".panel{padding-block:1rem;padding-inline:1.25rem;margin-block:1rem;border-radius:12px}" },
+        { "type": "tip", "value": "Use logical properties (margin-inline, padding-block, inset-inline) to support RTL and vertical writing modes effortlessly." }
       ],
       "examples": [
-        { "description": "Card responsivi con flex-basis variabile.", "code": ".row{display:flex;flex-wrap:wrap;gap:1rem}.item{flex:1 1 240px}" },
-        { "description": "Mettere in evidenza un elemento con order.", "code": ".item.featured{order:-1}" }
+        { "description": "Global border-box reset.", "code": "*,*::before,*::after{box-sizing:border-box}" },
+        { "description": "Character-based width for inputs.", "code": "input.code{width:24ch}" },
+        { "description": "Logical properties for international UIs.", "code": ".card{padding-block:1rem;padding-inline:1rem}" }
       ],
       "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Cosa fa flex: 1 1 240px?", "options": ["Niente", "Cresce/si restringe con base 240px", "Blocca a 240px"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale proprietà controlla allineamento sulla cross axis?", "options": ["justify-content", "align-items", "place-content"], "answer": 1 }
+        { "id": "q1", "type": "single", "prompt": "What does border-box change about width?", "options": ["Includes only content", "Includes content + padding + border", "Includes content + margin"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Which margins can collapse?", "options": ["Horizontal margins", "Vertical adjacent margins", "Margins never collapse"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Which unit scales with the root font size?", "options": ["em", "rem", "px"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "What are logical properties useful for?", "options": ["Animations", "Internationalization and writing modes", "Z-index management"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "A good default for sizing and spacing is to:", "options": ["Use px for all dimensions", "Mix relative units wisely", "Avoid units and use auto everywhere"], "answer": 1 }
       ]
     },
+
     {
-      "id": "c14",
-      "slug": "grid-avanzato-subgrid",
-      "order": 14,
-      "title": "Grid avanzato e subgrid",
-      "minutes": 50,
-      "summary": "Aree, minmax, auto-fit/fill, subgrid.",
-      "content": [
-        { "type": "text", "value": "Usa grid-template-areas, minmax(), auto-fit/auto-fill. Con subgrid, i figli ereditano linee della griglia del parent, utile per liste/card allineate." },
-        { "type": "code", "language": "css", "value": ".layout { display: grid; grid-template-columns: 1fr 2fr; grid-template-areas: 'side main'; gap: 1rem; }\n.list { display: grid; grid-template-columns: subgrid; }\n.list > li { grid-column: 1 / -1; }" },
-        { "type": "tip", "value": "Subgrid è perfetto per allineare elementi interni in liste, mantenendo consistenza." }
-      ],
-      "examples": [
-        { "description": "Lista articoli con subgrid per allineare contenuti interni.", "code": ".list{display:grid;grid-template-columns:subgrid}.list>li{grid-column:1/-1}" },
-        { "description": "Griglia fluida con auto-fit e minmax.", "code": ".grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "A cosa serve subgrid?", "options": ["Creare overlay", "Ereditare linee dal parent", "Aumentare specificità"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale helper rende griglie fluide?", "options": ["repeat(auto-fit, minmax())", "grid-auto-flow: dense", "grid-row: span 2"], "answer": 0 }
-      ]
-    },
-    {
-      "id": "c15",
-      "slug": "tipografia-avanzata",
-      "order": 15,
-      "title": "Tipografia avanzata e variable fonts",
-      "minutes": 40,
-      "summary": "Font-variation, feature settings, rhythm.",
-      "content": [
-        { "type": "text", "value": "Con i variable fonts controlli peso, larghezza e slant. Usa font-feature-settings per legature/figure e line-height per un ritmo verticale coerente." },
-        { "type": "code", "language": "css", "value": "h1 { font-variation-settings: 'wght' 650; }\n.code { font-feature-settings: 'ss01' on, 'zero' on; }" },
-        { "type": "tip", "value": "Non eccedere con varianti: bilancia performance (subset, swap) e resa tipografica." }
-      ],
-      "examples": [
-        { "description": "Controllo dell'asse peso (wght) su un variable font.", "code": "h1{font-variation-settings:'wght' 650}" },
-        { "description": "Attivazione di set stilistici e zero barrato.", "code": ".code{font-feature-settings:'ss01' on,'zero' on}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Cosa controlla 'wght'?", "options": ["Interlinea", "Peso del font", "Kerning"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale unità consigli per font-size globale?", "options": ["px", "rem", "vw"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c16",
-      "slug": "colori-moderni",
-      "order": 16,
-      "title": "Colori moderni: LCH/Lab, color(), color-mix()",
-      "minutes": 35,
-      "summary": "Spazi colore percettivi e mixing nativo.",
-      "content": [
-        { "type": "text", "value": "LCH/Lab sono spazi colore percettivi. Con color-mix e relative color syntax puoi derivare varianti coerenti (hover, focus, overlay) in modo nativo." },
-        { "type": "code", "language": "css", "value": ":root { --brand: lch(60% 60 40); }\n.btn { background: var(--brand); }\n.btn:hover { background: color-mix(in lch, var(--brand) 85%, black); }" },
-        { "type": "tip", "value": "Controlla il supporto e prevedi fallback (es. definizioni multiple)." }
-      ],
-      "examples": [
-        { "description": "Generazione di una scala di colori con color-mix.", "code": ":root{--brand:lch(60% 60 40);--brand-600:color-mix(in lch,var(--brand)85%,black);--brand-300:color-mix(in lch,var(--brand)70%,white)}" },
-        { "description": "Overlay semi-trasparente con color-mix.", "code": ".overlay{background:color-mix(in lch,black 40%,transparent)}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale funzione miscela colori nativamente?", "options": ["mix()", "color-mix()", "blend()"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Perché LCH è utile?", "options": ["Più veloce", "Più uniforme percettivamente", "Compatibile con IE11"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c17",
-      "slug": "pseudo-classi-elementi-moderni",
-      "order": 17,
-      "title": "Pseudo-classi/elementi moderni",
-      "minutes": 40,
-      "summary": ":focus-visible, :is, :where, :has, ::marker, ::file-selector-button.",
-      "content": [
-        { "type": "text", "value": "Migliora UX con :focus-visible (mostra focus quando serve), semplifica selettori con :is/:where e seleziona parent con :has. Personalizza liste (::marker) e input file (::file-selector-button)." },
-        { "type": "code", "language": "css", "value": "a:focus { outline: none; }\na:focus-visible { outline: 2px solid var(--brand); }\nnav:has(a.current) { box-shadow: inset 0 -2px var(--brand); }" },
-        { "type": "tip", "value": "Non rimuovere il focus; usa focus-visible per accessibilità tastiera." }
-      ],
-      "examples": [
-        { "description": "Evidenziare la voce attiva in una nav con :has.", "code": "nav:has(a.current){box-shadow:inset 0 -2px var(--brand)}" },
-        { "description": "Personalizzazione del marker delle liste.", "code": "ul.custom>li::marker{color:var(--brand);font-weight:700}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale pseudo-classe evita focus inutile con mouse?", "options": [":focus", ":active", ":focus-visible"], "answer": 2 },
-        { "id": "q2", "type": "single", "prompt": "Quale consente selezione del parent?", "options": [":has", ":is", ":where"], "answer": 0 }
-      ]
-    },
-    {
-      "id": "c18",
-      "slug": "architettura-layering-nesting",
-      "order": 18,
-      "title": "Architettura CSS: @layer, BEM e nesting",
+      "id": "l2",
+      "slug": "typography-and-colors",
+      "order": 2,
+      "title": "Typography and Colors",
       "minutes": 45,
-      "summary": "Strutturare il CSS per scalabilità e prevedibilità.",
+      "summary": "Readable type, scalable systems, and modern color spaces for accessible, beautiful interfaces.",
       "content": [
-        { "type": "text", "value": "Organizza il CSS in layer (reset/base/components/utilities) con @layer, adotta convenzioni (BEM/utility) e usa il CSS nesting nativo per mantenere leggibilità senza aumentare la specificità." },
-        { "type": "code", "language": "css", "value": "@layer reset, base, components, utilities;\n@layer base { :root { --gap: 1rem; } }\n@layer components { .card { padding: var(--gap); & > h3 { margin-bottom: .5rem; } } }\n/* nesting nativo: & si riferisce al selettore corrente */" },
-        { "type": "tip", "value": "Mantieni i layer stabili e prevedibili. Evita annidamenti profondi anche con nesting." }
+        { "type": "text", "value": "Typography communicates hierarchy and rhythm. Control font-family, size, weight, and line-height to establish clear visual structure and readability." },
+        { "type": "code", "language": "css", "value": "body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif;line-height:1.6;color:#111827}" },
+        { "type": "tip", "value": "Avoid long line lengths; aim for ~45–75 characters per line for running text." },
+
+        { "type": "text", "value": "Scale type with rem for consistency and accessibility. Define a type scale and reuse it across components for predictable sizing." },
+        { "type": "code", "language": "css", "value": "h1{font-size:2.5rem}\nh2{font-size:2rem}\nh3{font-size:1.5rem}\np{font-size:1rem}" },
+        { "type": "tip", "value": "Set the root font-size to 100% so rem maps to user preferences and browser defaults." },
+
+        { "type": "text", "value": "Modern color spaces like LCH/Lab offer perceptual uniformity, making gradients and mixed colors look more natural across ranges." },
+        { "type": "code", "language": "css", "value": ".accent{color:lch(55% 50 30)}\n.badge{background:color-mix(in lch, orange 60%, white)}" },
+        { "type": "tip", "value": "Use color-mix with care; test contrast and gamut clipping across devices." },
+
+        { "type": "text", "value": "Variable fonts compress multiple weights/axes into a single file. They reduce requests and offer fine-grained control with font-variation-settings." },
+        { "type": "code", "language": "css", "value": "@font-face{font-family:'InterVar';src:url(Inter.var.woff2) format('woff2');font-display:swap}\n.title{font-family:'InterVar',system-ui;font-variation-settings:'wght' 700}" },
+        { "type": "tip", "value": "Always use font-display: swap for perceived performance; load text first, refine with the custom font when ready." },
+
+        { "type": "text", "value": "Accessibility: ensure sufficient contrast and visible focus states. WCAG contrast recommendations help make text readable for more users." },
+        { "type": "code", "language": "css", "value": "a{color:#2563eb}\na:focus-visible{outline:2px solid #2563eb;outline-offset:2px}" },
+        { "type": "tip", "value": "Test contrast early and often. Don’t rely solely on color to convey meaning; use text or icons as well." }
       ],
       "examples": [
-        { "description": "Ordine prevedibile con @layer.", "code": "@layer reset,base,components,utilities;@layer base{body{font:16px/1.5 system-ui}}@layer components{.btn{padding:.5rem .75rem;border-radius:.5rem}}" },
-        { "description": "Nesting per componenti senza aumentare la specificità.", "code": ".card{padding:var(--gap)}.card{&>h3{margin:0 0 .5rem}& .actions{display:flex;gap:.5rem}}" }
+        { "description": "Fluid heading scale with rem.", "code": "h1{font-size:clamp(2rem,4vw,3rem)}" },
+        { "description": "Tag with high-contrast badge.", "code": ".tag{background:#111827;color:#f8fafc;border-radius:.5rem;padding:.25em .5em}" },
+        { "description": "Variable font in a hero title.", "code": ".hero-title{font-family:'InterVar';font-variation-settings:'wght' 650}" }
       ],
       "quiz": [
-        { "id": "q1", "type": "single", "prompt": "A cosa serve @layer?", "options": ["Ordinare l'esecuzione dei layer", "Caricare font", "Creare media query"], "answer": 0 },
-        { "id": "q2", "type": "single", "prompt": "Il nesting nativo…", "options": ["Aumenta sempre la specificità", "Non cambia la specificità di base", "È identico a SCSS"], "answer": 1 }
+        { "id": "q1", "type": "single", "prompt": "Which unit helps keep type consistent with user preferences?", "options": ["px", "rem", "vh"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Why use LCH/Lab color spaces?", "options": ["They are older and widely deprecated", "They’re perceptually more uniform", "They only work on dark mode"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "What’s a key benefit of variable fonts?", "options": ["Worse performance", "Multiple weights/axes in one file", "They remove the need for fallbacks"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Minimum practice for readable links and buttons is to:", "options": ["Remove outlines", "Ensure visible focus and contrast", "Use only color without labels"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "font-variation-settings controls:", "options": ["OpenType features only", "Variable font axis values (e.g., weight)", "Line height only"], "answer": 1 }
       ]
     },
+
     {
-      "id": "c19",
-      "slug": "container-queries-logical-properties",
-      "order": 19,
-      "title": "Container queries e proprietà logiche",
+      "id": "l3",
+      "slug": "flexbox-and-grid-essentials",
+      "order": 3,
+      "title": "Flexbox and Grid Essentials",
       "minutes": 50,
-      "summary": "Adattare i componenti al contenitore e internazionalizzare layout.",
+      "summary": "Build robust one-dimensional and two-dimensional layouts with Flexbox and Grid.",
       "content": [
-        { "type": "text", "value": "Con container queries, i componenti si adattano al loro contenitore anziché al viewport. Le logical properties (margin-inline, padding-block) semplificano layout RTL e writing modes." },
-        { "type": "code", "language": "css", "value": ".card { container-type: inline-size; }\n@container (min-width: 420px) {\n  .card { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; }\n}\n.box { padding-block: 1rem; margin-inline: auto; }" },
-        { "type": "tip", "value": "Usa container-type solo dove serve per non creare troppi contesti." }
+        { "type": "text", "value": "Flexbox is ideal for one-dimensional layouts (rows or columns). It distributes space along the main axis and supports alignment along the cross axis." },
+        { "type": "code", "language": "css", "value": ".row{display:flex;gap:1rem}\n.row>div{flex:1}" },
+        { "type": "tip", "value": "Start simple: display:flex on a container, then tune gap, alignment, and flex-basis." },
+
+        { "type": "text", "value": "Control alignment with justify-content (main axis) and align-items (cross axis). Enable wrapping for responsive rows of cards." },
+        { "type": "code", "language": "css", "value": ".row{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:stretch}\n.card{flex:1 1 240px}" },
+        { "type": "tip", "value": "Avoid overusing order for semantic rearrangement; DOM order should reflect reading order." },
+
+        { "type": "text", "value": "Grid handles two-dimensional layouts (rows and columns). Define tracks explicitly and place items by line, area, or auto-placement." },
+        { "type": "code", "language": "css", "value": ".grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}\n.header{grid-column:1/-1}" },
+        { "type": "tip", "value": "Use grid areas and minmax() to create resilient, fluid grids that adapt to container width." },
+
+        { "type": "text", "value": "Create fluid columns with repeat(auto-fit, minmax()). auto-fit collapses empty tracks; minmax ensures a minimum width while staying flexible." },
+        { "type": "code", "language": "css", "value": ".gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}" },
+        { "type": "tip", "value": "Prefer intrinsic sizing over fixed breakpoints: let content define the minimums, grid fills the rest." },
+
+        { "type": "text", "value": "When to choose Flexbox vs Grid: Flexbox for linear, content-driven distribution; Grid for structured two-axis layouts and page scaffolding." },
+        { "type": "code", "language": "css", "value": "/* Flex for nav */\nnav ul{display:flex;gap:1rem}\n/* Grid for page */\n.page{display:grid;grid-template-columns:1fr minmax(0,720px) 1fr}" },
+        { "type": "tip", "value": "Mix them: Grid for the macro layout, Flexbox for components within grid cells." }
       ],
       "examples": [
-        { "description": "Card che cambia layout in base alla larghezza del contenitore.", "code": ".card{container-type:inline-size}@container(min-width:480px){.card{display:grid;grid-template-columns:120px 1fr;gap:1rem}}" },
-        { "description": "Proprietà logiche per supporto RTL/LTR.", "code": ".box{padding-block:1rem;margin-inline:auto}" }
+        { "description": "Responsive card row with wrapping.", "code": ".row{display:flex;flex-wrap:wrap;gap:1rem}.card{flex:1 1 240px}" },
+        { "description": "12-column grid with full-width header.", "code": ".grid{display:grid;grid-template-columns:repeat(12,1fr)}.header{grid-column:1/-1}" },
+        { "description": "Gallery with auto-fit/minmax.", "code": ".gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}" }
       ],
       "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Cosa triggera una container query?", "options": ["Larghezza viewport", "Dimensione del contenitore", "DPI del device"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "margin-inline agisce su…", "options": ["Top/Bottom", "Left/Right (o start/end)", "Tutte le direzioni"], "answer": 1 }
+        { "id": "q1", "type": "single", "prompt": "Flexbox is best for:", "options": ["Two-dimensional page grids", "One-dimensional row/column layouts", "SVG filters"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Which property enables Grid?", "options": ["display: flex", "display: grid", "grid-auto-flow: column"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "What does minmax(200px, 1fr) do?", "options": ["Fixes items at 200px", "Allows items to be at least 200px and grow to 1fr", "Sets items to auto height"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "What does auto-fit do in repeat()?", "options": ["Hides grid areas", "Collapses empty tracks to fit available space", "Forces fixed columns"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "When should you prefer Grid over Flexbox?", "options": ["For axis-aligned two-dimensional layouts", "For simple horizontal nav bars", "Never"], "answer": 0 }
       ]
     },
+
     {
-      "id": "c20",
-      "slug": "performance-rendering",
-      "order": 20,
-      "title": "Performance e rendering",
-      "minutes": 40,
-      "summary": "content-visibility, contain, will-change e costi di layout.",
+      "id": "l4",
+      "slug": "responsive-design-media-and-container-queries",
+      "order": 4,
+      "title": "Responsive Design with Media and Container Queries",
+      "minutes": 50,
+      "summary": "Design mobile-first, use media queries for environment, and container queries for component-adaptive UI.",
       "content": [
-        { "type": "text", "value": "Riduci costi di rendering ottimizzando paint/layout/composite. Usa content-visibility per liste lunghe, contain per isolare effetti, will-change con parsimonia." },
-        { "type": "code", "language": "css", "value": ".feed > article { content-visibility: auto; contain-intrinsic-size: 400px; }\n.popup { contain: layout paint; }" },
-        { "type": "tip", "value": "Misura sempre con DevTools: non ottimizzare alla cieca." }
+        { "type": "text", "value": "Mobile-first means starting with a solid small-screen experience, then progressively enhancing layouts and features for larger screens." },
+        { "type": "code", "language": "css", "value": ".container{padding:1rem}\n@media (min-width: 640px){.container{padding:1.5rem}}" },
+        { "type": "tip", "value": "Avoid rigid desktop-first breakpoints. Let content and components guide where layout needs to adapt." },
+
+        { "type": "text", "value": "Media queries condition styles on viewport or user preferences. Common queries target width, color scheme, and reduced motion preferences." },
+        { "type": "code", "language": "css", "value": "@media (prefers-color-scheme: dark){:root{--bg:#0b0f19;--fg:#e5e7eb}body{background:var(--bg);color:var(--fg)}}" },
+        { "type": "tip", "value": "Respect user preferences (dark mode, reduced motion). It improves comfort and accessibility." },
+
+        { "type": "text", "value": "Container queries style components based on the size of their container, not the viewport. This enables truly reusable, context-aware components." },
+        { "type": "code", "language": "css", "value": ".card-grid{container-type:inline-size}\n@container (min-width: 600px){.card{display:grid;grid-template-columns:1fr 2fr;gap:1rem}}" },
+        { "type": "tip", "value": "Add container-type on the component’s parent you want to query. Then write @container rules like you do with @media." },
+
+        { "type": "text", "value": "Use modern viewport units (svh/lvh) for mobile browsers with dynamic toolbars. This avoids layout jumps when the UI chrome shows/hides." },
+        { "type": "code", "language": "css", "value": ".hero{min-height:100svh;display:grid;place-items:center}" },
+        { "type": "tip", "value": "Prefer svh/lvh/dvh over vh when building full-height sections on mobile." },
+
+        { "type": "text", "value": "Responsive images and fluid type improve performance and readability. Use image-set for DPR-aware images and clamp() for type scales." },
+        { "type": "code", "language": "css", "value": ".cover{background-image:image-set(url(hero@1x.jpg) 1x, url(hero@2x.jpg) 2x)}\nh1{font-size:clamp(1.75rem,4vw,3rem)}" },
+        { "type": "tip", "value": "Ship the smallest useful assets; let the browser pick higher-resolution resources only when needed." }
       ],
       "examples": [
-        { "description": "Lista lunga ottimizzata con content-visibility.", "code": ".feed>article{content-visibility:auto;contain-intrinsic-size:400px}" },
-        { "description": "will-change per animazione imminente.", "code": ".chip:hover{will-change:transform}" }
+        { "description": "Dark mode via prefers-color-scheme.", "code": "@media (prefers-color-scheme: dark){body{background:#0b0f19;color:#e5e7eb}}" },
+        { "description": "Container query for a sidebar layout.", "code": ".sidebar{container-type:inline-size}\n@container (min-width: 500px){.sidebar{display:grid;grid-template-columns:240px 1fr;gap:1rem}}" },
+        { "description": "Full-height hero that resists mobile toolbar jumps.", "code": ".hero{min-height:100svh}" }
       ],
       "quiz": [
-        { "id": "q1", "type": "single", "prompt": "content-visibility: auto…", "options": ["Mostra tutto subito", "Evita il rendering di elementi off-screen", "Blocca lo scroll"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quando usare will-change?", "options": ["Sempre", "Solo prima di animazioni ricorrenti su proprietà compositabili", "Mai"], "answer": 1 }
+        { "id": "q1", "type": "single", "prompt": "Mobile-first means:", "options": ["Design for desktop first", "Start from small screens and progressively enhance", "Ignore tablets"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Which query targets user color theme preference?", "options": ["prefers-reduced-motion", "prefers-color-scheme", "color-gamut"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Container queries depend on:", "options": ["Viewport size", "Container size", "User agent string"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "svh/lvh units help with:", "options": ["Legacy IE support", "Dynamic mobile viewport heights", "Color contrast"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "For responsive images, image-set helps by:", "options": ["Choosing images by density/pixel ratio", "Inlining SVGs automatically", "Preloading all images"], "answer": 0 }
       ]
     },
+
     {
-      "id": "c21",
-      "slug": "scroll-snap-interazioni",
-      "order": 21,
-      "title": "Scroll, snap e interazioni",
-      "minutes": 30,
-      "summary": "scroll-behavior, scroll-snap, scroll-margin.",
+      "id": "l5",
+      "slug": "modern-css-variables-nesting-layers-has-animations",
+      "order": 5,
+      "title": "Modern CSS: Variables, Nesting, Layers, :has(), and Animations",
+      "minutes": 55,
+      "summary": "Write scalable, maintainable CSS with custom properties, cascade layers, nesting, advanced selectors, and accessible motion.",
       "content": [
-        { "type": "text", "value": "Migliora l’esperienza di scroll con ancoraggi, snapping e spazi di atterraggio per anchor link. Usa scroll-behavior per smooth scroll non intrusivo." },
-        { "type": "code", "language": "css", "value": "html { scroll-behavior: smooth; }\n.carousel { scroll-snap-type: x mandatory; display: grid; grid-auto-flow: column; overflow-x: auto; }\n.slide { scroll-snap-align: center; scroll-margin: 1rem; }" },
-        { "type": "tip", "value": "Evita animazioni di scroll JS quando non necessarie." }
+        { "type": "text", "value": "Custom properties (CSS variables) enable theming and reuse. They’re dynamic and participate in the cascade, so scope them wisely." },
+        { "type": "code", "language": "css", "value": ":root{--brand:#eab308;--gap:1rem}\n.btn{background:var(--brand);padding:var(--gap)}\n.card{color:var(--fg,#111827)}" },
+        { "type": "tip", "value": "Use variables for tokens (colors, spacing, radii). Provide fallbacks with var(--token, fallback)." },
+
+        { "type": "text", "value": "Cascade layers (@layer) let you explicitly define priority buckets. They reduce specificity battles by making order intentional and predictable." },
+        { "type": "code", "language": "css", "value": "@layer reset, base, components, utilities;\n@layer reset{*,*::before,*::after{box-sizing:border-box}}\n@layer base{body{font:16px/1.6 system-ui;color:#111827}}\n@layer components{.btn{padding:.75em 1em;border-radius:.5rem}}\n@layer utilities{.text-center{text-align:center}}" },
+        { "type": "tip", "value": "Declare layers up front and group rules logically. Lower layers should set defaults; higher layers safely override." },
+
+        { "type": "text", "value": "Nesting reduces repetition by letting you nest selectors inside a rule. Use it to keep related styles close and readable." },
+        { "type": "code", "language": "css", "value": ".card{\n  padding:1rem;border-radius:.75rem;background:#fff\n  & .title{font-weight:700}\n  &:hover{box-shadow:0 6px 20px rgba(0,0,0,.08)}\n}" },
+        { "type": "tip", "value": "Don’t over-nest. Keep selector depth shallow to avoid specificity creep and ensure maintainability." },
+
+        { "type": "text", "value": ":is() and :where() simplify complex selectors; :has() is a parent-aware selector that unlocks patterns like styling a parent based on its children." },
+        { "type": "code", "language": "css", "value": "article:is(.post,.news){padding:1rem}\nnav :where(a){text-decoration:none}\n.card:has(img){display:grid;grid-template-columns:120px 1fr;gap:1rem}" },
+        { "type": "tip", "value": "Use :where() for zero-specificity grouping, :is() when you want specificity from the most specific selector inside." },
+
+        { "type": "text", "value": "Transitions and keyframe animations should favor transform and opacity for performance. Respect prefers-reduced-motion to avoid discomfort." },
+        { "type": "code", "language": "css", "value": ".btn{transition:transform .15s ease, background-color .2s ease}\n.btn:hover{transform:translateY(-2px)}\n@keyframes fadeIn{from{opacity:0}to{opacity:1}}\n@media (prefers-reduced-motion: reduce){*{animation:none;transition:none}}" },
+        { "type": "tip", "value": "Animate only what’s necessary. Measure impact with DevTools; avoid layout-thrashing properties like width/left if possible." }
       ],
       "examples": [
-        { "description": "Carousel con snapping al centro.", "code": ".carousel{display:grid;grid-auto-flow:column;overflow-x:auto;gap:1rem;scroll-snap-type:x mandatory}.slide{scroll-snap-align:center}" },
-        { "description": "Spazio di atterraggio per ancore con scroll-margin.", "code": "h2[id]{scroll-margin-top:80px}" }
+        { "description": "Theme switch via custom properties.", "code": ":root{--bg:#ffffff;--fg:#111827}\n@media (prefers-color-scheme: dark){:root{--bg:#0b0f19;--fg:#e5e7eb}}\nbody{background:var(--bg);color:var(--fg)}" },
+        { "description": "Layering utilities above components.", "code": "@layer components, utilities;@layer components{.btn{background:#111827;color:#fff}}@layer utilities{.text-center{text-align:center}}" },
+        { "description": "Parent styling with :has()", "code": ".field:has(input:invalid){outline:2px solid #ef4444;outline-offset:2px}" }
       ],
       "quiz": [
-        { "id": "q1", "type": "single", "prompt": "scroll-snap-type: x mandatory…", "options": ["Disattiva lo scroll", "Allinea gli elementi in asse X", "Blocca lo snapping"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "scroll-margin serve a…", "options": ["Margine visivo per target di scroll", "Margine del documento", "Spaziatura del body"], "answer": 0 }
-      ]
-    },
-    {
-      "id": "c22",
-      "slug": "immagini-media-aspect-ratio",
-      "order": 22,
-      "title": "Immagini e media: object-fit, image-set, aspect-ratio",
-      "minutes": 35,
-      "summary": "Gestione responsive e ritaglio.",
-      "content": [
-        { "type": "text", "value": "Mantieni proporzioni con aspect-ratio, adatta media con object-fit e usa image-set per densità diverse. Evita CLS riservando lo spazio." },
-        { "type": "code", "language": "css", "value": ".thumb { aspect-ratio: 16/9; object-fit: cover; }\n.hero { background-image: image-set(url(hero@1x.jpg) 1x, url(hero@2x.jpg) 2x); }" },
-        { "type": "tip", "value": "Definisci sempre dimensioni o aspect-ratio per evitare layout shift." }
-      ],
-      "examples": [
-        { "description": "Contenitore video responsive con aspect-ratio.", "code": ".video{aspect-ratio:16/9;background:#000}" },
-        { "description": "Ritaglio dell'immagine mantenendo le proporzioni.", "code": "img.cover{width:100%;height:100%;object-fit:cover}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "object-fit: cover…", "options": ["Distende l'immagine", "Ritaglia mantenendo proporzioni", "Aggiunge bordo"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "aspect-ratio 1/1 crea…", "options": ["Quadrato", "Rettangolo 2:1", "Nessun effetto"], "answer": 0 }
-      ]
-    },
-    {
-      "id": "c23",
-      "slug": "stampa-media-print",
-      "order": 23,
-      "title": "Stampa e @media print",
-      "minutes": 25,
-      "summary": "Ottimizzare layout e colori per la stampa.",
-      "content": [
-        { "type": "text", "value": "Crea fogli di stampa dedicati: nascondi elementi non essenziali, imposta colori e dimensioni pagina, gestisci orfani/vedove (ove supportato)." },
-        { "type": "code", "language": "css", "value": "@media print {\n  nav, .cta, footer { display: none; }\n  article { color: #000; font-size: 12pt; }\n}" },
-        { "type": "tip", "value": "Testa layout di stampa con anteprima del browser." }
-      ],
-      "examples": [
-        { "description": "Foglio di stile base per la stampa.", "code": "@media print{nav,.cta,footer{display:none}article{color:#000;font-size:12pt}}" },
-        { "description": "Impostazioni del margine di pagina (supporto variabile).", "code": "@page{margin:12mm}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Quale regola è dedicata alla stampa?", "options": ["@supports", "@media print", "@container"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Cosa conviene nascondere in stampa?", "options": ["Testo principale", "Navigazione/CTA", "Titoli"], "answer": 1 }
-      ]
-    },
-    {
-      "id": "c24",
-      "slug": "progetto-finale-dashboard",
-      "order": 24,
-      "title": "Progetto finale: Dashboard responsive e accessibile",
-      "minutes": 70,
-      "summary": "Metti insieme tutto: layout Grid+Flex, theming, accessibilità e performance.",
-      "content": [
-        { "type": "text", "value": "Costruisci una dashboard completa con header sticky, sidebar responsive (container queries), cards in Grid, pulsanti con variabili, dark mode e ottimizzazioni (content-visibility, lazy media)." },
-        { "type": "code", "language": "css", "value": "/* Stralcio */\n:root { --gap: 1rem; --brand: lch(60% 50 40); }\n.layout { display: grid; grid-template-columns: 280px 1fr; gap: var(--gap); }\n.sidebar { container-type: inline-size; }\n@container (max-width: 260px) { .sidebar { display: none; } }\n.card { content-visibility: auto; contain-intrinsic-size: 320px; }" },
-        { "type": "tip", "value": "Documenta decisioni di design e fornisci alternative per ridotto movimento/alto contrasto." }
-      ],
-      "examples": [
-        { "description": "Skeleton della dashboard con Grid e Flex ibrido.", "code": ".layout{display:grid;grid-template-columns:280px 1fr;gap:var(--gap)}.topbar{position:sticky;top:0}.cards{display:grid;gap:var(--gap);grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}" },
-        { "description": "Token di tema riutilizzabili per brand e gap.", "code": ":root{--gap:1rem;--brand:lch(60% 50 40)}.btn{background:var(--brand);padding:.5rem .75rem}" }
-      ],
-      "quiz": [
-        { "id": "q1", "type": "single", "prompt": "Cosa usi per adattare la sidebar al suo contenitore?", "options": ["Media query", "Container query", "Inline style"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Quale proprietà evita il rendering di card off-screen?", "options": ["visibility: hidden", "content-visibility: auto", "display: none"], "answer": 1 }
+        { "id": "q1", "type": "single", "prompt": "Custom properties are resolved:", "options": ["At build time", "At runtime and follow the cascade", "Only once per page"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Which feature organizes CSS into priority buckets?", "options": ["@supports", "@layer", "@font-face"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Which selector enables parent-aware styling?", "options": [":is()", ":where()", ":has()"], "answer": 2 },
+        { "id": "q4", "type": "single", "prompt": "Which properties are cheaper to animate?", "options": ["width/left", "transform/opacity", "height/top"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Nesting should be used:", "options": ["Deeply for all selectors", "Sparingly with shallow depth", "Never in modern CSS"], "answer": 1 }
       ]
     }
   ]
