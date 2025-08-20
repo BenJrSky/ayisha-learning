@@ -1,5 +1,5 @@
 {
-  "name": "Ayisha.js Wiki Directives",
+  "directive": "Ayisha.js Wiki Directives",
   "version": "1.0.4",
   "updatedAt": "2025-08-20T00:00:00.000Z",
   "sections": [
@@ -137,6 +137,22 @@
           "pairsWith": ["@model"]
         },
         {
+          "directive": "@form",
+          "type": "Form grouping & validity",
+          "description": "Aggregates all child @model fields into state[formName] and exposes overall form validity in _validate[formName] (true/false/null).",
+          "syntax": "@form=\"formName\"",
+          "useFor": "Form state snapshot and derived overall validity.",
+          "examples": [
+            "<form @form=\"login\">\n  <input @model=\"email\" @validate=\"email\">\n  <input type=\"password\" @model=\"password\" @validate=\"required|min:6\">\n  <button @class=\"{ 'btn-primary': _validate.login, 'btn-secondary': !_validate.login }\">Login</button>\n</form>",
+            "<form @form=\"profile\">\n  <input @model=\"name\" @validate=\"required|min:3\">\n</form>"
+          ],
+          "pairsWith": ["@model", "@validate"],
+          "tips": [
+            "_validate[formName] is true when all validated fields are true, false if any is false, null if none validated yet.",
+            "state[formName] mirrors current values of child @model fields."
+          ]
+        },
+        {
           "directive": "@page",
           "type": "SPA routing",
           "description": "Marks an element as a route target. Visible only when _currentPage matches its value.",
@@ -168,7 +184,7 @@
           "useFor": "Modular UI, shared components, layouts.",
           "examples": [
             "<component @src=\"'components/sections/courses-section.html'\"></component>",
-            "<component @src=\"activeComponentPath\"></component>"
+            "<component @page=\"enrol\" @src=\"'components/sections/enrol.html'\"></component>"
           ],
           "pairsWith": ["@src"]
         },
@@ -179,8 +195,40 @@
           "syntax": "@src=\"'path.html'\" or @src=\"stateVar\"",
           "useFor": "Supplying the source for @component.",
           "examples": [
-            "<component @src=\"'comp.html'\"></component>",
             "<component @src=\"'components/header.html'\"></component>"
+          ],
+          "pairsWith": ["@component"]
+        },
+        {
+          "directive": "@scope",
+          "type": "Scoped state (per component instance)",
+          "description": "Isola una o più variabili creando versioni per istanza del componente, evitando collisioni tra istanze (es. card_0001, card_0002). Funziona bene con liste di componenti.",
+          "syntax": "@scope=\"varName\"  |  @scope=\"var1, var2\"",
+          "useFor": "Componenti riutilizzabili in liste, stato per istanza, prevenire conflitti di nomi.",
+          "examples": [
+            "<component @src=\"'components/course-card.html'\" @scope=\"course\"></component>",
+            "<li @for=\"it in items\" @key=\"it.id\">\n  <component @src=\"'components/item.html'\" @scope=\"item, cart\"></component>\n</li>"
+          ],
+          "tips": [
+            "Con più nomi separati da virgola, ogni variabile viene resa unica per istanza.",
+            "Le variabili scoperte vengono mappate anche dentro i binding del componente (@result e accessi puntati)."
+          ],
+          "pairsWith": ["@component"]
+        },
+        {
+          "directive": "#param",
+          "type": "Component parameters (props-like)",
+          "description": "Passa dati/espressioni dal genitore al componente tramite attributi che iniziano con #. All'interno del componente i parametri sono disponibili come variabili locali con lo stesso nome.",
+          "syntax": "#name=\"expression\"",
+          "useFor": "Passare dati al componente senza usare variabili globali.",
+          "examples": [
+            "<component @src=\"'components/course-card.html'\" #data=\"item\"></component>",
+            "<component @src=\"'/components/sections/lesson-ltem.html'\" #slugcourse=\"_params[0]\" #datalesson=\"lesson\"></component>",
+            "<component @src=\"'components/user-card.html'\" #title=\"user.name + ' (' + user.role + ')'\" ></component>"
+          ],
+          "tips": [
+            "I valori sono valutati nel contesto del genitore e resi disponibili nel contesto del componente.",
+            "Usa nomi descrittivi (#data, #item, #slugcourse, ecc.) per chiarezza."
           ],
           "pairsWith": ["@component"]
         },
@@ -188,10 +236,12 @@
           "directive": "@state",
           "type": "Debug inspector",
           "description": "Displays the entire reactive state object as formatted JSON, updating live as state changes.",
-          "syntax": "@state",
+          "syntax": "@state or @state=\"expression\"",
           "useFor": "Development debugging, learning, state inspection.",
           "examples": [
-            "<div @state></div>"
+            "<div @state></div>",
+            "<div @state=\"user\"></div>",
+            "<div @state=\"login\"></div>"
           ],
           "tips": [
             "Useful during development; avoid in production."
@@ -490,7 +540,7 @@
       "title": "Special Variables",
       "entries": [
         {
-          "name": "state",
+          "directive": "state",
           "type": "Special variable",
           "description": "Global reactive state object that holds all reactive properties.",
           "examples": [
@@ -502,16 +552,21 @@
           ]
         },
         {
-          "name": "_validate",
+          "directive": "_validate",
           "type": "Special variable",
-          "description": "Holds validation results for inputs (true/false per field name), updated by @validate.",
+          "description": "Holds validation results for inputs (true/false per field name) and for forms (true/false/null per form name when using @form), updated by @validate.",
           "examples": [
             "_validate.email",
-            "_validate.password"
+            "_validate.password",
+            "_validate.login"
+          ],
+          "tips": [
+            "null for a form means no validated fields yet or some fields still pending.",
+            "true when all validated fields inside the form are true; false if any field is false."
           ]
         },
         {
-          "name": "_currentPage",
+          "directive": "_currentPage",
           "type": "Special variable",
           "description": "Contains the active route name for SPA navigation controlled by @page/@link.",
           "examples": [
