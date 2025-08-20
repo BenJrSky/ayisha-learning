@@ -2902,16 +2902,15 @@ no::before {
 
 .quiz-option:hover {
   border-color: var(--primary-color);
-  background: #fffbe6;
   box-shadow: var(--shadow-sm);
 }
 
-.true {
-  background: #5aa560;
+.true-answer {
+  background: #98d8a0;
 }
 
-.false {
-  background: #d76565;
+.false-answer {
+  background: #ffb3b3;
 }
 
 .quiz-option input[type="radio"] {
