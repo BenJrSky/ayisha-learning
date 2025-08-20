@@ -32,6 +32,7 @@
            @class="{active: location.pathname.includes('courses') || location.pathname.includes('course') || location.pathname.includes('lesson') || location.pathname.includes('enroll')}"
            @click="mobileNavOpen = false">Courses</a>
         <a href="#" 
+           @link="wiki"
            @class="{active: location.pathname.includes('wiki')}" 
            @click="mobileNavOpen = false">Wiki</a>
         <a href="#" 

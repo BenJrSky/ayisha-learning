@@ -50,6 +50,9 @@
       "minutes": 40,
       "summary": "Learn what CSS is, how to add it to HTML, and how a simple rule works.",
       "content": [
+        { "type": "text", "value": "First, create two files in your project folder: index.html (file extension .html) and styles.css (file extension .css)." },
+        { "type": "tip",  "value": "Make sure the files end with .html and .css. Without the right extension, the browser will not read them." },
+        { "type": "text", "value": "Open index.html in the browser (double-click it). If you linked styles.css correctly, the page will use your styles." },
         { "type": "text", "value": "CSS means Cascading Style Sheets. It tells the browser how things look: colors, size, space, and more. Think of CSS like clothes for your HTML." },
         { "type": "code", "language": "html", "value": "<!-- index.html -->\n<link rel=\"stylesheet\" href=\"styles.css\">\n<h1 class=\"title\">Hello CSS</h1>" },
         { "type": "tip", "value": "Keep CSS in a .css file. It is cleaner and easy to reuse on many pages." },

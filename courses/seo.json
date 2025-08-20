@@ -1,0 +1,438 @@
+{
+  "id": "course_seo_mastery",
+  "slug": "seo-from-zero-to-pro",
+  "title": "SEO",
+  "subtitle": "Start from zero and grow step by step with clear words and tiny, real examples.",
+  "category": "Development",
+  "level": "Beginner to Advanced",
+  "hours": 26,
+  "language": "en",
+  "lastUpdated": "2025-08-20",
+  "tags": ["SEO", "On-Page", "Technical", "Content", "Analytics"],
+
+  "hero": {
+    "image": "images/img_1.jpg",
+    "logo": "ayisha-logo-black.png",
+    "ctaText": "Start Learning",
+    "ctaUrl": "enroll.html"
+  },
+
+  "overview": "SEO means Search Engine Optimization. It helps people find your pages on Google and other search engines. In this course you will learn the basics: how search works, keywords, on‑page HTML, site structure, performance, mobile, structured data, and how to measure results. We use simple words and small steps.",
+  "content": "We focus on practical SEO: write clear titles, useful content, good links, and clean HTML. We also cover technical topics, but in a friendly way. You will see short examples, quick tips, and small quizzes to check your understanding.",
+  "prerequisites": [
+    "No experience required",
+    "Nice to have: basic HTML and how to edit a file"
+  ],
+  "outcomes": [
+    "Understand how search engines discover, crawl, and index pages",
+    "Use on‑page HTML correctly (title, meta description, headings, alt)",
+    "Plan keywords by intent and write helpful content",
+    "Improve performance, mobile experience, and site structure",
+    "Use Search Console and analytics to measure and improve"
+  ],
+
+  "pricing": { "free": true, "price": 0, "currency": "EUR" },
+
+  "instructor": {
+    "name": "Ayisha Team",
+    "avatar": "images/img_2.jpg",
+    "bio": "Frontend engineers and content makers who love clear, useful pages.",
+    "links": [
+      { "type": "site", "url": "https://example.com" }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "l0",
+      "slug": "what-is-seo",
+      "order": 0,
+      "title": "What is SEO?",
+      "minutes": 35,
+      "summary": "Learn what SEO is and why helpful pages win.",
+      "content": [
+        { "type": "text", "value": "SEO helps people find your page. Search engines try to show the most helpful result for a query." },
+        { "type": "text", "value": "Good SEO is simple: useful content, clear HTML, fast pages, and easy navigation." },
+        { "type": "text", "value": "There are three parts: on‑page (your content and HTML), off‑page (links from other sites), and technical (crawl, index, performance)." },
+        { "type": "tip", "value": "Write for humans first. Search engines reward helpful pages." },
+        { "type": "text", "value": "We will use short code to show how to set titles, meta descriptions, headings, alt text, and more." }
+      ],
+      "examples": [
+        { "description": "Good page idea", "code": "A page that clearly answers: \"How to change a bike tire\" with steps, pictures, and tools." },
+        { "description": "Bad page idea", "code": "A page that repeats the keyword many times but gives no real help." },
+        { "description": "Helpful structure", "code": "Intro → Steps → Tips → FAQ → Links to related guides" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "SEO helps:", "options": ["People find your page", "Make images larger only", "Turn HTML into CSS"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Search engines try to show:", "options": ["The most helpful result", "The oldest page", "Random pages"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Which is NOT a main SEO area?", "options": ["On‑page", "Technical", "Gaming"], "answer": 2 },
+        { "id": "q4", "type": "single", "prompt": "A simple rule of SEO is:", "options": ["Write for humans first", "Hide text with CSS", "Use many popups"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Helpful content is:", "options": ["Clear and useful", "Only long", "Only short"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l1",
+      "slug": "how-search-works",
+      "order": 1,
+      "title": "How Search Works",
+      "minutes": 40,
+      "summary": "Crawling, indexing, and ranking in simple words.",
+      "content": [
+        { "type": "text", "value": "Crawling: bots discover links and download pages." },
+        { "type": "text", "value": "Indexing: the engine reads your content and stores it to be searched later." },
+        { "type": "text", "value": "Ranking: for each query, results are ordered based on many signals." },
+        { "type": "text", "value": "You can help crawling with clean links, sitemaps, and no broken pages." },
+        { "type": "tip", "value": "Keep a simple site structure. Fewer clicks from the home to important pages." }
+      ],
+      "examples": [
+        { "description": "Link graph", "code": "Home → Category → Article (the bot follows links and discovers new pages)" },
+        { "description": "Orphan page", "code": "A page with no links pointing to it. Hard to discover." },
+        { "description": "Sitemap aid", "code": "A sitemap.xml lists key URLs to help discovery." }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Crawling means:", "options": ["Downloading pages via links", "Styling the page", "Compressing images"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Indexing means:", "options": ["Saving and understanding content", "Blocking CSS", "Removing HTML"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Ranking means:", "options": ["Ordering results for a query", "Creating images", "Sending emails"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "A simple aid for crawling is:", "options": ["A sitemap.xml", "More popups", "Hidden links"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Orphan pages are:", "options": ["Well linked", "Not linked by any page", "Only on mobile"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l2",
+      "slug": "keywords-and-intent",
+      "order": 2,
+      "title": "Keywords and Search Intent",
+      "minutes": 40,
+      "summary": "Understand queries and user goals to pick topics.",
+      "content": [
+        { "type": "text", "value": "Keywords are the words people type in search. Intent is the goal behind the query." },
+        { "type": "text", "value": "Main intents: informational (learn), navigational (go to site), transactional (buy), commercial (compare)." },
+        { "type": "text", "value": "Pick topics that match your users and business. Group related keywords into one helpful page." },
+        { "type": "text", "value": "Avoid making many thin pages. Make one strong page that answers fully." },
+        { "type": "tip", "value": "Look at the top results. What format do they use? Guide, list, product page, FAQ?" }
+      ],
+      "examples": [
+        { "description": "Intent mapping", "code": "Query: \"best running shoes\" → commercial (comparison)\nQuery: \"buy nike air\" → transactional" },
+        { "description": "Topic cluster", "code": "Main page: \"Home Wi‑Fi Guide\" + child pages: setup, security, speed tests" },
+        { "description": "Avoid thin content", "code": "Merge 5 tiny posts into 1 clear, complete guide." }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Intent means:", "options": ["The goal behind a query", "Font size", "Image size"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Commercial intent is:", "options": ["To compare options", "To learn a fact", "To visit a brand site"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Good practice is to:", "options": ["Make 10 tiny pages", "Group related keywords into strong pages", "Hide text"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Which is transactional?", "options": ["how to tie shoes", "buy red shoes", "what are shoes"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Check top results to learn:", "options": ["User intent and page format", "Only CSS tricks", "Only server IP"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l3",
+      "slug": "on-page-basics",
+      "order": 3,
+      "title": "On‑Page Basics: Title, Description, Headings",
+      "minutes": 45,
+      "summary": "Set a clear title, meta description, and heading structure.",
+      "content": [
+        { "type": "text", "value": "Each page needs one clear <title>. It shows in the browser tab and can appear in search results." },
+        { "type": "code", "language": "html", "value": "<head>\n  <title>How to Change a Bike Tire (Step by Step)</title>\n  <meta name=\"description\" content=\"Learn how to change a bike tire with tools, steps, and tips.\">\n</head>" },
+        { "type": "text", "value": "Use headings (h1..h6) to build a logical outline. One h1 for the main topic, then h2..h3 for sections." },
+        { "type": "code", "language": "html", "value": "<h1>Change a Bike Tire</h1>\n<h2>Tools</h2>\n<h2>Steps</h2>\n  <h3>Remove the wheel</h3>" },
+        { "type": "tip", "value": "Avoid stuffing keywords. Write natural titles and descriptions that match the content." }
+      ],
+      "examples": [
+        { "description": "Good title", "code": "“Homemade Pizza: Easy Recipe for Crispy Crust”" },
+        { "description": "Bad title", "code": "“Pizza, Pizza, Best Pizza Pizza”" },
+        { "description": "Clean headings", "code": "h1: Pizza Recipe → h2: Dough → h2: Sauce → h2: Bake" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "<title> belongs in:", "options": ["<head>", "<body>", "<footer>"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "A page should have:", "options": ["Many h1", "One h1", "No headings"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Meta description is used to:", "options": ["Style text", "Summarize the page", "Load scripts"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Avoid:", "options": ["Clear titles", "Keyword stuffing", "Helpful summaries"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Headings help:", "options": ["Structure content", "Only font size", "Only color"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l4",
+      "slug": "urls-and-structure",
+      "order": 4,
+      "title": "URLs and Site Structure",
+      "minutes": 45,
+      "summary": "Use clean URLs and a simple site tree.",
+      "content": [
+        { "type": "text", "value": "Use short, readable URLs. Include important words. Avoid long IDs and noise." },
+        { "type": "text", "value": "Keep a simple structure: home → category → page. Use internal links to connect related pages." },
+        { "type": "text", "value": "Add breadcrumbs to help users and bots understand location." },
+        { "type": "code", "language": "html", "value": "<nav aria-label=\"Breadcrumb\">\n  <ol>\n    <li><a href=\"/\">Home</a></li>\n    <li><a href=\"/bikes/\">Bikes</a></li>\n    <li aria-current=\"page\">Change Tire</li>\n  </ol>\n</nav>" },
+        { "type": "tip", "value": "Do not change URLs often. If you must, use 301 redirects to the new URL." }
+      ],
+      "examples": [
+        { "description": "Clean URL", "code": "/guides/change-bike-tire" },
+        { "description": "Noisy URL", "code": "/p?id=1234&cat=9&x=abc" },
+        { "description": "Link hub", "code": "A category page that links to all child guides." }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Clean URLs are:", "options": ["Short and readable", "Random strings", "All caps"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Breadcrumbs help:", "options": ["Only colors", "Navigation and context", "Server logs"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "If a URL changes, use:", "options": ["301 redirect", "404 page", "Popups"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Internal links connect:", "options": ["Related pages", "Only images", "Only CSS"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "A simple site tree is:", "options": ["Deep and complex", "Flat and clear", "Hidden"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l5",
+      "slug": "content-quality",
+      "order": 5,
+      "title": "Content Quality (Helpfulness)",
+      "minutes": 45,
+      "summary": "Write clear, original content that solves a real need.",
+      "content": [
+        { "type": "text", "value": "Answer the user’s question fully. Show steps, examples, and warnings when useful." },
+        { "type": "text", "value": "Use simple words. Cut fluff. Bring your experience and clear structure." },
+        { "type": "text", "value": "Keep pages fresh. Update when info changes." },
+        { "type": "text", "value": "Show sources where needed. Build trust." },
+        { "type": "tip", "value": "Add a short summary at the top. Many readers scan first." }
+      ],
+      "examples": [
+        { "description": "Useful sections", "code": "Intro → Requirements → Steps → Troubleshooting → FAQ" },
+        { "description": "Trust signals", "code": "Author bio, updated date, clear contact page" },
+        { "description": "Avoid fluff", "code": "Remove repeated sentences. Keep only what helps." }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Helpful content should:", "options": ["Answer fully", "Hide steps", "Repeat keywords only"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Trust grows with:", "options": ["Sources and clear author info", "Popups", "Hidden links"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Update pages:", "options": ["When info changes", "Never", "Daily for no reason"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "A good summary is:", "options": ["Short and clear", "Very long", "Missing"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Cut:", "options": ["Fluff", "Steps", "Warnings"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l6",
+      "slug": "images-and-media-seo",
+      "order": 6,
+      "title": "Images and Media SEO",
+      "minutes": 40,
+      "summary": "Use alt text, file names, and lightweight media.",
+      "content": [
+        { "type": "text", "value": "Use descriptive file names like cooking-pizza-dough.jpg." },
+        { "type": "text", "value": "Always write alt that explains the image role. Use empty alt for purely decorative images." },
+        { "type": "text", "value": "Compress images and use modern formats when possible." },
+        { "type": "text", "value": "Add captions when helpful (figure + figcaption)." },
+        { "type": "tip", "value": "Use width and height to prevent layout shifts." }
+      ],
+      "examples": [
+        { "description": "Good img HTML", "code": "<img src=\"/images/pizza-dough.jpg\" alt=\"Hands kneading pizza dough\">" },
+        { "description": "Decorative image", "code": "<img src=\"/images/divider.svg\" alt=\"\">" },
+        { "description": "Figure with caption", "code": "<figure><img src=\"/images/oven.jpg\" alt=\"Pizza in hot oven\"><figcaption>High temperature matters.</figcaption></figure>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Alt text should:", "options": ["Explain the image role", "Repeat keywords only", "Be always empty"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Decorative images use:", "options": ["alt=\"\"", "Long alt", "No alt attribute at all"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Descriptive file names:", "options": ["Help SEO and humans", "Are ignored", "Break links"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "To reduce layout shifts:", "options": ["Set width/height", "Use popups", "Remove captions"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Use modern formats when possible:", "options": ["Yes", "No", "Only for audio"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l7",
+      "slug": "internal-linking",
+      "order": 7,
+      "title": "Internal Linking and Navigation",
+      "minutes": 40,
+      "summary": "Link related pages and guide users with clear anchors.",
+      "content": [
+        { "type": "text", "value": "Use descriptive anchor text that tells where the link goes." },
+        { "type": "text", "value": "Link from old pages to new pages on the same topic." },
+        { "type": "text", "value": "Use nav, lists, and footer links to important areas." },
+        { "type": "text", "value": "Avoid too many links in one block. Keep it usable." },
+        { "type": "tip", "value": "Add related links at the end of articles to keep users exploring." }
+      ],
+      "examples": [
+        { "description": "Good anchor", "code": "<a href=\"/wifi-setup\">Set up your home Wi‑Fi</a>" },
+        { "description": "Weak anchor", "code": "<a href=\"/wifi-setup\">Click here</a>" },
+        { "description": "Related links block", "code": "<h2>Related</h2><ul><li><a href=\"/wifi-security\">Wi‑Fi Security</a></li></ul>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Anchor text should be:", "options": ["Descriptive", "Random", "Empty"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Link related pages:", "options": ["Yes", "No", "Only on weekends"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Too many links in one block:", "options": ["Can harm usability", "Is always best", "Is required"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Good site menus use:", "options": ["nav and lists", "Only images", "Hidden text"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Related links help:", "options": ["Users and bots discover more pages", "Only colors", "Only server speed"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l8",
+      "slug": "technical-seo-basics",
+      "order": 8,
+      "title": "Technical SEO: Crawl, Robots, Sitemaps",
+      "minutes": 50,
+      "summary": "Control crawling and help discovery with simple files.",
+      "content": [
+        { "type": "text", "value": "robots.txt tells bots what paths they can or cannot crawl." },
+        { "type": "code", "language": "plaintext", "value": "User-agent: *\nDisallow: /admin/\nAllow: /" },
+        { "type": "text", "value": "A sitemap lists key URLs for discovery. Keep it updated." },
+        { "type": "code", "language": "xml", "value": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>https://example.com/</loc></url>\n  <url><loc>https://example.com/guides/</loc></url>\n</urlset>" },
+        { "type": "tip", "value": "Do not block pages you want to rank. robots.txt blocks crawling, not indexing of known URLs." }
+      ],
+      "examples": [
+        { "description": "Block admin area", "code": "User-agent: *\nDisallow: /admin/" },
+        { "description": "Plain allow", "code": "User-agent: *\nAllow: /" },
+        { "description": "Minimal sitemap", "code": "<urlset>… URLs …</urlset>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "robots.txt is for:", "options": ["Crawl rules", "Page styles", "User passwords"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "A sitemap helps:", "options": ["Discovery of URLs", "Fonts only", "Cookies only"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Blocking in robots.txt:", "options": ["Stops crawling that path", "Deletes pages", "Changes titles"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "If you want a page to rank, you should:", "options": ["Block it", "Allow and link it", "Hide it"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Sitemaps should be:", "options": ["Updated and clean", "Random", "Empty"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l9",
+      "slug": "performance-and-cwv",
+      "order": 9,
+      "title": "Performance and Core Web Vitals",
+      "minutes": 50,
+      "summary": "Fast pages help users and ranking.",
+      "content": [
+        { "type": "text", "value": "Big images and heavy scripts slow pages. Optimize both." },
+        { "type": "text", "value": "Avoid layout shifts: set sizes for media, load fonts safely, avoid late DOM changes." },
+        { "type": "text", "value": "Use caching and compression on the server." },
+        { "type": "text", "value": "Measure and fix: test on real devices." },
+        { "type": "tip", "value": "Simpler pages are often faster and easier to maintain." }
+      ],
+      "examples": [
+        { "description": "Image optimization", "code": "Compress, lazy‑load below the fold, serve responsive sizes" },
+        { "description": "Script trimming", "code": "Remove unused libraries, split code, defer non‑critical" },
+        { "description": "Layout stability", "code": "Reserve space (width/height), avoid CLS spikes" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Slow pages:", "options": ["Hurt users and ranking", "Are better", "Always rank first"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "To avoid layout shifts:", "options": ["Set media sizes", "Add more popups", "Hide text"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Heavy scripts:", "options": ["Can slow interaction", "Always help", "Never run"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Caching and compression:", "options": ["Improve speed", "Only change colors", "Break SEO"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Testing:", "options": ["Use real devices too", "Never needed", "Only on desktop"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l10",
+      "slug": "mobile-and-ux",
+      "order": 10,
+      "title": "Mobile and UX",
+      "minutes": 45,
+      "summary": "Make pages friendly on phones and tablets.",
+      "content": [
+        { "type": "text", "value": "Use responsive layout and readable text sizes." },
+        { "type": "text", "value": "Touch targets should be big enough and spaced well." },
+        { "type": "text", "value": "Avoid blocking interstitials that cover the content." },
+        { "type": "text", "value": "Test on different devices and orientations." },
+        { "type": "tip", "value": "Use viewport meta and flexible units for layout." }
+      ],
+      "examples": [
+        { "description": "Viewport", "code": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" },
+        { "description": "Readable body text", "code": "Base font size ~16px, good line height" },
+        { "description": "Touch spacing", "code": "Buttons with at least ~44x44px tappable area" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Mobile pages should:", "options": ["Be responsive", "Use tiny text", "Hide content"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Touch targets:", "options": ["Should be big and spaced", "Can be tiny", "Should overlap"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Interstitials that block content:", "options": ["Are bad UX", "Always help SEO", "Are required"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Viewport meta helps:", "options": ["Responsive layout", "Only server speed", "Only colors"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Test only on:", "options": ["Real devices and desktop", "Desktop only", "Nothing"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l11",
+      "slug": "structured-data",
+      "order": 11,
+      "title": "Structured Data (JSON‑LD)",
+      "minutes": 50,
+      "summary": "Add schema markup for rich results.",
+      "content": [
+        { "type": "text", "value": "Structured data helps search engines understand your page type and parts." },
+        { "type": "text", "value": "Use JSON‑LD in a <script type=\"application/ld+json\"> block." },
+        { "type": "text", "value": "Match the visible content. Do not add fake data." },
+        { "type": "text", "value": "Common types: Article, Product, FAQ, Breadcrumb, Organization." },
+        { "type": "tip", "value": "Validate your markup with online testing tools." }
+      ],
+      "examples": [
+        { "description": "Article JSON‑LD", "code": "<script type=\"application/ld+json\">{\n  \"@context\":\"https://schema.org\",\n  \"@type\":\"Article\",\n  \"headline\":\"Homemade Pizza Guide\",\n  \"author\":{\"@type\":\"Person\",\"name\":\"Ana\"}\n}</script>" },
+        { "description": "Breadcrumb JSON‑LD", "code": "<script type=\"application/ld+json\">{\n  \"@context\":\"https://schema.org\",\n  \"@type\":\"BreadcrumbList\",\n  \"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"/\"}]\n}</script>" },
+        { "description": "FAQ JSON‑LD", "code": "<script type=\"application/ld+json\">{\n  \"@context\":\"https://schema.org\",\n  \"@type\":\"FAQPage\",\n  \"mainEntity\":[{\"@type\":\"Question\",\"name\":\"Is dough hard?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"No. Follow the steps.\"}}]\n}</script>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Structured data helps:", "options": ["Explain page type and parts", "Change CSS", "Load fonts"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "JSON‑LD goes in:", "options": ["<script type=\"application/ld+json\">", "<style>", "<meta> only"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Data must:", "options": ["Match visible content", "Be fake", "Be huge"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "A common type is:", "options": ["Article", "MarsBase", "Random"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Validate markup:", "options": ["Yes", "No", "Never"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l12",
+      "slug": "local-seo",
+      "order": 12,
+      "title": "Local SEO Basics",
+      "minutes": 40,
+      "summary": "Help nearby users find your business.",
+      "content": [
+        { "type": "text", "value": "Keep the business name, address, and phone (NAP) consistent." },
+        { "type": "text", "value": "Create a simple contact page with hours and map." },
+        { "type": "text", "value": "Ask happy customers for honest reviews." },
+        { "type": "text", "value": "List your business on relevant directories." },
+        { "type": "tip", "value": "Use LocalBusiness schema when it fits." }
+      ],
+      "examples": [
+        { "description": "Contact page", "code": "Address, phone, email, hours, map embed" },
+        { "description": "Consistent NAP", "code": "Same format across site and directories" },
+        { "description": "LocalBusiness schema", "code": "Add name, address, phone in JSON‑LD" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "NAP stands for:", "options": ["Name, Address, Phone", "Name, API, Proxy", "Nav, App, Page"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Reviews should be:", "options": ["Honest", "Fake", "Bought"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "A good contact page has:", "options": ["Hours and map", "Only CSS", "Only a logo"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Use LocalBusiness schema:", "options": ["When it fits the business", "Never", "Only for blogs"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Consistency means:", "options": ["Same NAP everywhere", "Different NAP each time", "Hidden NAP"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l13",
+      "slug": "measure-and-improve",
+      "order": 13,
+      "title": "Measure and Improve",
+      "minutes": 45,
+      "summary": "Use Search Console and analytics to learn and act.",
+      "content": [
+        { "type": "text", "value": "Use Search Console to see queries, clicks, and index status." },
+        { "type": "text", "value": "Check coverage issues and fix errors and redirects." },
+        { "type": "text", "value": "Use analytics to see what users do on the page." },
+        { "type": "text", "value": "Make small improvements and re‑check results." },
+        { "type": "tip", "value": "Write down changes and dates. Track what worked." }
+      ],
+      "examples": [
+        { "description": "Simple KPI list", "code": "Clicks, impressions, CTR, average position, conversions" },
+        { "description": "Fix loop", "code": "Find issue → Fix → Re‑test → Monitor" },
+        { "description": "Prioritize", "code": "Start with high‑impact, low‑effort changes" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Search Console shows:", "options": ["Queries and clicks", "Only CSS", "Only images"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Coverage report helps find:", "options": ["Errors and index status", "Color themes", "Fonts"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Analytics shows:", "options": ["User behavior", "Server cables", "Only titles"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Improve by:", "options": ["Small changes and re‑check", "Ignoring data", "Only guessing"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Track changes with:", "options": ["Dates and notes", "Nothing", "Only emojis"], "answer": 0 }
+      ]
+    }
+  ]
+}

@@ -51,6 +51,9 @@
       "minutes": 35,
       "summary": "Learn what HTML is, the page skeleton, and how to open a page in the browser.",
       "content": [
+        { "type": "text", "value": "Create a new file in your project folder named index.html (file extension .html)." },
+        { "type": "tip",  "value": "Save the file with the .html extension so the browser can understand it." },
+        { "type": "text", "value": "Open index.html in your browser (double‑click or use a local server). You should see your page." },
         { "type": "text", "value": "HTML means HyperText Markup Language. It tells the browser what each part of the page is: a heading, a paragraph, an image, a link, and more." },
         { "type": "code", "language": "html", "value": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>My First Page</title>\n  </head>\n  <body>\n    <h1>Hello, HTML!</h1>\n    <p>This is my first paragraph.</p>\n  </body>\n</html>" },
         { "type": "tip", "value": "Use <!doctype html> to tell the browser to use modern HTML mode." },

@@ -53,7 +53,7 @@
       <li class="quiz-item" @for="ind, q in currentLesson.quiz" @key="q.id">
         <p class="quiz-prompt">{{ind+1}}) - {{q.prompt}}</p>
 
-        <div class="quiz-options" @set="testclass=true">
+        <div class="quiz-options">
           <span @for="i, opt in q.options" @key="q.id + '-' + i">
             <label class="quiz-option" @class:click="{'true-answer':q.answer==i, 'false-answer':q.answer!=i}" >
               <span class="quiz-option-text">{{opt}}</span>

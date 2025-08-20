@@ -6600,7 +6600,8 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       const span = document.createElement('span');
 
       if (vNode.rawContent !== undefined) {
-        span.textContent = vNode.rawContent;
+        const interpolated = this.evaluator.evalText(vNode.rawContent, ctx);
+        span.textContent = interpolated;
       } else {
         let rawContent = '';
 
@@ -6643,7 +6644,8 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
           rawContent = vNode.children.map(collectTextContent).join('');
         }
 
-        span.textContent = rawContent;
+        const interpolated = this.evaluator.evalText(rawContent, ctx);
+        span.textContent = interpolated;
       }
 
       return span;
