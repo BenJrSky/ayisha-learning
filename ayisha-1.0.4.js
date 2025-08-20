@@ -1237,6 +1237,7 @@
         '@result': `Esempio: <div @fetch="'url'" @result="data">Carica</div>`,
         '@watch': `Esempio: <div @watch="user"></div>`,
         '@text': `Esempio: <span @text="nome"></span>`,
+        '@attr': `Esempio: <img @attr="{ src: url, alt: titolo }"> (imposta attributi HTML da un oggetto). Supporta anche subdirettive come <b>@attr:src</b>, <b>@attr:alt</b>, ecc.`,
         '@scope': `Esempio: <component @src="comp.html" @scope="course"></component> (isola la variabile 'course' per ogni istanza del componente, aggiungendo un suffisso numerico incrementale)`,
         '@date': `Esempio: <li @date="data"></li> (formatta una data ISO come "1 agosto 2025, 08:37")`,
         '@dateonly': `Esempio: <li @dateonly="data"></li> (mostra solo giorno, mese e anno)`,
@@ -1300,7 +1301,9 @@
     }
 
     isValidDirective(name) {
-      return this.helpTexts.hasOwnProperty(name);
+      if (this.helpTexts.hasOwnProperty(name)) return true;
+      if (/^@attr:[a-zA-Z0-9_-]+$/.test(name)) return true;
+      return false;
     }
   }
 
@@ -3183,6 +3186,27 @@
       if (completionListener) {
         completionListener.addTask(() => Promise.resolve());
       }
+    }
+
+    handleSubDirective(vNode, ctx, state, el, event, expression, completionListener = null) {
+      const attrName = event;
+      try {
+        const value = this.evalExpr(expression, ctx);
+        if (el) {
+          if (value == null) {
+            el.removeAttribute(attrName);
+          } else {
+            el.setAttribute(attrName, value);
+          }
+        }
+      } catch (err) {
+        this.showError(el, err, expression);
+      }
+
+      if (completionListener) {
+        completionListener.addTask(() => Promise.resolve());
+      }
+      return true;
     }
   }
 
