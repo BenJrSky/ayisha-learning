@@ -1,0 +1,432 @@
+{
+  "id": "course_git_terminal",
+  "slug": "git-from-terminal",
+  "title": "Git",
+  "subtitle": "Learn Git in clear steps using only the terminal. Start from zero and become confident.",
+  "category": "Development",
+  "level": "Beginner to Advanced",
+  "hours": 24,
+  "language": "en",
+  "lastUpdated": "2025-08-20",
+  "tags": ["Git", "CLI", "Branching", "Remotes", "Workflow"],
+
+  "hero": {
+    "image": "images/img_1.jpg",
+    "logo": "ayisha-logo-black.png",
+    "ctaText": "Start Now",
+    "ctaUrl": "enroll.html"
+  },
+
+  "overview": "Git is a tool that remembers every change in your code. You can move back in time, create branches to try ideas, and share work with a team. We use only the terminal, with small and friendly steps. Anyone 6+ can follow.",
+  "content": "We cover setup, the staging area, commits, branches, merges, remotes, safe undo, rewriting history, tags/releases, diffs, blame/bisect, hooks and config, and common workflows. You will practice with tiny, real commands.",
+  "prerequisites": [
+    "No Git experience required",
+    "Nice to have: a terminal and a text editor"
+  ],
+  "outcomes": [
+    "Initialize repositories and make clean commits",
+    "Use branches and merges with confidence",
+    "Sync with remotes (push, pull, fetch)",
+    "Fix mistakes safely (restore, revert, stash)",
+    "Adopt healthy workflows and write helpful commit messages"
+  ],
+
+  "pricing": { "free": true, "price": 0, "currency": "EUR" },
+
+  "instructor": {
+    "name": "Ayisha Team",
+    "avatar": "images/img_3.jpg",
+    "bio": "Frontend engineers and accessibility advocates.",
+    "links": [
+      { "type": "site", "url": "https://example.com" }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "l0",
+      "slug": "git-intro-and-first-commit",
+      "order": 0,
+      "title": "What is Git? Setup and First Commit",
+      "minutes": 40,
+      "summary": "Install Git, set your name and email, create a repo, and make your first commit.",
+      "content": [
+        { "type": "text", "value": "Git is a version control system (VCS). It remembers snapshots of your files over time. You can go back, branch out, and merge work safely." },
+        { "type": "code", "language": "bash", "value": "git --version\ngit help" },
+        { "type": "tip", "value": "If git is not found, install from your OS package manager or from git-scm.com." },
+
+        { "type": "text", "value": "Set your identity once so commits show who wrote them. Use --global to set it for all repos." },
+        { "type": "code", "language": "bash", "value": "git config --global user.name \"Your Name\"\ngit config --global user.email \"you@example.com\"\ngit config --list --global" },
+        { "type": "tip", "value": "Use the same email as your code host (e.g., GitHub) to link commits to your profile." },
+
+        { "type": "text", "value": "Create a new repository. The .git folder is where Git stores history and metadata." },
+        { "type": "code", "language": "bash", "value": "mkdir hello-git && cd hello-git\necho \"# Hello Git\" > README.md\ngit init\nls -a\ngit status" },
+        { "type": "tip", "value": "git status explains what Git sees: new files, changes, and the current branch." },
+
+        { "type": "text", "value": "Stage changes, then commit them with a clear message. Staging lets you pick exactly what to include in a snapshot." },
+        { "type": "code", "language": "bash", "value": "git add README.md\ngit commit -m \"feat: initial commit with README\"" },
+        { "type": "tip", "value": "Write short, clear commit messages. Prefer present tense, e.g., \"fix bug\" not \"fixed bug\"." }
+      ],
+      "examples": [
+        { "description": "Check config values", "code": "git config --list --global" },
+        { "description": "Initialize repo and commit", "code": "git init && git add . && git commit -m \"chore: init\"" },
+        { "description": "Show commit history (short)", "code": "git log --oneline" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Git is a:", "options": ["Code formatter", "Version Control System", "Database server"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Which command creates a repository?", "options": ["git create", "git init", "git new"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "What does staging do?", "options": ["Deletes files", "Selects changes for the next commit", "Pushes to remote"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Set author name and email with:", "options": ["git set user", "git config", "git author"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "A good commit message is:", "options": ["Long and vague", "Short and clear", "Only emojis"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l1",
+      "slug": "staging-status-ignore",
+      "order": 1,
+      "title": "Working Directory, Staging Area, .gitignore",
+      "minutes": 45,
+      "summary": "Understand the three areas, use status/diff, and ignore files you don’t want in history.",
+      "content": [
+        { "type": "text", "value": "There are 3 places: working directory (your files), staging area (what will be committed), and repository (history)." },
+        { "type": "code", "language": "bash", "value": "git status\ngit diff\ngit diff --staged" },
+        { "type": "tip", "value": "Use git diff before committing to review what you are about to save." },
+
+        { "type": "text", "value": ".gitignore lists files and folders Git should ignore (like build outputs or secrets)." },
+        { "type": "code", "language": "bash", "value": "echo \"node_modules/\" >> .gitignore\necho \".env\" >> .gitignore\ngit add .gitignore && git commit -m \"chore: add .gitignore\"" },
+        { "type": "tip", "value": "Ignoring is not retroactive. If a file is already tracked, use git rm --cached file to stop tracking it." },
+
+        { "type": "text", "value": "Unstage a file if you added it by mistake. Restore a file to throw away local changes in the working directory." },
+        { "type": "code", "language": "bash", "value": "git restore --staged README.md\ngit restore README.md" },
+        { "type": "tip", "value": "Restore is safer than reset for paths. It targets working tree or index without moving HEAD." }
+      ],
+      "examples": [
+        { "description": "Unstage a file", "code": "git restore --staged file.txt" },
+        { "description": "Stop tracking a file already in history", "code": "git rm --cached secrets.txt && echo \"secrets.txt\" >> .gitignore" },
+        { "description": "Diff staged vs working", "code": "git diff --staged" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "The staging area is for:", "options": ["Storing backups", "Choosing what goes into the next commit", "Pushing to remote"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": ".gitignore tells Git to:", "options": ["Delete files", "Ignore untracked files matching patterns", "Encrypt files"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "To unstage a file:", "options": ["git remove", "git restore --staged", "git revert"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Compare working directory to index with:", "options": ["git diff", "git show", "git tag"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "To stop tracking a file already committed:", "options": ["git rm --cached file", "Delete .git folder", "git ignore file"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l2",
+      "slug": "branching-basics",
+      "order": 2,
+      "title": "Branching Basics and Merging",
+      "minutes": 45,
+      "summary": "Create branches, switch between them, and merge changes safely.",
+      "content": [
+        { "type": "text", "value": "A branch is a movable pointer to a commit. You can try ideas without breaking main." },
+        { "type": "code", "language": "bash", "value": "git branch\ngit branch feature/hello\ngit switch feature/hello" },
+        { "type": "tip", "value": "Use git switch -c feature/name to create and move in one step." },
+
+        { "type": "text", "value": "Merge combines changes from one branch into another. Fast-forward merges move the pointer when no other work diverged." },
+        { "type": "code", "language": "bash", "value": "git switch main\ngit merge feature/hello\ngit branch -d feature/hello" },
+        { "type": "tip", "value": "Keep branches short-lived. Small PRs are easier to review and merge." },
+
+        { "type": "text", "value": "View history as a graph. This helps understand branches and merges." },
+        { "type": "code", "language": "bash", "value": "git log --oneline --graph --decorate --all" },
+        { "type": "tip", "value": "Use clear branch names: feature/, fix/, chore/, docs/, etc." }
+      ],
+      "examples": [
+        { "description": "Create and switch in one go", "code": "git switch -c feature/signup" },
+        { "description": "Merge back to main", "code": "git switch main && git merge feature/signup" },
+        { "description": "Delete merged branch", "code": "git branch -d feature/signup" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "A branch points to:", "options": ["A file", "A commit", "A tag only"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Create a branch and switch:", "options": ["git new -b", "git switch -c", "git merge -c"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Fast-forward merge happens when:", "options": ["There is no diverging work", "Conflicts exist", "Tags exist"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "To remove a merged branch:", "options": ["git branch -D", "git branch -d", "git rm branch"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Show graph view:", "options": ["git view graph", "git log --graph", "git status --graph"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l3",
+      "slug": "remotes-clone-push-pull",
+      "order": 3,
+      "title": "Remotes: Clone, Push, Pull, Fetch",
+      "minutes": 45,
+      "summary": "Connect to a remote, push your work, pull updates, and stay in sync.",
+      "content": [
+        { "type": "text", "value": "A remote is a URL to another copy of your repo (often on a server like GitHub or GitLab). The default remote name is usually origin." },
+        { "type": "code", "language": "bash", "value": "git remote add origin https://example.com/user/repo.git\ngit remote -v" },
+        { "type": "tip", "value": "Use SSH URLs if you prefer key-based auth: git@host:user/repo.git" },
+
+        { "type": "text", "value": "Rename the default branch to main, then push and set upstream so next pushes are shorter." },
+        { "type": "code", "language": "bash", "value": "git branch -M main\ngit push -u origin main" },
+        { "type": "tip", "value": "The -u flag remembers the upstream so you can run git push without extra args later." },
+
+        { "type": "text", "value": "Clone an existing repo. Pull brings remote changes to your current branch. Fetch downloads data without merging." },
+        { "type": "code", "language": "bash", "value": "git clone https://example.com/user/repo.git\ncd repo\ngit pull\ngit fetch --all --prune" },
+        { "type": "tip", "value": "Use --prune with fetch to remove stale remote-tracking branches." }
+      ],
+      "examples": [
+        { "description": "Set origin and push first time", "code": "git remote add origin <url>\ngit push -u origin main" },
+        { "description": "Clone over SSH", "code": "git clone git@github.com:user/repo.git" },
+        { "description": "Fetch without merge", "code": "git fetch --all --prune" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "origin is:", "options": ["A branch", "A common default remote name", "A tag"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "git push -u does:", "options": ["Deletes history", "Sets upstream tracking", "Creates a tag"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "git fetch will:", "options": ["Merge immediately", "Download remote data without merging", "Delete local branches"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Clone a repo with:", "options": ["git copy", "git clone", "git get"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "--prune removes:", "options": ["Stale remote-tracking branches", "Commits", "Tags"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l4",
+      "slug": "collaboration-and-prs",
+      "order": 4,
+      "title": "Collaboration and Pull Request Basics",
+      "minutes": 45,
+      "summary": "Work with feature branches, keep main clean, and prepare changes for review.",
+      "content": [
+        { "type": "text", "value": "Create a feature branch for each task. Keep main protected and stable." },
+        { "type": "code", "language": "bash", "value": "git switch -c feature/task-123\n# ...edit files...\ngit add .\ngit commit -m \"feat: add task 123 implementation\"\ngit push -u origin feature/task-123" },
+        { "type": "tip", "value": "Use clear branch names with an issue id or short description." },
+
+        { "type": "text", "value": "Sync your branch with main to reduce conflicts. You can merge or rebase." },
+        { "type": "code", "language": "bash", "value": "git fetch origin\ngit switch feature/task-123\ngit merge origin/main  # or: git rebase origin/main" },
+        { "type": "tip", "value": "Prefer merge for shared branches; rebase for local cleanup before sharing." },
+
+        { "type": "text", "value": "After pushing, open a Pull Request on your platform. Reviewers comment, you push fixes, then merge." },
+        { "type": "code", "language": "bash", "value": "# After review\ngit switch main\ngit merge --no-ff feature/task-123\ngit push" },
+        { "type": "tip", "value": "Squash merging creates one clean commit for the whole feature." }
+      ],
+      "examples": [
+        { "description": "Push a feature branch", "code": "git push -u origin feature/signup" },
+        { "description": "Update your branch from main", "code": "git fetch origin && git rebase origin/main" },
+        { "description": "Merge with --no-ff", "code": "git switch main && git merge --no-ff feature/signup" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Feature branches help you:", "options": ["Edit main directly", "Isolate work for review", "Delete history"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "To publish a new branch:", "options": ["git publish", "git push -u origin <branch>", "git send"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Squash merge produces:", "options": ["Multiple commits", "A single commit on target", "No commits"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Rebase is best used:", "options": ["On shared public branches", "To tidy local commits before sharing", "Never"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Keep main:", "options": ["Broken and experimental", "Protected and stable", "Unused"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l5",
+      "slug": "undo-and-fix",
+      "order": 5,
+      "title": "Undo and Fix: Restore, Reset, Revert, Stash",
+      "minutes": 50,
+      "summary": "Recover from mistakes safely using the right tool.",
+      "content": [
+        { "type": "text", "value": "Restore changes in working directory or staging without moving history." },
+        { "type": "code", "language": "bash", "value": "git restore file.txt\ngit restore --staged file.txt" },
+        { "type": "tip", "value": "Use restore to unstage or discard local edits. It does not change commits." },
+
+        { "type": "text", "value": "Reset moves HEAD (and optionally index/working tree). It rewrites where your branch points." },
+        { "type": "code", "language": "bash", "value": "git reset --soft HEAD~1   # keep changes staged\ngit reset --mixed HEAD~1  # default, keep changes in working dir\ngit reset --hard HEAD~1   # DISCARD changes" },
+        { "type": "tip", "value": "Be careful with --hard. It discards changes in your working directory." },
+
+        { "type": "text", "value": "Revert creates a new commit that undoes a past commit. Safe on shared branches." },
+        { "type": "code", "language": "bash", "value": "git revert <commit-sha>" },
+        { "type": "tip", "value": "Use revert instead of reset on public branches to keep history safe for everyone." },
+
+        { "type": "text", "value": "Stash saves your local changes aside without committing." },
+        { "type": "code", "language": "bash", "value": "git stash push -m \"wip: half done\"\n# ... later ...\ngit stash list\ngit stash apply\n# or drop or pop" },
+        { "type": "tip", "value": "Prefer small, frequent commits over large stashes." }
+      ],
+      "examples": [
+        { "description": "Undo last commit but keep changes staged", "code": "git reset --soft HEAD~1" },
+        { "description": "Revert a commit on main", "code": "git revert abc1234" },
+        { "description": "Stash and apply later", "code": "git stash push -m \"wip\" && git stash apply" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Safe on public branches:", "options": ["git reset --hard", "git revert", "git rebase --interactive"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Unstage a file with:", "options": ["git restore --staged", "git clean", "git tag -d"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Reset moves:", "options": ["HEAD/branch pointer", "Remote URL", "Tags only"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Stash is for:", "options": ["Saving WIP changes temporarily", "Deleting commits", "Merging branches"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Which discards local changes immediately?", "options": ["git reset --soft", "git reset --hard", "git revert"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l6",
+      "slug": "rewrite-history-safely",
+      "order": 6,
+      "title": "Rewrite History (Safely): Amend, Rebase, Cherry-pick, Reflog",
+      "minutes": 50,
+      "summary": "Clean up commits locally, pick specific changes, and recover with reflog.",
+      "content": [
+        { "type": "text", "value": "Amend updates the last commit (message or content). Use before pushing." },
+        { "type": "code", "language": "bash", "value": "git commit --amend -m \"fix: correct typo\"" },
+        { "type": "tip", "value": "Avoid amending commits that are already pushed to shared branches." },
+
+        { "type": "text", "value": "Interactive rebase lets you reorder, squash, or edit commits." },
+        { "type": "code", "language": "bash", "value": "git rebase -i HEAD~3  # pick, squash, reword..." },
+        { "type": "tip", "value": "Use rebase to craft clear history before sharing your branch." },
+
+        { "type": "text", "value": "Cherry-pick applies a specific commit on top of your current branch." },
+        { "type": "code", "language": "bash", "value": "git cherry-pick <commit-sha>" },
+        { "type": "tip", "value": "Cherry-pick is great when you need one fix in multiple branches." },
+
+        { "type": "text", "value": "Reflog records where HEAD and branches have been. You can recover from many mistakes." },
+        { "type": "code", "language": "bash", "value": "git reflog\n# find the safe point, then\ngit reset --hard <reflog-id>" },
+        { "type": "tip", "value": "Reflog is local to your machine and may expire. Recover quickly." }
+      ],
+      "examples": [
+        { "description": "Squash last 3 commits", "code": "git rebase -i HEAD~3" },
+        { "description": "Pick a fix from another branch", "code": "git cherry-pick 1a2b3c4" },
+        { "description": "Recover using reflog", "code": "git reflog && git reset --hard HEAD@{2}" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Use amend to:", "options": ["Update last commit", "Delete history", "Push tags"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Interactive rebase can:", "options": ["Reorder/squash commits", "Change remote URL", "Create tags only"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Cherry-pick applies:", "options": ["A branch", "A specific commit", "All tags"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Reflog helps you:", "options": ["Rewrite remote history", "Find past HEAD positions", "Delete branches remotely"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Avoid rewriting history that is:", "options": ["Local only", "Already pushed and shared", "In your stash"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l7",
+      "slug": "tags-and-releases",
+      "order": 7,
+      "title": "Tags and Releases",
+      "minutes": 40,
+      "summary": "Create version tags and share them for releases.",
+      "content": [
+        { "type": "text", "value": "Tags mark specific commits. Lightweight tags are names; annotated tags store message, author, and date." },
+        { "type": "code", "language": "bash", "value": "git tag v1.0.0\ngit tag -a v1.1.0 -m \"release: 1.1.0 with new features\"" },
+        { "type": "tip", "value": "Prefer annotated tags for releases. They keep useful metadata." },
+
+        { "type": "text", "value": "Push tags to the remote so others can use them too." },
+        { "type": "code", "language": "bash", "value": "git push origin v1.1.0\n# or push all tags\ngit push --tags" },
+        { "type": "tip", "value": "Use semantic versioning: MAJOR.MINOR.PATCH (e.g., 2.3.1)." },
+
+        { "type": "text", "value": "List and delete tags. Deleting local and remote tags are different commands." },
+        { "type": "code", "language": "bash", "value": "git tag --list\ngit tag -d v1.0.0\ngit push origin :refs/tags/v1.0.0" },
+        { "type": "tip", "value": "Tag after merging to main so the tag points to a stable commit." }
+      ],
+      "examples": [
+        { "description": "Create an annotated tag", "code": "git tag -a v2.0.0 -m \"release: 2.0.0\"" },
+        { "description": "Push a single tag", "code": "git push origin v2.0.0" },
+        { "description": "Delete a remote tag", "code": "git push origin :refs/tags/v2.0.0" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Annotated tags include:", "options": ["Only a name", "Message, author, date", "Binary files"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Push all tags with:", "options": ["git push --tags", "git push --all", "git tag --push"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Semantic versioning format:", "options": ["YEAR.MONTH", "MAJOR.MINOR.PATCH", "vNUMBER"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Delete a local tag:", "options": ["git tag -d v1.0.0", "git delete tag v1.0.0", "git rm tag v1.0.0"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Releases are usually tagged on:", "options": ["Random commits", "Stable commits on main", "Any WIP branch"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l8",
+      "slug": "diff-blame-bisect",
+      "order": 8,
+      "title": "Diff, Blame, and Bisect",
+      "minutes": 50,
+      "summary": "Compare changes, see who last touched a line, and find a bad commit fast.",
+      "content": [
+        { "type": "text", "value": "Use diff to compare changes in your working directory or between commits." },
+        { "type": "code", "language": "bash", "value": "git diff\ngit diff HEAD~1..HEAD\ngit diff main..feature" },
+        { "type": "tip", "value": "Use path filters: git diff -- src/app.js to limit output." },
+
+        { "type": "text", "value": "Blame shows the last commit and author for each line. Helpful for finding context." },
+        { "type": "code", "language": "bash", "value": "git blame src/app.js -L 1,50" },
+        { "type": "tip", "value": "Be kind. Blame is for history, not for accusing people." },
+
+        { "type": "text", "value": "Bisect finds the first bad commit by binary search between a known good and bad point." },
+        { "type": "code", "language": "bash", "value": "git bisect start\ngit bisect bad\ngit bisect good <good-sha>\n# test your app, then mark each step: good/bad\ngit bisect reset" },
+        { "type": "tip", "value": "Automate tests during bisect when possible to speed up the search." }
+      ],
+      "examples": [
+        { "description": "Diff a file between commits", "code": "git diff 1a2b3c..4d5e6f -- src/index.js" },
+        { "description": "Blame a range of lines", "code": "git blame README.md -L 10,30" },
+        { "description": "Quick bisect session", "code": "git bisect start && git bisect bad && git bisect good HEAD~50" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "git diff shows:", "options": ["Commits only", "Line-by-line changes", "Remote branches"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "git blame helps you find:", "options": ["Build times", "Who last changed a line", "Remote URLs"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "git bisect is:", "options": ["A merge strategy", "A binary search to find a bad commit", "A tagging tool"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Limit diff output to a file with:", "options": ["git diff file", "git ls", "git show file"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "End a bisect session with:", "options": ["git end", "git bisect reset", "git reset --hard"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l9",
+      "slug": "config-hooks-attributes",
+      "order": 9,
+      "title": "Config, Hooks, and Attributes",
+      "minutes": 50,
+      "summary": "Tune Git behavior, run hooks, and manage line endings and file rules.",
+      "content": [
+        { "type": "text", "value": "Git config exists at system, global, and local levels. The nearest value wins." },
+        { "type": "code", "language": "bash", "value": "git config --list --show-origin\ngit config --global core.editor \"code --wait\"" },
+        { "type": "tip", "value": "Use includeIf in your global config to load settings per project path." },
+
+        { "type": "text", "value": "Hooks are scripts that run on events (like pre-commit). They live in .git/hooks." },
+        { "type": "code", "language": "bash", "value": "printf '#!/bin/sh\\necho \"Running pre-commit\"\\n' > .git/hooks/pre-commit\nchmod +x .git/hooks/pre-commit" },
+        { "type": "tip", "value": "Hooks are not shared by default. Consider a tool or docs so the team installs them." },
+
+        { "type": "text", "value": ".gitattributes controls how Git treats files (text/binary, line endings, merge strategies)." },
+        { "type": "code", "language": "bash", "value": "echo \"* text=auto\" > .gitattributes\necho \"*.sh text eol=lf\" >> .gitattributes\ngit add .gitattributes && git commit -m \"chore: add attributes\"" },
+        { "type": "tip", "value": "On cross-platform teams, normalize line endings to avoid noisy diffs." }
+      ],
+      "examples": [
+        { "description": "Set default editor", "code": "git config --global core.editor \"code --wait\"" },
+        { "description": "Simple pre-commit hook", "code": "echo '#!/bin/sh\necho check' > .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit" },
+        { "description": "Normalize line endings", "code": "echo \"* text=auto\" > .gitattributes" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Config precedence is:", "options": ["Local > Global > System", "System > Global > Local", "Random"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Hooks run:", "options": ["Only on the server", "On certain Git events", "Only with tags"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": ".gitattributes can:", "options": ["Change colors", "Manage line endings", "Add remotes"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Team-shared hooks:", "options": ["Are automatic", "Need a setup method or tool", "Cannot exist"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "To set a global default editor:", "options": ["git editor set", "git config --global core.editor", "git set editor"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l10",
+      "slug": "workflows-and-best-practices",
+      "order": 10,
+      "title": "Workflows and Best Practices",
+      "minutes": 45,
+      "summary": "Choose a simple workflow, write good commits, and protect your main branch.",
+      "content": [
+        { "type": "text", "value": "Trunk-based: work in small branches, merge to main often. GitFlow: long-lived develop + release branches. Pick what fits your team." },
+        { "type": "code", "language": "bash", "value": "# Trunk-based example\ngit switch -c feature/x\n# small commits\n# merge to main quickly" },
+        { "type": "tip", "value": "Start simple. Trunk-based with small PRs is great for many teams." },
+
+        { "type": "text", "value": "Write good commit messages. Conventional Commits help automation and clarity." },
+        { "type": "code", "language": "bash", "value": "git commit -m \"feat: add user login\"\ngit commit -m \"fix: handle empty password\"\n# types: feat, fix, docs, chore, refactor, test" },
+        { "type": "tip", "value": "One change per commit. Keep messages short in subject, details in body if needed." },
+
+        { "type": "text", "value": "Protect main with required reviews and CI checks. Avoid force-push on main." },
+        { "type": "code", "language": "bash", "value": "# Use your platform settings for branch protection\n# Require PR reviews and passing tests" },
+        { "type": "tip", "value": "Automate tests in CI so every PR is checked before merging." }
+      ],
+      "examples": [
+        { "description": "Trunk-based mini flow", "code": "git switch -c feature/a && git add . && git commit -m \"feat: a\" && git push -u origin feature/a" },
+        { "description": "Conventional commit examples", "code": "feat: add settings page\nfix: handle 0 items in cart" },
+        { "description": "Small PR checklist", "code": "- Clear title\n- Tests pass\n- One focused change\n- Reviewer assigned" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Trunk-based encourages:", "options": ["Long-lived branches", "Small, frequent merges to main", "No reviews"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Conventional Commits help:", "options": ["Only colors", "Automation and clarity", "Binary storage"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Protect main by:", "options": ["Allowing force-push", "Requiring reviews and CI", "Disabling PRs"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "A good commit usually contains:", "options": ["Many unrelated changes", "One focused change", "Secret keys"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Pick a workflow that is:", "options": ["As complex as possible", "Simple and fits the team", "Random each week"], "answer": 1 }
+      ]
+    }
+  ]
+}

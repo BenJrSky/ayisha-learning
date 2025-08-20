@@ -25,11 +25,11 @@
         </div>
         <a href="#" 
            @link="home" 
-           @class="{active: location.pathname === '/' || location.pathname.includes('index')}" 
+           @class="{active: location.pathname === '/' || location.pathname.includes('index') || location.pathname.includes('home')}" 
            @click="mobileNavOpen = false">Home</a>
         <a href="#" 
            @link="courses"
-           @class="{active: location.pathname.includes('courses') || location.pathname.includes('course-detail') || location.pathname.includes('lesson') || location.pathname.includes('enroll')}"
+           @class="{active: location.pathname.includes('courses') || location.pathname.includes('course') || location.pathname.includes('lesson') || location.pathname.includes('enroll')}"
            @click="mobileNavOpen = false">Courses</a>
         <a href="#" 
            @class="{active: location.pathname.includes('wiki')}" 

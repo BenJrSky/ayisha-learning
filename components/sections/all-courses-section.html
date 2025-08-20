@@ -1,8 +1,6 @@
 
   <section class="section">
-    <div class="courses-grid">
-        <component @src="components/course-card-horizontal.html" #data="'html'" #uno="'uno'" @scope="course"></component>
-        <component @src="components/course-card-horizontal.html" #data="'css'" #due="'tre'"  @scope="course"></component>
-        <component @src="components/course-card-horizontal.html" #data="'ayisha'" #tre="'due'"  @scope="course"></component>
+    <div class="courses-grid" @for="item in list">
+         <component @src="components/course-card-horizontal.html" #data="item" @scope="course"></component>
     </div>
   </section>

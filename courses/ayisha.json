@@ -1,0 +1,387 @@
+{
+  "id": "ayisha",
+  "slug": "ayisha",
+  "title": "Ayisha.js",
+  "subtitle": "Learn directives, reactivity, components, and routing step by step.",
+  "overview": "Ayisha.js lets you build interactive pages using plain HTML plus small directives like @text, @model, @if, @for. You write simple HTML, and the page becomes reactive. In this course, you will learn the core ideas and advanced features: state, data binding, validation, lists, fetch, components, router, files, and more.",
+  "content": "We start very simple (show a value) and go up to advanced flows (then/finally, router, components). You will use real HTML, small code examples, and clear steps. By the end, you can build a full mini app using only HTML + Ayisha.js.",
+  "prerequisites": ["Basic HTML knowledge (tags like div, p, button)", "Zero JavaScript experience is OK"],
+  "outcomes": [
+    "Use @text, @model, @click, and other directives",
+    "Show/hide and render lists with @if, @show, @switch, @for, @key",
+    "Load data with @fetch / @json and react to changes",
+    "Build reusable UI with <component @src=\"...\"> and props",
+    "Make single-page navigation with @page and @link"
+  ],
+  "level": "Beginner to Advanced",
+  "hours": 10,
+  "language": "English",
+  "lastUpdated": "2025-08-20",
+  "tags": ["Ayisha.js", "Directives", "Reactivity", "Components", "Routing"],
+  "lessons": [
+    {
+      "id": "l0",
+      "slug": "getting-started",
+      "order": 0,
+      "title": "Getting Started: your first reactive page",
+      "summary": "Add Ayisha.js, print text, and react to a click.",
+      "content": [
+        { "type": "text", "value": "Ayisha.js makes your HTML reactive using small directives. No build step, no framework syntax. Just add the script and write HTML." },
+        { "type": "code", "language": "html", "value": "<!-- Include Ayisha.js (example): -->\n<script src=\"https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.4-min.js\"></script>\n<!-- Ayisha boots automatically on document.body -->" },
+        { "type": "tip", "value": "Use @text to show a variable. Use @click to run code when a button is clicked." },
+        { "type": "text", "value": "Use the <init> block to set variables. Variables are reactive and global to the page." },
+        { "type": "code", "language": "html", "value": "<init>\n  message = 'Hello Ayisha';\n  count = 0;\n</init>\n<p>@text shows message: <b @text=\"message\"></b></p>\n<button @click=\"count++\">Clicked <span @text=\"count\"></span> times</button>" }
+      ],
+      "examples": [
+        { "description": "Hello message", "code": "<init> message='Hi!' </init>\n<p><span @text=\"message\"></span></p>" },
+        { "description": "Counter button", "code": "<init> count=0 </init>\n<button @click=\"count++\">Count: <span @text=\"count\"></span></button>" },
+        { "description": "Change message on click", "code": "<init> msg='Start' </init>\n<p @text=\"msg\"></p>\n<button @click=\"msg='Changed!'\">Change</button>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "What does @text do?", "options": ["Shows a variable or expression", "Sends an HTTP request", "Creates a new page"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Where do you set initial variables?", "options": ["In <init> block", "In <style>", "In the image tag"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "@click runs code when:", "options": ["The page loads", "The element is clicked", "The mouse moves"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Ayisha boots automatically on:", "options": ["document.body", "head tag", "footer only"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Variables in <init> are:", "options": ["Not reactive", "Reactive and global in page", "Only local to <init>"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l1",
+      "slug": "state-and-init",
+      "order": 1,
+      "title": "State and <init>: create and use variables",
+      "summary": "Declare variables, update them, and show them in the page.",
+      "content": [
+        { "type": "text", "value": "In <init>, you create variables like name, age, items. Ayisha makes them reactive." },
+        { "type": "code", "language": "html", "value": "<init>\n  name='Alice';\n  age=7;\n  items=[];\n</init>\n<p>Hello <b @text=\"name\"></b>, age <span @text=\"age\"></span></p>" },
+        { "type": "tip", "value": "You can write state.var or just var in directives; both work." },
+        { "type": "text", "value": "You can compute values inline: @text=\"age + 1\" or @text=\"name.toUpperCase()\"." },
+        { "type": "code", "language": "html", "value": "<p>Next year you are <span @text=\"age + 1\"></span></p>\n<p>Shout name: <span @text=\"name.toUpperCase()\"></span></p>" }
+      ],
+      "examples": [
+        { "description": "Simple names", "code": "<init> first='Tom'; last='Fox' </init>\n<p @text=\"first + ' ' + last\"></p>" },
+        { "description": "Array init", "code": "<init> items=[1,2,3] </init>\n<p>Total: <span @text=\"items.length\"></span></p>" },
+        { "description": "Toggle flag", "code": "<init> show=true </init>\n<button @click=\"show=!show\">Toggle</button>\n<p @text=\"show ? 'Visible' : 'Hidden'\"></p>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "<init> variables are available where?", "options": ["Only inside <init>", "Everywhere in the page", "Only in buttons"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "You can use expressions in @text:", "options": ["No", "Yes, like age + 1", "Only numbers"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "items=[] creates:", "options": ["A number", "An array", "A string"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "name.toUpperCase() is:", "options": ["Invalid", "A valid expression", "A CSS rule"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Flags like show can be toggled with:", "options": ["show = 'on'", "show = !show", "show++"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l2",
+      "slug": "text-and-attributes",
+      "order": 2,
+      "title": "Bind text and attributes (@text, @attr, interpolation)",
+      "summary": "Show values and bind attributes like src, href, title.",
+      "content": [
+        { "type": "text", "value": "Use @text to print values and expressions. Use interpolation {{value}} inside plain HTML text." },
+        { "type": "code", "language": "html", "value": "<p>Hello, <b @text=\"name\"></b>!</p>\n<p>Inline interpolation: Your age is {{age}}</p>" },
+        { "type": "tip", "value": "Use @attr to set attributes if needed. Many directives exist, and AttrDirective allows binding generic attributes." },
+        { "type": "text", "value": "Bind image src and link href with expressions." },
+        { "type": "code", "language": "html", "value": "<init> img='images/img_1.jpg'; url='https://example.com' </init>\n<img src=\"{{img}}\" alt=\"Demo\">\n<a href=\"{{url}}\" target=\"_blank\" @text=\"'Open ' + url\"></a>" }
+      ],
+      "examples": [
+        { "description": "Dynamic title", "code": "<init> title='My Page' </init>\n<h1 @text=\"title\"></h1>\n<p title=\"{{title}}\">Hover me</p>" },
+        { "description": "Conditional link text", "code": "<init> ready=false; url='https://site.com' </init>\n<a href=\"{{url}}\" @text=\"ready ? 'Go now' : 'Wait'\" ></a>" },
+        { "description": "Switch image", "code": "<init> on=true </init>\n<img src=\"{{ on ? 'images/img_1.jpg' : 'images/img_2.jpg' }}\">" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@text prints:", "options": ["CSS", "A variable or expression result", "Nothing"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Interpolation looks like:", "options": ["[[value]]", "{{value}}", "(value)"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "@attr:href sets:", "options": ["The href attribute", "The CSS class", "The inner text"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "You can bind src with:", "options": ["@attr:src", "@text", "@model"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Expressions can use:", "options": ["JavaScript methods like toUpperCase()", "Only numbers", "Only CSS"], "answer": 0 }
+      ]
+    },
+    {
+      "id": "l3",
+      "slug": "events-and-actions",
+      "order": 3,
+      "title": "Events and actions (@click, @set, @do)",
+      "summary": "Run code on events and update state.",
+      "content": [
+        { "type": "text", "value": "Use @click, @input, @change, @focus, @blur to run code. Use @set for quick assignments." },
+        { "type": "code", "language": "html", "value": "<init> n=0 </init>\n<button @click=\"n++\">Add</button>\n<button @click=\"n--\">Sub</button>\n<p @text=\"'Value: ' + n\"></p>" },
+        { "type": "tip", "value": "@do can run multi-step code or call functions in state." },
+        { "type": "text", "value": "Use sub-directives, like @class:click or @model:change, to handle styles or updates only on specific events." },
+        { "type": "code", "language": "html", "value": "<button @set=\"name='Ben'\">Set name</button>\n<button @do=\"log = (log||[]); log.push('clicked');\">Log action</button>" }
+      ],
+      "examples": [
+        { "description": "Toggle boolean", "code": "<init> open=false </init>\n<button @click=\"open=!open\">Toggle</button>\n<p @text=\"open ? 'Open' : 'Closed'\"></p>" },
+        { "description": "Track clicks", "code": "<init> clicks=0 </init>\n<button @click=\"clicks=clicks+1\">Clicks: <span @text=\"clicks\"></span></button>" },
+        { "description": "Set many values", "code": "<init> a=0; b=0 </init>\n<button @do=\"a=1; b=2\">Set A and B</button>\n<p @text=\"a + ',' + b\"></p>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@click runs on:", "options": ["Mouse move", "Element click", "Scroll"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@set is useful to:", "options": ["Load JSON", "Assign a value fast", "Animate elements"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "@do can:", "options": ["Run multiple statements", "Only read state", "Only style elements"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Sub-directives like @model:change run on:", "options": ["All events", "Specific event", "Never"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "n++ is same as:", "options": ["n = n + 1", "n = 1", "n = n - 1"], "answer": 0 }
+      ]
+    },
+    {
+      "id": "l4",
+      "slug": "model-and-validate",
+      "order": 4,
+      "title": "Two-way binding and validation (@model, @validate)",
+      "summary": "Sync inputs with state and validate values.",
+      "content": [
+        { "type": "text", "value": "@model keeps the input value and the state variable in sync. @validate checks the value with rules." },
+        { "type": "code", "language": "html", "value": "<init> email=''; password='' </init>\n<input @model=\"email\" @validate=\"email\" placeholder=\"Email\">\n<input @model=\"password\" @validate=\"required|min:6\" placeholder=\"Password\" type=\"password\">\n<p>Email valid: <b @text=\"_validate.email ? '✔️' : '❌'\"></b></p>" },
+        { "type": "tip", "value": "Validation results are in _validate.fieldName (true/false/null). You can combine rules (e.g., required,email)." },
+        { "type": "text", "value": "Use @model:input or @model:change to control when the variable updates." },
+        { "type": "code", "language": "html", "value": "<input @model:change=\"email\" @validate=\"required|email\" placeholder=\"Email (update on change)\">" }
+      ],
+      "examples": [
+        { "description": "Name with min length", "code": "<init> name='' </init>\n<input @model=\"name\" @validate=\"required|min:3\" placeholder=\"Your name\">\n<p @text=\"name\"></p>" },
+        { "description": "Phone with regex", "code": "<init> phone='' </init>\n<input @model=\"phone\" @validate=\"^\\+?\\d{7,15}$\" placeholder=\"+123456789\">" },
+        { "description": "All valid to enable button", "code": "<init> email=''; pass='' </init>\n<input @model=\"email\" @validate=\"email\">\n<input @model=\"pass\" @validate=\"required|min:6\" type=\"password\">\n<button @class=\"{ 'btn-primary': _validate.email && _validate.pass, 'btn-secondary': !(_validate.email && _validate.pass) }\">Submit</button>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@model does:", "options": ["Only reads state", "Two-way sync input <-> state", "Only sets attributes"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "_validate.email is:", "options": ["A string", "A boolean (true/false)", "A CSS class"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Required + min:6 means:", "options": ["Optional field", "Must not be empty and at least 6 chars", "Only numbers"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "@model:change updates:", "options": ["On every keystroke", "On change/blur", "Never"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Regex can be used with:", "options": ["@fetch", "@validate", "@page"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l5",
+      "slug": "conditionals",
+      "order": 5,
+      "title": "Show and choose (@if, @not, @show, @switch)",
+      "summary": "Show or hide elements and choose cases.",
+      "content": [
+        { "type": "text", "value": "@if removes the element if the condition is false. @show hides with CSS (display:none) but keeps it in DOM." },
+        { "type": "code", "language": "html", "value": "<init> count=0 </init>\n<button @click=\"count++\">Inc</button>\n<p @if=\"count>0\">Positive!</p>\n<p @show=\"count===0\">Zero</p>" },
+        { "type": "tip", "value": "Use @not to invert conditions simply: @not=\"isLogged\"." },
+        { "type": "text", "value": "@switch selects one case. Use @case and @default." },
+        { "type": "code", "language": "html", "value": "<init> role='guest' </init>\n<div @switch=\"role\">\n  <div @case=\"guest\">Welcome, Guest</div>\n  <div @case=\"user\">Hello, User</div>\n  <div @case=\"admin\">Hi, Admin</div>\n  <div @default>Unknown</div>\n</div>" }
+      ],
+      "examples": [
+        { "description": "Login view", "code": "<init> logged=false </init>\n<p @if=\"logged\">Dashboard</p>\n<p @not=\"logged\">Please log in</p>" },
+        { "description": "Toggle details", "code": "<init> open=false </init>\n<button @click=\"open=!open\">Details</button>\n<div @show=\"open\">Hidden text</div>" },
+        { "description": "Case by type", "code": "<init> type='info' </init>\n<div @switch=\"type\">\n  <p @case=\"info\">Info</p>\n  <p @case=\"warn\">Warning</p>\n  <p @default>Other</p>\n</div>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@if false means:", "options": ["Hidden via CSS", "Removed from DOM", "Blinks"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@show false means:", "options": ["Removed", "display:none", "Red text"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "@not=\"isReady\" equals:", "options": ["!isReady", "isReady==true", "isReady+1"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "@switch needs:", "options": ["@case and @default", "Only @if", "Only @show"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Good use of @show:", "options": ["Toggle visibility but keep element state", "Always remove elements", "Animate network"], "answer": 0 }
+      ]
+    },
+    {
+      "id": "l6",
+      "slug": "lists-and-keys",
+      "order": 6,
+      "title": "Lists and keys (@for, @key)",
+      "summary": "Render arrays, use indexes, and track items.",
+      "content": [
+        { "type": "text", "value": "Use @for to loop over arrays. You can write @for=\"item in items\" or @for=\"i, item in items\"." },
+        { "type": "code", "language": "html", "value": "<init> items=[{id:1,name:'A'},{id:2,name:'B'}] </init>\n<li @for=\"item in items\" @key=\"item.id\">{{item.name}}</li>" },
+        { "type": "tip", "value": "@key helps Ayisha track DOM nodes for better performance." },
+        { "type": "text", "value": "Update arrays with push/filter/map; Ayisha re-renders as needed." },
+        { "type": "code", "language": "html", "value": "<button @click=\"items.push({id:Date.now(), name:'New'})\">Add</button>\n<li @for=\"i, it in items\" @key=\"it.id\">{{i+1}} - {{it.name}}</li>" }
+      ],
+      "examples": [
+        { "description": "Remove item", "code": "<init> items=[{id:1,n:'One'},{id:2,n:'Two'}] </init>\n<li @for=\"it in items\" @key=\"it.id\">{{it.n}} <button @click=\"items=items.filter(x=>x.id!==it.id)\">x</button></li>" },
+        { "description": "Edit item", "code": "<init> items=[{id:1,n:'One'}]; edit='' </init>\n<li @for=\"it in items\" @key=\"it.id\">\n  <input @model=\"edit\">\n  <button @click=\"it.n=edit\">Save</button>\n  <span @text=\"it.n\"></span>\n</li>" },
+        { "description": "Index render", "code": "<init> nums=[10,20,30] </init>\n<p @for=\"i, n in nums\" @key=\"i\">{{i}}: {{n}}</p>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@for loops over:", "options": ["Objects only", "Arrays", "CSS rules"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@key should be:", "options": ["A random number every render", "A stable unique id", "Always the index"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "items.push(...) will:", "options": ["Do nothing", "Trigger re-render", "Delete items"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "To remove one item you can:", "options": ["items = items.filter(...)", "items = null", "items.length = 'off'"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Write index in loop like:", "options": ["@for=\"index of items\"", "@for=\"i, item in items\"", "@for=\"items in i\""], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l7",
+      "slug": "class-and-style",
+      "order": 7,
+      "title": "Dynamic class and style (@class, @style + sub-events)",
+      "summary": "Bind one or more classes and inline styles.",
+      "content": [
+        { "type": "text", "value": "Use @class to add/remove classes from expressions. Use object syntax: {active: isActive}." },
+        { "type": "code", "language": "html", "value": "<init> isActive=false; textColor='#333'; fontSize=16 </init>\n<div @class=\"{active:isActive}\" @style=\"{color:textColor,fontSize:fontSize+'px'}\">Box</div>\n<button @click=\"isActive=!isActive\">Toggle Active</button>" },
+        { "type": "tip", "value": "Sub-directives like @class:focus or @class:input let you change classes on specific events." },
+        { "type": "text", "value": "You can compute multiple classes and styles at once." },
+        { "type": "code", "language": "html", "value": "<input @model=\"textColor\">\n<input type=\"range\" min=\"12\" max=\"24\" @model=\"fontSize\">" }
+      ],
+      "examples": [
+        { "description": "Focus border", "code": "<input @class:focus=\"{ 'border-blue': true }\" placeholder=\"Focus me\">" },
+        { "description": "Conditional button style", "code": "<init> ok=false </init>\n<button @class=\"{ 'btn-primary': ok, 'btn-secondary': !ok }\" @click=\"ok=!ok\">Toggle</button>" },
+        { "description": "Big text", "code": "<init> size=18 </init>\n<p @style=\"{ fontSize: size+'px' }\">Hello</p>\n<input type=\"range\" min=\"10\" max=\"40\" @model=\"size\">" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@class accepts:", "options": ["CSS file paths", "Expressions/objects for classes", "Only strings"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@style sets:", "options": ["External CSS", "Inline styles", "Animations only"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "@class:focus runs:", "options": ["On focus event", "On click only", "On page load"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Object class syntax example:", "options": ["{active: isActive}", "['active']", "('active')"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "fontSize+'px' builds:", "options": ["A URL", "A CSS value string", "A number array"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l8",
+      "slug": "fetch-and-json",
+      "order": 8,
+      "title": "Load data (@fetch, @json, @result, @watch)",
+      "summary": "Fetch or load JSON and react to changes.",
+      "content": [
+        { "type": "text", "value": "Use @fetch to call an HTTP URL. Use @json to load local JSON and store it in a variable with @result." },
+        { "type": "code", "language": "html", "value": "<div @fetch=\"'https://jsonplaceholder.typicode.com/users/1'\" @result=\"user\"></div>\n<p @text=\"user?.name\"></p>" },
+        { "type": "tip", "value": "Use @watch to re-run when a variable changes. You can watch an expression or a single var." },
+        { "type": "text", "value": "Dynamic URLs use braces: /users/{userId}. When userId changes, fetch again." },
+        { "type": "code", "language": "html", "value": "<init> userId=1 </init>\n<input type=\"number\" @model=\"userId\">\n<div @fetch=\"'https://jsonplaceholder.typicode.com/users/{userId}'\" @result=\"currentUser\" @watch=\"userId\"></div>\n<p @text=\"currentUser?.email\"></p>" }
+      ],
+      "examples": [
+        { "description": "Load course by slug", "code": "<div @json=\"'/courses/css.json'\" @result=\"course\"></div>\n<h3 @text=\"course?.title\"></h3>" },
+        { "description": "Search by input", "code": "<init> q='' </init>\n<input @model=\"q\">\n<div @fetch=\"'https://api.example.com/search?q={q}'\" @result=\"res\" @watch=\"q\"></div>" },
+        { "description": "Watch computed", "code": "<init> a=1; b=2 </init>\n<div @watch=\"a+b => sum=a+b\"></div>\n<p @text=\"sum\"></p>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@json loads:", "options": ["Remote HTML", "JSON into a variable", "CSS"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@result stores:", "options": ["The response value", "A CSS class", "A timer"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Dynamic URL syntax:", "options": ["/users/${id}", "/users/{id}", "/users/(id)"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "@watch re-runs when:", "options": ["Window resizes", "The watched value changes", "A page loads"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "@fetch is best for:", "options": ["Styling", "Loading HTTP data", "Routing"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l9",
+      "slug": "array-ops",
+      "order": 9,
+      "title": "Transform arrays (@source, @map, @filter, @reduce, @initial)",
+      "summary": "Use helpers to transform data in a reactive way.",
+      "content": [
+        { "type": "text", "value": "@source gives the input array. Then @map/@filter/@reduce create new arrays or values and save them with @result." },
+        { "type": "code", "language": "html", "value": "<init> numbers=[1,2,3,4] </init>\n<div @source=\"numbers\" @map=\"item*item\" @result=\"squares\"></div>\n<p @text=\"squares.join(', ')\"></p>" },
+        { "type": "tip", "value": "Use @initial with @reduce to set the starting value." },
+        { "type": "text", "value": "Combine filters and maps as needed." },
+        { "type": "code", "language": "html", "value": "<div @source=\"numbers\" @filter=\"item%2===0\" @result=\"even\"></div>\n<div @source=\"numbers\" @reduce=\"acc,item => acc+item\" @initial=\"0\" @result=\"sum\"></div>" }
+      ],
+      "examples": [
+        { "description": "Filter by text", "code": "<init> q=''; users=[{name:'Bob'},{name:'Ana'}] </init>\n<input @model=\"q\">\n<div @source=\"users\" @filter=\"item.name.toLowerCase().includes(q.toLowerCase())\" @result=\"matches\"></div>\n<li @for=\"u in matches\" @key=\"u.name\">{{u.name}}</li>" },
+        { "description": "Map to labels", "code": "<init> nums=[1,2,3] </init>\n<div @source=\"nums\" @map=\"'No.'+item\" @result=\"labels\"></div>\n<p @text=\"labels.join(' ')\"></p>" },
+        { "description": "Reduce to product", "code": "<init> nums=[2,3,4] </init>\n<div @source=\"nums\" @reduce=\"(acc,item)=>acc*item\" @initial=\"1\" @result=\"prod\"></div>\n<p @text=\"prod\"></p>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@source is used to:", "options": ["Set CSS", "Provide the input array", "Navigate"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@map returns:", "options": ["Only booleans", "A transformed item", "Only numbers"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "@filter keeps items where function:", "options": ["Returns true", "Throws error", "Is undefined"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "@reduce builds:", "options": ["A single value", "A CSS file", "A route"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "@initial sets:", "options": ["The first item of array", "The starting accumulator", "The page index"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l10",
+      "slug": "components",
+      "order": 10,
+      "title": "Reusable components (<component @src>)",
+      "summary": "Load external HTML as components and pass props.",
+      "content": [
+        { "type": "text", "value": "Use <component @src=\"file.html\"></component> to include reusable HTML. Components inherit state and can receive props via attributes starting with prop-." },
+        { "type": "code", "language": "html", "value": "<init> user={name:'John', email:'john@example.com'} </init>\n<component @src=\"/components/users.html\" prop-name=\"user.name\" prop-email=\"user.email\"></component>" },
+        { "type": "tip", "value": "Components can have their own <init> block. Loaded content is cached for performance." },
+        { "type": "text", "value": "You can nest components and load them conditionally." },
+        { "type": "code", "language": "html", "value": "<div @if=\"user\">\n  <component @src=\"/components/users.html\" prop-name=\"user.name\"></component>\n</div>" }
+      ],
+      "examples": [
+        { "description": "Card component", "code": "<init> p={title:'Card',body:'Hello'} </init>\n<component @src=\"/components/course-card.html\" prop-title=\"p.title\" prop-body=\"p.body\"></component>" },
+        { "description": "List item component", "code": "<init> items=[{t:'A'},{t:'B'}] </init>\n<li @for=\"it in items\" @key=\"it.t\">\n  <component @src=\"/components/sections/lesson-ltem.html\" prop-title=\"it.t\"></component>\n</li>" },
+        { "description": "Conditional include", "code": "<init> show=true </init>\n<div @if=\"show\">\n  <component @src=\"footer.html\"></component>\n</div>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Components are loaded via:", "options": ["<use>", "<component @src=\"...\">", "<import>"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Props are passed using:", "options": ["class=", "prop- attributes", "data- attributes only"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Components inherit:", "options": ["Parent state", "No state", "Only CSS"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "You can load components:", "options": ["Dynamically", "Only on page load", "Only in header"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Caching is used to:", "options": ["Improve performance", "Block updates", "Hide errors"], "answer": 0 }
+      ]
+    },
+    {
+      "id": "l11",
+      "slug": "router",
+      "order": 11,
+      "title": "SPA routing (@page, @link, _params)",
+      "summary": "Create multi-view pages without reload.",
+      "content": [
+        { "type": "text", "value": "@page marks a section as a route. @link navigates without reloading. currentPage/_params are available." },
+        { "type": "code", "language": "html", "value": "<a @link=\"/home\">Home</a> | <a @link=\"/about\">About</a>\n<div @page=\"/home\">Home page</div>\n<div @page=\"/about\">About page</div>" },
+        { "type": "tip", "value": "Use @page=\"\" for a default/home page. History is synced with the URL." },
+        { "type": "text", "value": "Use _params to read dynamic segments or query parts in routes when applicable." },
+        { "type": "code", "language": "html", "value": "<div @page=\"/lesson/{course}/{id}\">\n  <p>Course: <span @text=\"_params[0]\"></span></p>\n  <p>Lesson: <span @text=\"_params[1]\"></span></p>\n</div>" }
+      ],
+      "examples": [
+        { "description": "Tabs via router", "code": "<a @link=\"/tab/one\">One</a> <a @link=\"/tab/two\">Two</a>\n<div @page=\"/tab/one\">Tab One</div>\n<div @page=\"/tab/two\">Tab Two</div>" },
+        { "description": "Default page", "code": "<div @page=\"\">Welcome</div>\n<a @link=\"/home\">Go Home</a>\n<div @page=\"/home\">Home content</div>" },
+        { "description": "Dynamic params", "code": "<div @page=\"/u/{uid}\">User id: <b @text=\"_params[0]\"></b></div>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@link does:", "options": ["Reloads page", "Navigates SPA without reload", "Adds style"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@page shows when:", "options": ["URL matches the value", "A button is clicked", "A timer ends"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Default page uses:", "options": ["@page=\"default\"", "@page=\"\"", "@page=\"/\" only"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "_params contains:", "options": ["CSS variables", "Route parts/parameters", "Cookies"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Router syncs with:", "options": ["Clipboard", "Browser history and URL", "CSS files"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l12",
+      "slug": "files",
+      "order": 12,
+      "title": "Work with files (@file, @files)",
+      "summary": "Read files as base64 strings and store them in state.",
+      "content": [
+        { "type": "text", "value": "@file reads a single file and stores its base64 content in a variable. @files stores multiple files in an array (it also appends if array exists)." },
+        { "type": "code", "language": "html", "value": "<init> pic=null; gallery=[] </init>\n<input type=\"file\" @file=\"pic\">\n<input type=\"file\" multiple @files=\"gallery\">" },
+        { "type": "tip", "value": "You can preview images by binding the resulting data URL to src='{{...}}'." },
+        { "type": "text", "value": "Combine with @show to preview only when present." },
+        { "type": "code", "language": "html", "value": "<img @if=\"pic\" src=\"{{pic}}\" alt=\"preview\" style=\"max-width:200px\">" }
+      ],
+      "examples": [
+        { "description": "Single preview", "code": "<init> pic=null </init>\n<input type=\"file\" @file=\"pic\">\n<img @if=\"pic\" src=\"{{pic}}\">" },
+        { "description": "Gallery preview", "code": "<init> gallery=[] </init>\n<input type=\"file\" multiple @files=\"gallery\">\n<img @for=\"g in gallery\" @key=\"g\" src=\"{{g}}\" style=\"max-width:100px\">" },
+        { "description": "Append more files", "code": "<init> gallery=['data1'] </init>\n<input type=\"file\" multiple @files=\"gallery\">\n<p>Count: <span @text=\"gallery.length\"></span></p>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@file stores:", "options": ["A number", "Base64 string into a var", "CSS rules"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@files stores:", "options": ["A single string", "Multiple files into an array", "Only filenames"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "To preview an image use:", "options": ["src='{{...}}'", "@text", "@page"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "You can combine with:", "options": ["@show to toggle preview", "@reduce", "@link"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Existing array + @files will:", "options": ["Overwrite always", "Append to array", "Throw error"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l13",
+      "slug": "advanced-flow-and-debug",
+      "order": 13,
+      "title": "Advanced flow, animation, and debug (@wait, @then, @finally, @animate, @log, @state)",
+      "summary": "Sequence actions, animate entries, and debug state.",
+      "content": [
+        { "type": "text", "value": "Use @wait to delay actions, and chain with @then and @finally. Useful when multiple async tasks are coordinated." },
+        { "type": "code", "language": "html", "value": "<button @wait=\"1000\" @then=\"done=true\" @finally=\"log=(log||[]);log.push('finished')\">Start</button>\n<p @text=\"done ? 'Done' : 'Working...'\"></p>" },
+        { "type": "tip", "value": "@animate can animate element on enter/update. Define CSS animations and refer by name." },
+        { "type": "text", "value": "Use @log to print debug info to console. Use @state to render the whole global state for inspection." },
+        { "type": "code", "language": "html", "value": "<div @state></div>\n<div @log>Check console</div>\n<div @if=\"showBox\" @animate=\"fadeIn\">Animated box</div>" }
+      ],
+      "examples": [
+        { "description": "Then/Finally chain", "code": "<init> steps=[] </init>\n<button @wait=\"500\" @then=\"steps.push('step1')\" @finally=\"steps.push('done')\">Run</button>\n<li @for=\"s in steps\" @key=\"s\">{{s}}</li>" },
+        { "description": "CSS fade in", "code": "<style>\n@keyframes fadeIn { from{opacity:0} to{opacity:1} }\n.fadeIn { animation: fadeIn 0.5s ease-in; }\n</style>\n<div @if=\"true\" @animate=\"fadeIn\">Hello</div>" },
+        { "description": "Show state", "code": "<div @state></div>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "@wait is used to:", "options": ["Load CSS", "Delay before next step", "Create routes"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "@then runs when:", "options": ["After wait/completion", "On page load", "On mouseover"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "@finally is:", "options": ["Optional final step", "A CSS property", "A router hook"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "@log prints:", "options": ["Only errors", "Directive info/state to console", "Images"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "@state shows:", "options": ["The full reactive state", "Only CSS", "Only route"], "answer": 0 }
+      ]
+    }
+  ]
+}

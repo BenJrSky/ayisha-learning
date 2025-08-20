@@ -1,0 +1,420 @@
+{
+  "id": "course_html_mastery",
+  "slug": "html-from-zero-to-pro",
+  "title": "HTML",
+  "subtitle": "Start from zero and build real pages with clear words and many tiny examples.",
+  "category": "Development",
+  "level": "Beginner to Advanced",
+  "hours": 26,
+  "language": "en",
+  "lastUpdated": "2025-08-20",
+  "tags": ["HTML", "Semantics", "Forms", "Accessibility", "SEO"],
+
+  "hero": {
+    "image": "images/img_2.jpg",
+    "logo": "ayisha-logo-black.png",
+    "ctaText": "Start Learning",
+    "ctaUrl": "enroll.html"
+  },
+
+  "overview": "HTML is the language of web pages. It gives structure and meaning: titles, text, images, forms, and more. We start from zero, explain every new word, and use small, clear steps. Anyone age 6+ can follow and build pages with confidence.",
+  "content": "You will learn how to write clean, semantic HTML. We will cover the page skeleton, headings and text, links, images and media, semantic layout (header, nav, main, footer), forms, tables, accessibility basics, SEO metadata, responsive images, and best practices.",
+  "prerequisites": [
+    "No coding experience required",
+    "Nice to have: curiosity and a text editor"
+  ],
+  "outcomes": [
+    "Create valid HTML pages with a correct head and body",
+    "Use semantic elements to structure content and help screen readers",
+    "Build accessible forms with labels, input types, and built-in validation",
+    "Add images, video, and audio with proper alt text and captions",
+    "Use metadata for SEO and social sharing, and ship fast, friendly pages"
+  ],
+
+  "pricing": { "free": true, "price": 0, "currency": "EUR" },
+
+  "instructor": {
+    "name": "Ayisha Team",
+    "avatar": "images/img_1.jpg",
+    "bio": "Frontend engineers and accessibility advocates.",
+    "links": [
+      { "type": "site", "url": "https://example.com" }
+    ]
+  },
+
+  "lessons": [
+    {
+      "id": "l0",
+      "slug": "what-is-html",
+      "order": 0,
+      "title": "What is HTML? Your First Page",
+      "minutes": 35,
+      "summary": "Learn what HTML is, the page skeleton, and how to open a page in the browser.",
+      "content": [
+        { "type": "text", "value": "HTML means HyperText Markup Language. It tells the browser what each part of the page is: a heading, a paragraph, an image, a link, and more." },
+        { "type": "code", "language": "html", "value": "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>My First Page</title>\n  </head>\n  <body>\n    <h1>Hello, HTML!</h1>\n    <p>This is my first paragraph.</p>\n  </body>\n</html>" },
+        { "type": "tip", "value": "Use <!doctype html> to tell the browser to use modern HTML mode." },
+
+        { "type": "text", "value": "An element usually has an opening tag and a closing tag. The content goes between them. Example: <p>content</p>." },
+        { "type": "code", "language": "html", "value": "<h1>Title</h1>\n<p>This is text inside a paragraph element.</p>" },
+        { "type": "tip", "value": "Tags are case-insensitive in HTML, but write them in lowercase for consistency." },
+
+        { "type": "text", "value": "Attributes add extra info to elements. They live inside the opening tag, like href on a link or src on an image." },
+        { "type": "code", "language": "html", "value": "<a href=\"https://example.com\">Visit Example</a>\n<img src=\"images/img_1.jpg\" alt=\"A beautiful landscape\">" },
+        { "type": "tip", "value": "Always add alt to images. It helps people using screen readers and shows text if the image fails." }
+      ],
+      "examples": [
+        { "description": "Minimal HTML document", "code": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Mini</title></head><body><h1>Hi</h1></body></html>" },
+        { "description": "Paragraphs and headings", "code": "<h1>Main Title</h1><h2>Subtitle</h2><p>Short text.</p>" },
+        { "description": "A link that opens a new tab", "code": "<a href=\"https://example.com\" target=\"_blank\" rel=\"noopener\">Open Example</a>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "HTML is used to:", "options": ["Style the page", "Structure the page content", "Run server code"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Where do you put the visible content?", "options": ["In the <head>", "In the <body>", "In the <meta> tag"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "The attribute for a link’s destination is:", "options": ["src", "href", "alt"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "The correct modern doctype is:", "options": ["<!DOCTYPE HTML>", "<!doctype html>", "<!Doctype Html5>"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Why write alt on images?", "options": ["For decorations only", "To describe the image for screen readers", "To add CSS"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l1",
+      "slug": "text-and-links",
+      "order": 1,
+      "title": "Headings, Text, Lists, and Links",
+      "minutes": 40,
+      "summary": "Use headings for structure, paragraphs for text, lists for items, and links for navigation.",
+      "content": [
+        { "type": "text", "value": "Headings create a clear outline. Use one <h1> per page for the main title, then <h2>, <h3>, and so on for sections and subsections." },
+        { "type": "code", "language": "html", "value": "<h1>My Blog</h1>\n<h2>First Post</h2>\n<p>Hello world!</p>" },
+        { "type": "tip", "value": "Do not pick headings by size. Pick by meaning: levels form a logical structure." },
+
+        { "type": "text", "value": "Inline text tags add meaning: <strong> for strong importance, <em> for emphasis, <code> for code, <mark> to highlight." },
+        { "type": "code", "language": "html", "value": "<p><strong>Warning:</strong> save your work.</p>\n<p>Press <code>Ctrl</code> + <code>S</code>.</p>" },
+        { "type": "tip", "value": "Use <strong> and <em> for meaning, not just for styles." },
+
+        { "type": "text", "value": "Lists group items. Use <ul> for bullets and <ol> for numbered steps. Each item goes in an <li> element." },
+        { "type": "code", "language": "html", "value": "<h2>Shopping List</h2>\n<ul>\n  <li>Milk</li>\n  <li>Bread</li>\n  <li>Eggs</li>\n</ul>" },
+        { "type": "tip", "value": "Nest lists for subitems. Keep nesting shallow for readability." },
+
+        { "type": "text", "value": "Links connect pages. Use absolute URLs for other sites and relative URLs for pages inside your site." },
+        { "type": "code", "language": "html", "value": "<a href=\"/about.html\">About Us</a>\n<a href=\"https://news.example\">News</a>" },
+        { "type": "tip", "value": "If you open a new tab, add rel=\"noopener\" to improve security and performance." }
+      ],
+      "examples": [
+        { "description": "Article outline with headings", "code": "<h1>Travel Guide</h1><h2>Food</h2><p>Yummy.</p><h2>Places</h2><p>Nice.</p>" },
+        { "description": "Bulleted and numbered lists", "code": "<ul><li>Blue</li><li>Green</li></ul><ol><li>One</li><li>Two</li></ol>" },
+        { "description": "Inline meaning tags", "code": "<p><em>Note:</em> Bring water. <mark>It will be hot.</mark></p>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Use <h1> for:", "options": ["The main page title", "Any big text", "A footer note"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "<em> is used for:", "options": ["Emphasis", "A link", "A table"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "Each list item lives in:", "options": ["<li>", "<ul>", "<p>"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Which is a relative URL?", "options": ["/contact.html", "https://example.com", "mailto:team@example.com"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "When opening a new tab, add:", "options": ["rel=\"noopener\"", "style=\"color:red\"", "alt=\"open\""], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l2",
+      "slug": "images-and-media",
+      "order": 2,
+      "title": "Images, Audio, and Video",
+      "minutes": 40,
+      "summary": "Add images with alt text, use figure/figcaption, and embed audio/video with captions.",
+      "content": [
+        { "type": "text", "value": "Use <img> for images. Always include alt. The alt text should say what the image means or shows." },
+        { "type": "code", "language": "html", "value": "<img src=\"images/img_2.jpg\" alt=\"Sunset over the sea\">" },
+        { "type": "tip", "value": "If the image is decorative only, use empty alt (alt=\"\")." },
+
+        { "type": "text", "value": "Use <figure> to group an image and its caption. Put the caption in <figcaption>." },
+        { "type": "code", "language": "html", "value": "<figure>\n  <img src=\"images/img_3.jpg\" alt=\"A small boat on a lake\">\n  <figcaption>Morning calm on the lake</figcaption>\n</figure>" },
+        { "type": "tip", "value": "Captions help explain context. Keep them short and clear." },
+
+        { "type": "text", "value": "Audio and video can have multiple sources. Add controls so users can play/pause. Use <track> for captions (subtitles)." },
+        { "type": "code", "language": "html", "value": "<video controls width=\"480\">\n  <source src=\"video.mp4\" type=\"video/mp4\">\n  <track kind=\"subtitles\" src=\"subs.vtt\" srclang=\"en\" label=\"English\">\n  Sorry, your browser doesn't support embedded videos.\n</video>" },
+        { "type": "tip", "value": "Always offer captions or transcripts for accessibility." }
+      ],
+      "examples": [
+        { "description": "Decorative image with empty alt", "code": "<img src=\"images/img_1.jpg\" alt=\"\">" },
+        { "description": "Audio with controls", "code": "<audio controls><source src=\"song.mp3\" type=\"audio/mpeg\"></audio>" },
+        { "description": "Video with caption track", "code": "<video controls><source src=\"clip.mp4\" type=\"video/mp4\"><track kind=\"captions\" src=\"clip.vtt\" srclang=\"en\"></video>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "alt is used to:", "options": ["Show CSS", "Describe an image", "Embed a script"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Where does the image caption go?", "options": ["<caption>", "<figcaption>", "<legend>"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Which element adds subtitles to video?", "options": ["<source>", "<track>", "<code>"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "If an image is purely decorative:", "options": ["Use alt=\"\"", "Use alt=\"decorative image\"", "Omit alt"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "To include two formats for video, you can:", "options": ["Add two <source> elements", "Use <img>", "Use <audio>"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l3",
+      "slug": "semantic-structure",
+      "order": 3,
+      "title": "Semantic Structure and Landmarks",
+      "minutes": 45,
+      "summary": "Use header, nav, main, section, article, aside, and footer to give meaning and improve accessibility.",
+      "content": [
+        { "type": "text", "value": "Semantic elements tell both browsers and assistive tech what a block means, not just how it looks." },
+        { "type": "code", "language": "html", "value": "<header>Site header</header>\n<nav>Main navigation</nav>\n<main>\n  <article>\n    <h1>News Title</h1>\n    <p>Story...</p>\n  </article>\n</main>\n<footer>Site footer</footer>" },
+        { "type": "tip", "value": "Use one <main> per page and only for the main content." },
+
+        { "type": "text", "value": "<section> groups related content under a heading. <article> can stand on its own (like a blog post or card)." },
+        { "type": "code", "language": "html", "value": "<section>\n  <h2>Features</h2>\n  <article>\n    <h3>Fast</h3>\n    <p>Loads quickly.</p>\n  </article>\n</section>" },
+        { "type": "tip", "value": "Each section should usually start with a heading." },
+
+        { "type": "text", "value": "Use <aside> for side info (like related links). Use <header> and <footer> inside articles too if it helps meaning." },
+        { "type": "code", "language": "html", "value": "<article>\n  <header><h2>Guide</h2></header>\n  <p>Body...</p>\n  <aside>See also: <a href=\"#\">Another guide</a></aside>\n  <footer>Author: Ana</footer>\n</article>" },
+        { "type": "tip", "value": "Avoid div soup. Prefer semantic tags when they fit." }
+      ],
+      "examples": [
+        { "description": "One main landmark", "code": "<main><h1>Welcome</h1><p>Intro</p></main>" },
+        { "description": "Article inside a section", "code": "<section><h2>Blog</h2><article><h3>Post</h3><p>Text</p></article></section>" },
+        { "description": "Aside with related links", "code": "<aside><h2>Related</h2><ul><li><a href=\"#\">Link</a></li></ul></aside>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "<main> should appear:", "options": ["Multiple times", "Once per page", "Never"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Use <article> when:", "options": ["Content can stand alone", "For any layout box", "Only for ads"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "<section> should usually have:", "options": ["A heading", "A style attribute", "Only images"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "<aside> is for:", "options": ["Main content", "Side info or tangential content", "Navigation only"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Semantic HTML helps:", "options": ["Only SEO", "Both accessibility and SEO", "Only styles"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l4",
+      "slug": "forms-basics",
+      "order": 4,
+      "title": "Forms: Basics and Labels",
+      "minutes": 50,
+      "summary": "Build simple forms with proper labels, names, and input types.",
+      "content": [
+        { "type": "text", "value": "A form groups inputs to send data. The action is the URL, and the method is usually GET or POST." },
+        { "type": "code", "language": "html", "value": "<form action=\"/subscribe\" method=\"post\">\n  <label for=\"email\">Email</label>\n  <input id=\"email\" name=\"email\" type=\"email\" required>\n  <button type=\"submit\">Subscribe</button>\n</form>" },
+        { "type": "tip", "value": "Always connect <label> with its input using for and id for better accessibility." },
+
+        { "type": "text", "value": "Use the right input type to get built-in validation and better keyboards on phones." },
+        { "type": "code", "language": "html", "value": "<input type=\"email\" required>\n<input type=\"password\" required>\n<input type=\"number\" min=\"0\" max=\"10\">" },
+        { "type": "tip", "value": "Add name attributes. Without name, the input’s value won’t be submitted." },
+
+        { "type": "text", "value": "Group related controls with <fieldset> and <legend>. Use <textarea> for multi-line text and <select> for options." },
+        { "type": "code", "language": "html", "value": "<fieldset>\n  <legend>Contact</legend>\n  <label>Name <input name=\"name\" required></label>\n  <label>Message <textarea name=\"message\"></textarea></label>\n</fieldset>" },
+        { "type": "tip", "value": "Place help text near the input. Keep labels short and clear." }
+      ],
+      "examples": [
+        { "description": "Checkbox and radio", "code": "<label><input type=\"checkbox\" name=\"tos\" required> I agree</label>\n<label><input type=\"radio\" name=\"size\" value=\"s\"> Small</label>" },
+        { "description": "Select with options", "code": "<label>Country\n  <select name=\"country\">\n    <option>Italy</option>\n    <option>USA</option>\n  </select>\n</label>" },
+        { "description": "Textarea with placeholder", "code": "<textarea name=\"notes\" placeholder=\"Write here...\"></textarea>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "The attribute that binds a label to an input is:", "options": ["href", "for", "src"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Which type gives built-in email validation?", "options": ["text", "email", "password"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Without a name attribute, an input’s value:", "options": ["Is submitted", "Is ignored on submit", "Breaks the page"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "<fieldset> is used to:", "options": ["Group related controls", "Change styles", "Add images"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Good labels are:", "options": ["Long and complex", "Short and clear", "Hidden always"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l5",
+      "slug": "forms-validation-and-submit",
+      "order": 5,
+      "title": "Forms: Validation and Submit",
+      "minutes": 50,
+      "summary": "Use HTML validation attributes and understand GET vs POST basics.",
+      "content": [
+        { "type": "text", "value": "Validation helps users fix mistakes before sending data. HTML has built-in checks like required, minlength, maxlength, min, max, and pattern." },
+        { "type": "code", "language": "html", "value": "<input name=\"username\" required minlength=\"3\" maxlength=\"16\">\n<input name=\"age\" type=\"number\" min=\"0\" max=\"120\">\n<input name=\"zip\" pattern=\"\\d{5}\" placeholder=\"12345\">" },
+        { "type": "tip", "value": "Use title on inputs with pattern to explain the expected format." },
+
+        { "type": "text", "value": "The form method decides how data is sent. GET puts data in the URL (good for search). POST sends data in the request body (good for forms)." },
+        { "type": "code", "language": "html", "value": "<form action=\"/search\" method=\"get\">\n  <label>Query <input name=\"q\"></label>\n  <button type=\"submit\">Search</button>\n</form>" },
+        { "type": "tip", "value": "For sensitive data, use POST. Do not put secrets in URLs." },
+
+        { "type": "text", "value": "You can tell the browser not to validate with novalidate, or per input with formnovalidate on a submit button." },
+        { "type": "code", "language": "html", "value": "<form novalidate>\n  <input name=\"email\" type=\"email\">\n  <button type=\"submit\">Submit without checks</button>\n</form>" },
+        { "type": "tip", "value": "Prefer keeping validation on. It helps users and reduces errors." }
+      ],
+      "examples": [
+        { "description": "Pattern with hint", "code": "<input name=\"code\" pattern=\"[A-Z]{3}-\\d{3}\" title=\"Example: ABC-123\">" },
+        { "description": "GET vs POST forms", "code": "<form action=\"/search\" method=\"get\">...</form>\n<form action=\"/create\" method=\"post\">...</form>" },
+        { "description": "Disable validation on a secondary submit", "code": "<button type=\"submit\" formnovalidate>Save Draft</button>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Which shows a required error by default?", "options": ["required", "alt", "rel"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Use GET when:", "options": ["Sending a search query", "Sending a password", "Uploading files"], "answer": 0 },
+        { "id": "q3", "type": "single", "prompt": "pattern uses:", "options": ["CSS rules", "Regular expressions", "SVG paths"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "To turn off validation on a button:", "options": ["novalidate on form", "formnovalidate on the button", "hidden on input"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "POST is better when:", "options": ["You want data in URL", "Data is sensitive", "You don’t submit"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l6",
+      "slug": "tables",
+      "order": 6,
+      "title": "Tables for Data",
+      "minutes": 40,
+      "summary": "Create accessible tables with headers, captions, and scopes.",
+      "content": [
+        { "type": "text", "value": "Tables are for tabular data, not for layout. Use <table> with <thead>, <tbody>, and <tfoot> when needed." },
+        { "type": "code", "language": "html", "value": "<table>\n  <caption>Monthly Sales</caption>\n  <thead><tr><th scope=\"col\">Month</th><th scope=\"col\">Total</th></tr></thead>\n  <tbody>\n    <tr><th scope=\"row\">Jan</th><td>$100</td></tr>\n    <tr><th scope=\"row\">Feb</th><td>$120</td></tr>\n  </tbody>\n</table>" },
+        { "type": "tip", "value": "Use <caption> to describe the table. It helps everyone, including screen reader users." },
+
+        { "type": "text", "value": "scope on <th> tells which cells the header relates to (col or row). This improves screen reader navigation." },
+        { "type": "code", "language": "html", "value": "<th scope=\"col\">Price</th>\n<th scope=\"row\">Total</th>" },
+        { "type": "tip", "value": "Avoid complex merges unless needed. If you use colspan/rowspan, test with screen readers." }
+      ],
+      "examples": [
+        { "description": "Basic table with header", "code": "<table><thead><tr><th>City</th><th>Pop</th></tr></thead><tbody><tr><th scope=\"row\">Rome</th><td>2.8M</td></tr></tbody></table>" },
+        { "description": "Captioned table", "code": "<table><caption>Scores</caption><tbody><tr><th scope=\"row\">Ana</th><td>9</td></tr></tbody></table>" },
+        { "description": "Column and row headers", "code": "<table><thead><tr><th scope=\"col\">Name</th><th scope=\"col\">Age</th></tr></thead><tbody><tr><th scope=\"row\">Lee</th><td>12</td></tr></tbody></table>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Tables are for:", "options": ["Page layout", "Tabular data", "Styling only"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Use <caption> to:", "options": ["Style the table", "Describe the table", "Merge cells"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "scope=\"col\" means:", "options": ["Header for a column", "Header for a row", "No effect"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "For complex merges you should:", "options": ["Avoid testing", "Test with screen readers", "Use only <td>"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "thead, tbody, tfoot help:", "options": ["Accessibility and structure", "Only colors", "Only margins"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l7",
+      "slug": "seo-and-metadata",
+      "order": 7,
+      "title": "SEO and Page Metadata",
+      "minutes": 40,
+      "summary": "Use proper titles, descriptions, social meta tags, and language to help search and sharing.",
+      "content": [
+        { "type": "text", "value": "The <title> is the page title in the browser and search results. Make it short and clear." },
+        { "type": "code", "language": "html", "value": "<head>\n  <title>Best Pasta Recipes</title>\n</head>" },
+        { "type": "tip", "value": "Keep titles under ~60 characters when possible." },
+
+        { "type": "text", "value": "Add a meta description to summarize the page. It may appear in search results." },
+        { "type": "code", "language": "html", "value": "<meta name=\"description\" content=\"Easy pasta recipes with simple ingredients.\">" },
+        { "type": "tip", "value": "Use one <h1> in the body for the main topic. Keep content relevant to the title." },
+
+        { "type": "text", "value": "Use Open Graph and Twitter Card tags for social sharing previews (title, description, image)." },
+        { "type": "code", "language": "html", "value": "<meta property=\"og:title\" content=\"Best Pasta Recipes\">\n<meta property=\"og:description\" content=\"Simple and tasty.\">\n<meta property=\"og:image\" content=\"https://example.com/pasta.jpg\">\n<meta name=\"twitter:card\" content=\"summary_large_image\">" },
+        { "type": "tip", "value": "Set <html lang=\"en\"> to help screen readers and search engines." }
+      ],
+      "examples": [
+        { "description": "Basic head block", "code": "<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Home</title></head>" },
+        { "description": "Social meta", "code": "<meta property=\"og:title\" content=\"Guide\"><meta property=\"og:image\" content=\"https://example.com/cover.jpg\">" },
+        { "description": "Language attribute", "code": "<html lang=\"en\">" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "The <title> appears:", "options": ["In the body", "In the browser tab and search results", "Only in CSS"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "A good meta description:", "options": ["Is very long", "Summarizes the page clearly", "Contains only keywords"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Open Graph tags help with:", "options": ["Server performance", "Social sharing previews", "Form validation"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Set <html lang=\"en\"> to help:", "options": ["Only CSS", "Screen readers and SEO", "Nothing"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Which tag holds the meta description?", "options": ["<meta name=\"description\">", "<h1>", "<footer>"], "answer": 0 }
+      ]
+    },
+
+    {
+      "id": "l8",
+      "slug": "accessibility-basics",
+      "order": 8,
+      "title": "Accessibility Basics (a11y)",
+      "minutes": 45,
+      "summary": "Make pages usable for everyone: labels, alt text, landmarks, focus, and ARIA basics.",
+      "content": [
+        { "type": "text", "value": "Accessibility means everyone can use your site. Start with semantic HTML: it gives roles and behavior for free." },
+        { "type": "code", "language": "html", "value": "<main>\n  <h1>Contact Us</h1>\n  <p>We are here to help.</p>\n</main>" },
+        { "type": "tip", "value": "Prefer native elements over custom ones. They handle focus and keyboard by default." },
+
+        { "type": "text", "value": "Every input needs a programmatic label. Use <label for> or wrap the input, and ensure a matching id." },
+        { "type": "code", "language": "html", "value": "<label for=\"email\">Email</label>\n<input id=\"email\" name=\"email\" type=\"email\" required>" },
+        { "type": "tip", "value": "Place error messages near the input and connect them using aria-describedby if needed." },
+
+        { "type": "text", "value": "Use alt text. Provide visible focus styles with CSS. Keep tab order logical. Avoid tabindex > 0 unless you know why." },
+        { "type": "code", "language": "html", "value": "<a href=\"#main\" class=\"skip-link\">Skip to content</a>\n<main id=\"main\">...</main>" },
+        { "type": "tip", "value": "Add a skip link as the first focusable element so keyboard users can jump to main content." }
+      ],
+      "examples": [
+        { "description": "Wrapped label", "code": "<label>Name <input name=\"name\" required></label>" },
+        { "description": "Descriptive alt", "code": "<img src=\"chart.png\" alt=\"Bar chart showing sales by month\">" },
+        { "description": "Skip link", "code": "<a class=\"skip-link\" href=\"#main\">Skip to content</a>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "The best first step in a11y is:", "options": ["Custom widgets", "Semantic HTML", "Remove labels"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Inputs should have:", "options": ["A style attribute", "A label", "tabindex=5"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "A skip link helps:", "options": ["Scroll animation", "Keyboard users reach main content", "Only mouse users"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Avoid:", "options": ["Meaningful alt text", "Tab order chaos", "Labels"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "ARIA should:", "options": ["Replace semantics", "Supplement semantics when needed", "Be ignored"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l9",
+      "slug": "responsive-images",
+      "order": 9,
+      "title": "Responsive Images and Performance",
+      "minutes": 45,
+      "summary": "Use width/height, loading=lazy, srcset/sizes, and <picture> for the best image experience.",
+      "content": [
+        { "type": "text", "value": "Give images width and height attributes to reserve space and reduce layout shift." },
+        { "type": "code", "language": "html", "value": "<img src=\"hero-800.jpg\" alt=\"Mountains\" width=\"800\" height=\"450\">" },
+        { "type": "tip", "value": "Even if CSS scales the image, width/height attributes help the browser plan space." },
+
+        { "type": "text", "value": "Use loading=\"lazy\" for below-the-fold images to speed up the first paint." },
+        { "type": "code", "language": "html", "value": "<img src=\"gallery-1.jpg\" alt=\"Flower\" loading=\"lazy\">" },
+        { "type": "tip", "value": "Do not lazy-load images that are immediately visible when the page opens." },
+
+        { "type": "text", "value": "Use srcset and sizes so the browser can pick the best image for the device." },
+        { "type": "code", "language": "html", "value": "<img\n  src=\"photo-800.jpg\"\n  srcset=\"photo-400.jpg 400w, photo-800.jpg 800w, photo-1200.jpg 1200w\"\n  sizes=\"(max-width: 600px) 90vw, 800px\"\n  alt=\"Beach at sunrise\">" },
+        { "type": "tip", "value": "Keep file sizes small. Prefer modern formats like WebP/AVIF if supported." }
+      ],
+      "examples": [
+        { "description": "Simple lazy image", "code": "<img src=\"pic.jpg\" alt=\"Tree\" loading=\"lazy\">" },
+        { "description": "Picture with format fallback", "code": "<picture>\n  <source type=\"image/avif\" srcset=\"img.avif\">\n  <source type=\"image/webp\" srcset=\"img.webp\">\n  <img src=\"img.jpg\" alt=\"Landscape\">\n</picture>" },
+        { "description": "Srcset with sizes", "code": "<img src=\"a-800.jpg\" srcset=\"a-400.jpg 400w, a-800.jpg 800w\" sizes=\"(max-width: 600px) 90vw, 800px\" alt=\"City\">" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "width/height attributes help:", "options": ["CSS only", "Prevent layout shift", "SEO only"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Use loading=\"lazy\" for:", "options": ["Above-the-fold images", "Below-the-fold images", "Icons only"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "srcset lets the browser choose:", "options": ["A font", "An image size variant", "A CSS file"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "<picture> is useful for:", "options": ["Choosing formats and art direction", "Making tables", "Forms"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Keep images:", "options": ["Huge for quality", "As small as possible while looking good", "Only PNG"], "answer": 1 }
+      ]
+    },
+
+    {
+      "id": "l10",
+      "slug": "embedding-and-scripts",
+      "order": 10,
+      "title": "Embedding Content and Loading Scripts",
+      "minutes": 45,
+      "summary": "Use iframe safely, and load scripts with defer/module for performance.",
+      "content": [
+        { "type": "text", "value": "<iframe> embeds another page. Use sandbox and allow attributes to control what it can do." },
+        { "type": "code", "language": "html", "value": "<iframe src=\"https://example.com\" title=\"Example\"\n        width=\"600\" height=\"400\" loading=\"lazy\"\n        sandbox=\"allow-scripts allow-same-origin\"\n        referrerpolicy=\"no-referrer\">\n</iframe>" },
+        { "type": "tip", "value": "Set a title on iframes. Keep permissions minimal." },
+
+        { "type": "text", "value": "Load scripts with defer so they don’t block HTML parsing. Use type=\"module\" for modern JS and automatic strict mode." },
+        { "type": "code", "language": "html", "value": "<script src=\"app.js\" defer></script>\n<script type=\"module\" src=\"main.js\"></script>" },
+        { "type": "tip", "value": "Place critical scripts near the end of <head> with defer, or before </body> if needed." },
+
+        { "type": "text", "value": "Use rel preconnect or preload for critical resources. Keep third-party embeds as few as possible." },
+        { "type": "code", "language": "html", "value": "<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link rel=\"preload\" as=\"image\" href=\"hero-1200.jpg\">" },
+        { "type": "tip", "value": "Measure performance. Avoid blocking scripts that slow down first paint." }
+      ],
+      "examples": [
+        { "description": "YouTube embed with title", "code": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/xyz\" title=\"Intro Video\" loading=\"lazy\" allowfullscreen></iframe>" },
+        { "description": "Defer script", "code": "<script defer src=\"bundle.js\"></script>" },
+        { "description": "Module script", "code": "<script type=\"module\" src=\"app.mjs\"></script>" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Use sandbox on iframes to:", "options": ["Style the page", "Limit capabilities", "Change fonts"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "defer makes scripts:", "options": ["Block HTML parsing", "Load without blocking and run after parsing", "Load CSS"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "type=\"module\" gives:", "options": ["Old JS only", "Modern modules and strict mode", "CSS modules"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Preconnect helps:", "options": ["DNS/TLS setup earlier", "Bigger images", "Inline styles"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Too many third-party embeds:", "options": ["Always fine", "Can slow and harm privacy", "Always secure"], "answer": 1 }
+      ]
+    }
+  ]
+}

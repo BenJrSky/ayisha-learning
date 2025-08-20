@@ -2,8 +2,8 @@
   <section class="section">
     <h2>Available Courses</h2>
     <div class="courses-grid">
-        <component @src="components/course-card.html" #data="'html'" #uno="'uno'" @scope="course"></component>
-        <component @src="components/course-card.html" #data="'css'" #due="'tre'"  @scope="course"></component>
-        <component @src="components/course-card.html" #data="'ayisha'" #tre="'due'"  @scope="course"></component>
+        <span @for="item in list">
+          <component @src="components/course-card.html" #data="item" @scope="course"></component>
+        </span>
     </div>
   </section>

@@ -1,8 +1,8 @@
 {
   "id": "course_css_mastery",
   "slug": "css-from-zero-to-pro",
-  "title": "CSS — From Zero to Professional",
-  "subtitle": "Learn modern CSS from first principles to advanced, production-grade techniques.",
+  "title": "CSS",
+  "subtitle": "Start from zero and grow step by step with clear words and many small examples.",
   "category": "Development",
   "level": "Beginner to Advanced",
   "hours": 28,
@@ -17,17 +17,19 @@
     "ctaUrl": "enroll.html"
   },
 
-  "overview": "Master CSS step by step. Start with how CSS works, selectors and the cascade, then build solid layouts with the box model, Flexbox and Grid. Learn modern typography and color techniques, responsive design with media and container queries, custom properties, nesting, cascade layers, advanced selectors like :has(), and production performance and accessibility best practices. You’ll finish with a solid mental model and a toolbox to ship scalable, maintainable CSS.",
-  "content": "This course is project-oriented and explanation-heavy. Each lesson combines clear theory, small focused code snippets, and practical tips. Quizzes reinforce concepts from beginner to pro-level, ensuring you understand not just the how, but the why behind CSS decisions.",
-  "prerequisites": ["Basic HTML knowledge (elements, attributes)", "Optional: basic understanding of the browser devtools"],
-  "outcomes": [
-    "Confidently write maintainable CSS with a strong grasp of the cascade, specificity and inheritance",
-    "Build responsive layouts with Flexbox and Grid using modern units and techniques",
-    "Craft accessible, readable interfaces with robust typography and color systems",
-    "Adopt modern CSS features: custom properties, container queries, nesting, cascade layers, and :has()",
-    "Optimize for performance and respect user preferences (reduced motion, dark mode)"
+  "overview": "CSS is the language that changes how a web page looks. We start from zero. We explain every new word the first time we use it. We use short steps, tiny code, and friendly quizzes. Anyone from age 6+ can follow, learn, and have fun.",
+  "content": "We use plain English and very small examples. You will learn colors, text, spacing, layout (Flexbox and Grid), and how to make pages that work on phones and big screens. Each lesson is simple, clear, and builds on what you learned before.",
+  "prerequisites": [
+    "No coding experience needed",
+    "Nice to have: basic HTML (know what a tag is)"
   ],
-
+  "outcomes": [
+    "Understand what CSS is and how to link it to HTML",
+    "Use simple selectors safely (prefer classes)",
+    "Control size and space with the box model",
+    "Make rows and grids with Flexbox and Grid",
+    "Build pages that work well on small and large screens"
+  ],
   "pricing": { "free": true, "price": 0, "currency": "EUR" },
 
   "instructor": {
@@ -44,41 +46,41 @@
       "id": "l0",
       "slug": "css-fundamentals",
       "order": 0,
-      "title": "CSS Fundamentals",
+      "title": "What is CSS? Your first styles",
       "minutes": 40,
-      "summary": "What CSS is, how it connects to HTML, rule syntax, basic selectors, and a first look at the cascade.",
+      "summary": "Learn what CSS is, how to add it to HTML, and how a simple rule works.",
       "content": [
-        { "type": "text", "value": "CSS (Cascading Style Sheets) controls presentation. Keep structure (HTML) separate from style (CSS) to improve reuse, accessibility, and maintainability. You usually link an external stylesheet from your HTML for caching and portability." },
+        { "type": "text", "value": "CSS means Cascading Style Sheets. It tells the browser how things look: colors, size, space, and more. Think of CSS like clothes for your HTML." },
         { "type": "code", "language": "html", "value": "<!-- index.html -->\n<link rel=\"stylesheet\" href=\"styles.css\">\n<h1 class=\"title\">Hello CSS</h1>" },
-        { "type": "tip", "value": "Prefer external stylesheets over inline styles to benefit from caching and clearer separation of concerns." },
+        { "type": "tip", "value": "Keep CSS in a .css file. It is cleaner and easy to reuse on many pages." },
 
-        { "type": "text", "value": "The basic CSS rule shape is: selector { property: value; }. The selector targets elements; declarations set styles. Properties accept specific value types (keywords, lengths, colors)." },
-        { "type": "code", "language": "css", "value": "/* styles.css */\nh1.title { color: #111827; font-size: 2rem; }" },
-        { "type": "tip", "value": "Keep one declaration per line and group related rules to improve readability and diffs." },
+        { "type": "text", "value": "A CSS rule has three parts: selector, property, value. The selector chooses the HTML. The property says what to change. The value says how to change it." },
+        { "type": "code", "language": "css", "value": "h1.title { color: blue; font-size: 2rem; }" },
+        { "type": "tip", "value": "End each declaration with a semicolon ; and put one declaration per line to keep it easy to read." },
 
-        { "type": "text", "value": "Core selectors: type (h1), class (.btn), id (#header). Prefer classes for styling because they scale and avoid specificity traps that ids can create." },
-        { "type": "code", "language": "css", "value": "button.btn { background: #111827; color: white; }\n#header { padding: 1rem; } /* Use sparingly */" },
-        { "type": "tip", "value": "Prefer classes for styling. Use ids for unique anchors or JS hooks only when necessary." },
+        { "type": "text", "value": "Selectors you will use a lot: element (h1), class (.title), id (#main). Prefer classes for styling because they scale better." },
+        { "type": "code", "language": "css", "value": "p.note { background: #fff3cd; }\n#header { padding: 1rem; } /* use id only when something is unique */" },
+        { "type": "tip", "value": "Use classes for style. Use ids only for unique anchors or special hooks." },
 
-        { "type": "text", "value": "Attribute selectors and pseudo-classes target states and attributes. :hover and :focus-visible improve interaction and accessibility; prefer the latter for keyboard users." },
-        { "type": "code", "language": "css", "value": "input[type=\"email\"] { border: 1px solid #cbd5e1; }\nbutton:hover { filter: brightness(1.05); }\nbutton:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }" },
-        { "type": "tip", "value": "Use :focus-visible (not :focus) so mouse users aren’t shown outlines unnecessarily, while keyboard users still get a visible focus indicator." },
+        { "type": "text", "value": "States: we can style states like hover and focus. :focus-visible is great for keyboard users and helps accessibility." },
+        { "type": "code", "language": "css", "value": "button:hover { filter: brightness(1.05); }\nbutton:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }" },
+        { "type": "tip", "value": "Make sure focus is visible. It helps people who use the keyboard to move on the page." },
 
-        { "type": "text", "value": "The cascade decides which rule wins using: importance (!important), origin (user/author/UA), specificity, and source order. Understanding this prevents surprises." },
+        { "type": "text", "value": "The cascade decides which rule wins. Important things that change the result: !important, specificity, and the order of rules. Keep your selectors simple." },
         { "type": "code", "language": "css", "value": "p { color: #111; }\n.article p { color: #334155; }\n.article p.important { color: #000 !important; }" },
-        { "type": "tip", "value": "Avoid !important when possible. Favor good structure, lower specificity, and consistent layering to control priority." }
+        { "type": "tip", "value": "Avoid !important when you can. Good names and simple selectors make CSS easier." }
       ],
       "examples": [
-        { "description": "Linking a stylesheet and styling a heading.", "code": "<link rel=\"stylesheet\" href=\"styles.css\">\n<h1 class=\"title\">Hello</h1>\n/* styles.css */\n.title{color:#111827;font-size:2rem}" },
-        { "description": "Basic selectors: type, class, id.", "code": "h2{margin:0}\n.note{background:#fef3c7}\n#footer{padding:1rem}" },
-        { "description": "Pseudo-classes for accessibility.", "code": "button:focus-visible{outline:2px solid #2563eb;outline-offset:2px}" }
+        { "description": "Link a stylesheet and style a heading", "code": "<link rel=\"stylesheet\" href=\"styles.css\">\n<h1 class=\"title\">Hello</h1>\n/* styles.css */\n.title { color: #111827; font-size: 2rem; }" },
+        { "description": "Basic selectors", "code": "h2 { margin: 0; }\n.note { background: #fef3c7; }\n#footer { padding: 1rem; }" },
+        { "description": "Focus styles for buttons", "code": "button:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }" }
       ],
       "quiz": [
-        { "id": "q1", "type": "single", "prompt": "What does CSS primarily control?", "options": ["Data structure", "Presentation/visual style", "Server behavior"], "answer": 1 },
-        { "id": "q2", "type": "single", "prompt": "Which selector type is generally best for scalable styling?", "options": ["Type selector", "Class selector", "ID selector"], "answer": 1 },
-        { "id": "q3", "type": "single", "prompt": "Which factor is evaluated last in the cascade if all else ties?", "options": ["Specificity", "Importance", "Source order"], "answer": 2 },
-        { "id": "q4", "type": "single", "prompt": "Which pseudo-class should you prefer for keyboard focus states?", "options": [":focus", ":focus-visible", ":hover"], "answer": 1 },
-        { "id": "q5", "type": "single", "prompt": "Where should you typically put your CSS for maintainability?", "options": ["Inline styles", "External stylesheet", "In the HTML head as style blocks only"], "answer": 1 }
+        { "id": "q1", "type": "single", "prompt": "What does CSS control?", "options": ["How the page looks", "Where the site is hosted", "The database"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Which selector is safest for styling many elements?", "options": ["Element (h1)", "Class (.title)", "ID (#header)"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "A CSS rule has:", "options": ["selector, property, value", "file, folder, link", "server, client, API"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Which is better for keyboard users?", "options": [":focus", ":focus-visible", ":hover"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "What helps keep CSS simple?", "options": ["Use many !important", "Use simple selectors and classes", "Put all CSS inline"], "answer": 1 }
       ]
     },
 
@@ -90,25 +92,25 @@
       "minutes": 45,
       "summary": "Understand content, padding, border, margin, box-sizing, margin collapsing, and modern units.",
       "content": [
-        { "type": "text", "value": "Every element is a rectangular box. The box model consists of content, padding, border, and margin. Mastering it is key to predictable spacing and sizing." },
+        { "type": "text", "value": "Every element is a box. A box has four parts: content (the inside), padding (soft space inside), border (a line), and margin (space outside). This helps us control size and space." },
         { "type": "code", "language": "css", "value": ".card { padding: 1rem; border: 2px solid #eab308; margin: 1rem 0; }" },
         { "type": "tip", "value": "Sketch boxes when debugging layout. Visualizing padding/border/margin quickly reveals spacing issues." },
 
-        { "type": "text", "value": "box-sizing: border-box makes width/height include padding and border, simplifying layout math and preventing overflow." },
+        { "type": "text", "value": "box-sizing: border-box is friendly. The width and height include padding and border. Math becomes simple, and boxes do not overflow by surprise." },
         { "type": "code", "language": "css", "value": "*,*::before,*::after{box-sizing:border-box}\n.card{width:300px;padding:1rem;border:2px solid #eab308}" },
-        { "type": "tip", "value": "Set border-box globally to reduce surprises and simplify components across the app." },
+        { "type": "tip", "value": "Set border-box for the whole page. It helps every component." },
 
-        { "type": "text", "value": "Adjacent vertical margins can collapse. This means the larger margin wins instead of adding up. Understanding this avoids unexpected gaps." },
-        { "type": "code", "language": "css", "value": "h1{margin:1rem 0}\nh2{margin:.5rem 0} /* The vertical margin between may collapse to 1rem */" },
-        { "type": "tip", "value": "Use padding on containers (not margin) to create internal spacing that doesn’t collapse with child margins." },
+        { "type": "text", "value": "Vertical margins between blocks can join (collapse). The bigger one wins. They do not add up. Knowing this avoids strange gaps." },
+        { "type": "code", "language": "css", "value": "h1{margin:1rem 0}\nh2{margin:.5rem 0} /* Space may be 1rem, not 1.5rem */" },
+        { "type": "tip", "value": "Use padding inside a container to keep inner spacing stable. Padding does not collapse with children." },
 
-        { "type": "text", "value": "Use the right unit for the job. rem for global typography, em for component-relative spacing, % for fluid containers, ch for character-based measures, and modern viewport units like svh/lvh for mobile viewports." },
+        { "type": "text", "value": "Pick units that fit the job. rem is great for text sizes that respect user settings. em can scale inside a component. % makes things fluid. ch uses character width. svh/lvh help on phones with dynamic bars." },
         { "type": "code", "language": "css", "value": "html{font-size:100%}\nh1{font-size:2.25rem}\n.btn{padding:.75em 1em}\n.hero{min-height:100svh}" },
-        { "type": "tip", "value": "Prefer relative units (rem/em/%) for accessibility and responsiveness; avoid locking layouts with px everywhere." },
+        { "type": "tip", "value": "Prefer relative units (rem, em, %) so your UI adapts nicely." },
 
-        { "type": "text", "value": "Logical properties adapt to writing modes and locales. Prefer inline/block logical margins/paddings over left/right/top/bottom for internationalized UIs." },
+        { "type": "text", "value": "Logical properties use words like block and inline. They work better for different languages and writing directions (like right-to-left)." },
         { "type": "code", "language": "css", "value": ".panel{padding-block:1rem;padding-inline:1.25rem;margin-block:1rem;border-radius:12px}" },
-        { "type": "tip", "value": "Use logical properties (margin-inline, padding-block, inset-inline) to support RTL and vertical writing modes effortlessly." }
+        { "type": "tip", "value": "Use margin-inline, padding-block, and inset-inline to be friendly to all languages." }
       ],
       "examples": [
         { "description": "Global border-box reset.", "code": "*,*::before,*::after{box-sizing:border-box}" },
@@ -346,7 +348,7 @@
 
         { "type": "text", "value": "Align along the main axis with justify-content and along the cross axis with align-items. align-content acts on the multi-line container when wrapping occurs." },
         { "type": "code", "language": "css", "value": ".toolbar{display:flex;justify-content:space-between;align-items:center}" },
-        { "type": "tip", "value": "Use place-content and place-items as shorthands for pairs of align/justify properties when it improves clarity." },
+        { "type": "tip", "value": "Shorthands like place-content can be handy." },
 
         { "type": "text", "value": "Use auto margins to push items apart in a row. They absorb free space on the main axis, enabling flexible separators without extra wrappers." },
         { "type": "code", "language": "css", "value": ".nav{display:flex;gap:1rem}\n.nav .spacer{margin-inline-start:auto}" },
@@ -383,7 +385,7 @@
       "content": [
         { "type": "text", "value": "Positioning modes change how elements are placed. relative offsets without removing from flow; absolute removes from flow and positions against the nearest positioned ancestor." },
         { "type": "code", "language": "css", "value": ".box{position:relative}\n.badge{position:absolute;inset-inline-end:.5rem;inset-block-start:.5rem}" },
-        { "type": "tip", "value": "Add position: relative to the parent to anchor absolutely positioned children predictably." },
+        { "type": "tip", "value": "Add position: relative to the parent you want to anchor to." },
 
         { "type": "text", "value": "Fixed elements are pinned to the viewport; sticky toggles between relative and fixed based on scroll thresholds." },
         { "type": "code", "language": "css", "value": "header{position:sticky;top:0;backdrop-filter:blur(8px)}\n.modal{position:fixed;inset:0}" },
@@ -449,7 +451,7 @@
       ],
       "quiz": [
         { "id": "q1", "type": "single", "prompt": "A BFC can be created by:", "options": ["overflow:hidden", "display:inline", "position: static"], "answer": 0 },
-        { "id": "q2", "type": "single", "prompt": "Normal flow stacks block elements:", "options": ["Horizontally", "Vertically", "In z-index order only"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Block elements in normal flow stack:", "options": ["Horizontally", "Vertically", "In z-index order only"], "answer": 1 },
         { "id": "q3", "type": "single", "prompt": "Floats are best used today for:", "options": ["Site-wide layout", "Text wrap around media", "Z-index layering"], "answer": 1 },
         { "id": "q4", "type": "single", "prompt": "overflow can also:", "options": ["Create a BFC", "Disable line height", "Set writing mode"], "answer": 0 },
         { "id": "q5", "type": "single", "prompt": "To avoid clipping focus with rounded corners:", "options": ["Use outline-offset/padding", "Remove outlines", "Use z-index"], "answer": 0 }
@@ -463,7 +465,7 @@
       "minutes": 55,
       "summary": "Named lines/areas, auto-fit vs auto-fill, minmax patterns, alignment, and subgrid for nested layouts.",
       "content": [
-        { "type": "text", "value": "Name lines and areas for readable placement. This scales better than magic numbers and helps you express intent clearly." },
+        { "type": "text", "value": "Name grid lines and areas to make code easy to read. It tells future you what each part is for." },
         { "type": "code", "language": "css", "value": ".layout{display:grid;grid-template-columns:[full-start] 1fr [content-start] minmax(0,720px) [content-end] 1fr [full-end];}\n.main{grid-column:content-start/content-end}" },
         { "type": "tip", "value": "Use named lines for page scaffolds; it documents structure in the CSS itself." },
 
@@ -475,13 +477,13 @@
         { "type": "code", "language": "css", "value": ".gallery{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:1rem}\n.gallery-fill{display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:1rem}" },
         { "type": "tip", "value": "Use auto-fit for compact grids that don’t show phantom columns; use auto-fill when you want consistent track patterns." },
 
-        { "type": "text", "value": "Control alignment with align-items/justify-items at the container level, and align-self/justify-self per item. place-items is a convenient shorthand." },
+        { "type": "text", "value": "Control alignment with align-items/justify-items at the container level, and align-self/justify-self on an item. place-items is a convenient shorthand." },
         { "type": "code", "language": "css", "value": ".grid{display:grid;place-items:center}" },
         { "type": "tip", "value": "Place-items is perfect for centering content inside cards and tiles with minimal code." },
 
         { "type": "text", "value": "Subgrid allows nested grids to inherit track definitions from their parent, aligning columns or rows across components without duplication." },
         { "type": "code", "language": "css", "value": ".parent{display:grid;grid-template-columns:200px 1fr}\n.child{display:grid;grid-template-columns:subgrid;grid-column:1/-1}\n/* The child grid aligns to parent columns */" },
-        { "type": "tip", "value": "Use subgrid to keep nested components aligned with the outer grid—especially useful for media lists and article layouts." }
+        { "type": "tip", "value": "Use subgrid for lists, media rows, and article layouts that need shared columns." }
       ],
       "examples": [
         { "description": "Named line scaffold for a centered content column.", "code": ".layout{display:grid;grid-template-columns:[full-start] 1fr [content-start] minmax(0,720px) [content-end] 1fr [full-end]}" },

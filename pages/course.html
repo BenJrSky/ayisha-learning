@@ -63,10 +63,7 @@
     </section>
 
     <nav class="page-nav">
-      <a @link="home">← Back to Courses</a>
-      <a @link="course?.hero?.ctaUrl || 'enroll.html'" @text="(course?.hero?.ctaText || 'Enroll now') + ' →'"></a>
+      <a @link="courses">← Back to Courses</a>
     </nav>
-
-    <component @src="components/sections/courses-section.html"></component>
 
   </main>
