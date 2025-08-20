@@ -1,14 +1,14 @@
 {
   "id": "course_css_mastery",
   "slug": "css-from-zero-to-pro",
-  "title": "CSS From Zero to Pro",
+  "title": "CSS — From Zero to Professional",
   "subtitle": "Learn modern CSS from first principles to advanced, production-grade techniques.",
   "category": "Development",
   "level": "Beginner to Advanced",
   "hours": 28,
   "language": "en",
   "lastUpdated": "2025-08-20",
-  "tags": ["CSS", "Selectors", "Cascade", "Box Model", "Typography", "Colors", "Flexbox", "Grid", "Responsive", "Media Queries", "Container Queries", "Variables", "Nesting", "Cascade Layers", ":has()", "Accessibility", "Performance", "Animations"],
+  "tags": ["CSS", "Box Model", "Flexbox", "Grid", "Responsive"],
 
   "hero": {
     "image": "images/img_1.jpg",
@@ -289,6 +289,211 @@
         { "id": "q3", "type": "single", "prompt": "Which selector enables parent-aware styling?", "options": [":is()", ":where()", ":has()"], "answer": 2 },
         { "id": "q4", "type": "single", "prompt": "Which properties are cheaper to animate?", "options": ["width/left", "transform/opacity", "height/top"], "answer": 1 },
         { "id": "q5", "type": "single", "prompt": "Nesting should be used:", "options": ["Deeply for all selectors", "Sparingly with shallow depth", "Never in modern CSS"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l6",
+      "slug": "spacing-margin-padding-gap",
+      "order": 6,
+      "title": "Spacing Systems: Margin, Padding, and Gap",
+      "minutes": 45,
+      "summary": "Master internal vs external spacing, margin collapsing, and modern gap for Flex and Grid.",
+      "content": [
+        { "type": "text", "value": "Spacing is communication. Padding creates internal breathing room inside a component; margin creates external space around it. Gap distributes space between children in Flex and Grid without side effects on the first/last child." },
+        { "type": "code", "language": "css", "value": ".card{padding:1rem;border:1px solid #e5e7eb;border-radius:.5rem}\n.stack>*{margin-block:0}\n.stack>*+*{margin-block-start:1rem}\n.row{display:flex;gap:1rem}" },
+        { "type": "tip", "value": "Use gap whenever possible for layout spacing; it avoids collapsing margins and is symmetrical by design." },
+
+        { "type": "text", "value": "Margin collapsing occurs between adjacent block-level elements' vertical margins. The resulting gap equals the largest margin, not the sum. This can surprise newcomers." },
+        { "type": "code", "language": "css", "value": "h1{margin-block:1rem}\nh2{margin-block:.5rem} /* The vertical space between can collapse to 1rem */" },
+        { "type": "tip", "value": "Use padding on containers to create consistent internal spacing that does not collapse with children." },
+
+        { "type": "text", "value": "Logical properties help internationalization. Prefer padding-block, margin-inline, and block/inline shorthands over top/right/bottom/left." },
+        { "type": "code", "language": "css", "value": ".panel{padding-inline:1rem;padding-block:1.25rem;margin-block:1rem}" },
+        { "type": "tip", "value": "Logical spacing reads like text: block = vertical flow; inline = reading direction. It adapts automatically to RTL and vertical writing modes." },
+
+        { "type": "text", "value": "Establish a spacing scale to stay consistent across the UI. A simple 4/8px base scale (0.25/0.5rem steps) keeps rhythm and reduces one-off values." },
+        { "type": "code", "language": "css", "value": ":root{--space-1:.25rem;--space-2:.5rem;--space-3:1rem;--space-4:1.5rem}\n.card{padding:var(--space-3)}\n.row{gap:var(--space-3)}" },
+        { "type": "tip", "value": "Document your spacing tokens and stick to them—consistency reduces cognitive load and design drift." },
+
+        { "type": "text", "value": "Use gap in Flex and Grid to separate children without affecting edges. It works with wrapping and complex grid placements, making spacing robust and readable." },
+        { "type": "code", "language": "css", "value": ".grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}\n.flex{display:flex;flex-wrap:wrap;gap:.75rem}" },
+        { "type": "tip", "value": "Avoid relying on first-child/last-child margin hacks—gap expresses intent better and avoids edge inconsistencies." }
+      ],
+      "examples": [
+        { "description": "Stack layout with consistent vertical spacing.", "code": ".stack>*{margin-block:0}.stack>*+*{margin-block-start:1rem}" },
+        { "description": "Flexible row with gap and wrapping.", "code": ".row{display:flex;flex-wrap:wrap;gap:1rem}" },
+        { "description": "Spacing tokens with custom properties.", "code": ":root{--space-1:.25rem;--space-2:.5rem;--space-3:1rem}.card{padding:var(--space-3)}" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Padding vs margin primarily differ by:", "options": ["Padding is internal; margin is external", "Padding is external; margin is internal", "They are identical"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Margin collapsing applies to:", "options": ["Horizontal margins only", "Adjacent vertical block margins", "Inline elements only"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "gap works with:", "options": ["Flex and Grid", "Only Grid", "Only Flex"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "Logical properties help with:", "options": ["Animations", "Internationalization & writing modes", "Z-index"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "A spacing scale (tokens) primarily improves:", "options": ["Bundle size only", "Consistency & readability", "Network security"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l7",
+      "slug": "advanced-flexbox",
+      "order": 7,
+      "title": "Advanced Flexbox Patterns",
+      "minutes": 50,
+      "summary": "Deep dive into flex shorthand, alignment, wrapping strategies, and common UI patterns.",
+      "content": [
+        { "type": "text", "value": "The flex shorthand is flex: grow shrink basis. A common pattern is flex: 1 1 240px to let items wrap with a sensible minimum width while growing to fill space." },
+        { "type": "code", "language": "css", "value": ".cards{display:flex;flex-wrap:wrap;gap:1rem}\n.card{flex:1 1 240px}" },
+        { "type": "tip", "value": "Think of basis as the starting size. Grow and shrink are scaling permissions when space is extra or tight." },
+
+        { "type": "text", "value": "Align along the main axis with justify-content and along the cross axis with align-items. align-content acts on the multi-line container when wrapping occurs." },
+        { "type": "code", "language": "css", "value": ".toolbar{display:flex;justify-content:space-between;align-items:center}" },
+        { "type": "tip", "value": "Use place-content and place-items as shorthands for pairs of align/justify properties when it improves clarity." },
+
+        { "type": "text", "value": "Use auto margins to push items apart in a row. They absorb free space on the main axis, enabling flexible separators without extra wrappers." },
+        { "type": "code", "language": "css", "value": ".nav{display:flex;gap:1rem}\n.nav .spacer{margin-inline-start:auto}" },
+        { "type": "tip", "value": "Auto margins are powerful but explicit. Prefer them for singular push/grow behavior; use gap for general spacing." },
+
+        { "type": "text", "value": "Min/max content sizing can interact with flex-basis. Use min-width or a basis to avoid items shrinking too small and breaking content." },
+        { "type": "code", "language": "css", "value": ".item{flex:1 1 16rem;min-width:12rem}" },
+        { "type": "tip", "value": "Audit content-driven minimums (like long words) and enforce them via min-width to prevent overflow." },
+
+        { "type": "text", "value": "Common patterns: equal-height cards, centered hero, split layouts, and responsive toolbars that wrap gracefully on narrow screens." },
+        { "type": "code", "language": "css", "value": ".hero{display:flex;min-height:60svh;align-items:center;justify-content:center}\n.split{display:flex;gap:1rem}\n.split>*{flex:1 1 20rem}" },
+        { "type": "tip", "value": "Favor Flexbox for one-dimensional distribution and Grid for structured two-axis compositions." }
+      ],
+      "examples": [
+        { "description": "Responsive card deck with min width.", "code": ".cards{display:flex;flex-wrap:wrap;gap:1rem}.card{flex:1 1 240px;min-width:200px}" },
+        { "description": "Toolbar with spacer using auto margin.", "code": ".toolbar{display:flex;gap:1rem}.spacer{margin-inline-start:auto}" },
+        { "description": "Centered hero with Flexbox.", "code": ".hero{display:flex;align-items:center;justify-content:center;min-height:60svh}" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "In flex: 1 1 240px, 240px represents:", "options": ["grow", "shrink", "basis"], "answer": 2 },
+        { "id": "q2", "type": "single", "prompt": "Which property aligns along the cross axis?", "options": ["justify-content", "align-items", "order"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Auto margins on the main axis can:", "options": ["Pull items together", "Absorb free space to push items apart", "Disable wrapping"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "To prevent overly narrow items, prefer:", "options": ["min-width or basis", "z-index", "float"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Flexbox is best suited for:", "options": ["Two-dimensional page grids", "One-dimensional layouts", "SVG filters"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l8",
+      "slug": "positioning-and-stacking-context",
+      "order": 8,
+      "title": "Positioning and Stacking Context Deep Dive",
+      "minutes": 50,
+      "summary": "Relative, absolute, fixed, sticky positioning; stacking contexts and z-index sanity.",
+      "content": [
+        { "type": "text", "value": "Positioning modes change how elements are placed. relative offsets without removing from flow; absolute removes from flow and positions against the nearest positioned ancestor." },
+        { "type": "code", "language": "css", "value": ".box{position:relative}\n.badge{position:absolute;inset-inline-end:.5rem;inset-block-start:.5rem}" },
+        { "type": "tip", "value": "Add position: relative to the parent to anchor absolutely positioned children predictably." },
+
+        { "type": "text", "value": "Fixed elements are pinned to the viewport; sticky toggles between relative and fixed based on scroll thresholds." },
+        { "type": "code", "language": "css", "value": "header{position:sticky;top:0;backdrop-filter:blur(8px)}\n.modal{position:fixed;inset:0}" },
+        { "type": "tip", "value": "Sticky needs a scrollable ancestor and enough space to stick; test with realistic content heights." },
+
+        { "type": "text", "value": "Stacking contexts group elements for z-index calculations. They are created by positioned elements with z-index, opacity < 1, transform, filter, and other properties." },
+        { "type": "code", "language": "css", "value": ".panel{position:relative;z-index:1}\n.overlay{position:fixed;inset:0;z-index:1000}\n.card{transform:translateZ(0)}" },
+        { "type": "tip", "value": "Use DevTools to visualize stacking contexts. Reduce unnecessary contexts that complicate layering." },
+
+        { "type": "text", "value": "isolation: isolate creates a new stacking context for a subtree, preventing interference from outside layers." },
+        { "type": "code", "language": "css", "value": ".app{isolation:isolate}" },
+        { "type": "tip", "value": "Create an isolated root when complex z-index layers risk bleeding or accidental overlaps." },
+
+        { "type": "text", "value": "Use inset shorthands to place elements, and prefer logical offsets (inset-block-start) over top/left to align with writing modes." },
+        { "type": "code", "language": "css", "value": ".tooltip{position:absolute;inset-block-end:100%;inset-inline-start:0;margin-block-end:.5rem}" },
+        { "type": "tip", "value": "Prefer logical insets for internationalized UIs; they adapt to RTL and vertical writing directions." }
+      ],
+      "examples": [
+        { "description": "Sticky header with blur effect.", "code": "header{position:sticky;top:0;backdrop-filter:blur(8px);z-index:10}" },
+        { "description": "Badge anchored to a card corner.", "code": ".card{position:relative}.badge{position:absolute;inset-inline-end:.5rem;inset-block-start:.5rem}" },
+        { "description": "Isolated app root for safer stacking.", "code": ".app{isolation:isolate}" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Absolute positioning references:", "options": ["The viewport always", "The nearest positioned ancestor", "The document root"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "Sticky becomes fixed when:", "options": ["The page loads", "A scroll threshold is crossed", "It has z-index"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Which can create a stacking context?", "options": ["opacity < 1", "margin", "padding"], "answer": 0 },
+        { "id": "q4", "type": "single", "prompt": "isolation: isolate is used to:", "options": ["Reset styles", "Create a new stacking context", "Disable scrolling"], "answer": 1 },
+        { "id": "q5", "type": "single", "prompt": "Prefer which for i18n-aware offsets?", "options": ["top/left", "inset-block/inline", "z-index"], "answer": 1 }
+      ]
+    },
+    {
+      "id": "l9",
+      "slug": "display-flow-and-bfc",
+      "order": 9,
+      "title": "Display, Normal Flow, and BFC",
+      "minutes": 45,
+      "summary": "Understand how elements flow, how BFC isolates formatting, and when to use flow-root/overflow.",
+      "content": [
+        { "type": "text", "value": "Normal flow is how elements naturally lay out: block-level elements stack vertically; inline elements flow within a line box. Changing display alters flow and participation." },
+        { "type": "code", "language": "css", "value": ".inline{display:inline}\n.block{display:block}\n.inline-block{display:inline-block}" },
+        { "type": "tip", "value": "Reach for Flex/Grid first for complex layout needs; use display-level tweaks for small adjustments." },
+
+        { "type": "text", "value": "A Block Formatting Context (BFC) isolates layout. It can contain floats and prevent margin collapsing with its children." },
+        { "type": "code", "language": "css", "value": ".bfc{overflow:auto} /* also creates BFC */\n/* or */\n.flow-root{display:flow-root}" },
+        { "type": "tip", "value": "Use flow-root or overflow:auto to contain floats without extra wrapper markup." },
+
+        { "type": "text", "value": "Floats still matter for text wrapping around media. Clear them with clear or avoid them with modern layout methods." },
+        { "type": "code", "language": "css", "value": "img.thumb{float:inline-start;margin:0 1rem 1rem 0}\n.footer{clear:both}" },
+        { "type": "tip", "value": "Prefer Flex/Grid for layout. Keep floats for legacy patterns or intentional text wrap effects." },
+
+        { "type": "text", "value": "Overflow controls how content that exceeds a box is handled. It can also trigger a new block formatting context, affecting spacing and floats." },
+        { "type": "code", "language": "css", "value": ".clip{overflow:hidden;border-radius:.75rem}" },
+        { "type": "tip", "value": "Beware of clipping focus rings with overflow:hidden; add outline-offset or extra padding to keep focus visible." },
+
+        { "type": "text", "value": "Inline formatting context differs from block: letter/word spacing, baseline alignment, and line-height govern inline layout—useful for precise typographic control." },
+        { "type": "code", "language": "css", "value": ".label{letter-spacing:.01em;line-height:1.4}" },
+        { "type": "tip", "value": "Use unitless line-height for scalable line boxes that inherit nicely across components." }
+      ],
+      "examples": [
+        { "description": "Containing floats with flow-root.", "code": ".container{display:flow-root}" },
+        { "description": "Legacy float-based media wrapping.", "code": "img.thumb{float:inline-start;margin:0 1rem 1rem 0}" },
+        { "description": "Safe clipping with rounded corners.", "code": ".clip{overflow:hidden;border-radius:12px}" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "A BFC can be created by:", "options": ["overflow:hidden", "display:inline", "position: static"], "answer": 0 },
+        { "id": "q2", "type": "single", "prompt": "Normal flow stacks block elements:", "options": ["Horizontally", "Vertically", "In z-index order only"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Floats are best used today for:", "options": ["Site-wide layout", "Text wrap around media", "Z-index layering"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "overflow can also:", "options": ["Create a BFC", "Disable line height", "Set writing mode"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "To avoid clipping focus with rounded corners:", "options": ["Use outline-offset/padding", "Remove outlines", "Use z-index"], "answer": 0 }
+      ]
+    },
+    {
+      "id": "l10",
+      "slug": "grid-advanced-and-subgrid",
+      "order": 10,
+      "title": "Advanced CSS Grid and Subgrid",
+      "minutes": 55,
+      "summary": "Named lines/areas, auto-fit vs auto-fill, minmax patterns, alignment, and subgrid for nested layouts.",
+      "content": [
+        { "type": "text", "value": "Name lines and areas for readable placement. This scales better than magic numbers and helps you express intent clearly." },
+        { "type": "code", "language": "css", "value": ".layout{display:grid;grid-template-columns:[full-start] 1fr [content-start] minmax(0,720px) [content-end] 1fr [full-end];}\n.main{grid-column:content-start/content-end}" },
+        { "type": "tip", "value": "Use named lines for page scaffolds; it documents structure in the CSS itself." },
+
+        { "type": "text", "value": "Define areas and place items by name. It boosts readability and makes responsive rearrangements straightforward." },
+        { "type": "code", "language": "css", "value": ".page{display:grid;grid-template:\n  \"header header\" auto\n  \"sidebar main\" 1fr\n  \"footer footer\" auto / 280px 1fr}\n.header{grid-area:header}\n.sidebar{grid-area:sidebar}\n.main{grid-area:main}" },
+        { "type": "tip", "value": "Areas are great for page-level layouts; combine with media/container queries for adaptations." },
+
+        { "type": "text", "value": "auto-fit vs auto-fill: both repeat tracks to fill the row. auto-fit collapses empty tracks; auto-fill preserves them, which can affect alignment." },
+        { "type": "code", "language": "css", "value": ".gallery{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:1rem}\n.gallery-fill{display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:1rem}" },
+        { "type": "tip", "value": "Use auto-fit for compact grids that don’t show phantom columns; use auto-fill when you want consistent track patterns." },
+
+        { "type": "text", "value": "Control alignment with align-items/justify-items at the container level, and align-self/justify-self per item. place-items is a convenient shorthand." },
+        { "type": "code", "language": "css", "value": ".grid{display:grid;place-items:center}" },
+        { "type": "tip", "value": "Place-items is perfect for centering content inside cards and tiles with minimal code." },
+
+        { "type": "text", "value": "Subgrid allows nested grids to inherit track definitions from their parent, aligning columns or rows across components without duplication." },
+        { "type": "code", "language": "css", "value": ".parent{display:grid;grid-template-columns:200px 1fr}\n.child{display:grid;grid-template-columns:subgrid;grid-column:1/-1}\n/* The child grid aligns to parent columns */" },
+        { "type": "tip", "value": "Use subgrid to keep nested components aligned with the outer grid—especially useful for media lists and article layouts." }
+      ],
+      "examples": [
+        { "description": "Named line scaffold for a centered content column.", "code": ".layout{display:grid;grid-template-columns:[full-start] 1fr [content-start] minmax(0,720px) [content-end] 1fr [full-end]}" },
+        { "description": "Page areas for header/sidebar/content/footer.", "code": ".page{display:grid;grid-template:\"header header\" auto \"sidebar main\" 1fr \"footer footer\" auto / 280px 1fr}" },
+        { "description": "Subgrid aligning child components.", "code": ".parent{display:grid;grid-template-columns:200px 1fr}.child{display:grid;grid-template-columns:subgrid;grid-column:1/-1}" }
+      ],
+      "quiz": [
+        { "id": "q1", "type": "single", "prompt": "Named lines and areas primarily improve:", "options": ["Rendering speed only", "Readability and intent", "Color accuracy"], "answer": 1 },
+        { "id": "q2", "type": "single", "prompt": "auto-fit will:", "options": ["Preserve empty tracks", "Collapse empty tracks", "Disable wrapping"], "answer": 1 },
+        { "id": "q3", "type": "single", "prompt": "Subgrid lets children:", "options": ["Define unrelated tracks", "Inherit parent track sizing", "Ignore alignment rules"], "answer": 1 },
+        { "id": "q4", "type": "single", "prompt": "Which centers items in both axes?", "options": ["place-items:center", "align-content:space-between", "justify-items:start"], "answer": 0 },
+        { "id": "q5", "type": "single", "prompt": "Grid areas are best used for:", "options": ["Inline text styling", "High-level page layouts", "Server configuration"], "answer": 1 }
       ]
     }
   ]
