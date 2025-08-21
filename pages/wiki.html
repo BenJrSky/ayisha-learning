@@ -26,14 +26,9 @@
 
   <section class="philosophy">
 
-    <span @when="wikisearch.length>0" @do="wikiResults=wikisearch"></span>
-    <span @when="wikisearch==false" @do="wikiResults=rowWiki.directives"></span>
+    <h3 @not="wikisearch.length" >Loading...</h3>
 
-
-
-    <h3 @not="wikiResults.length" >Loading...</h3>
-
-    <div class="wiki-dictionary" @for="directive in wikiResults">
+    <div class="wiki-dictionary" @for="directive in wikisearch">
       <div class="wiki-entry-row">
         <div class="wiki-entry-col-dir"><dir-badge>{{directive.directive}}</dir-badge></div>
         <div class="wiki-entry-col-desc">
@@ -41,12 +36,12 @@
           {{directive.description}}<br>
           <span class="wiki-type">Syntax:</span>
           {{directive.syntax}}<br>
-          <span class="wiki-spec">Use for: <i>{{directive.useFor}}</i></span>
+          <span class="wiki-spec" @if="directive.useFor.length">Use for: <i>{{directive.useFor}}</i></span>
 
           <div class="wiki-entry-code" @if="directive.pairsWith.length">
             Pairs with
-            <span @for="pairsWith in directive.pairsWith">
-              <dir-badge>{{pairsWith}}</dir-badge>
+            <span class="pointer" @for="pairsWith in directive.pairsWith">
+              <dir-badge @click="search=pairsWith">{{pairsWith}}</dir-badge>
             </span>
           </div>
           <div class="wiki-entry-code" @for="example in directive.examples" @if="directive.examples.length">
