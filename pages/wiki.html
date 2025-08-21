@@ -1,4 +1,4 @@
-<main class="container" @json="docs/wiki.json" @result="rowWiki" @then="wiki=rowWiki">
+<main class="container" @json="docs/wiki.json" @result="rowWiki" @then="wiki=rowWiki.directives">
   <section class="hero">
     <div class="hero-background"></div>
     <div class="hero-content">
@@ -20,29 +20,39 @@
   </section>
 
 
-  <div class="search-container" role="search">
-    <input
-      type="text"
-      class="search-input"
-      placeholder="Search directives..."
-      @model="search"
+  <div class="search-container" role="search" @watch="search" @do="wiki=rowWiki.directives.filter(item=>item.directive.includes(search))">
+    <input type="text" class="search-input" placeholder="Search directives..." @model="search"
       aria-label="Search directives">
   </div>
 
-  <section class="philosophy" @for="section in wiki.sections">
-    <h2>{{section.title}}</h2>
-    <div class="wiki-dictionary" @for="entry in section.entries">
+  <section class="philosophy">
+    <div class="wiki-dictionary" @for="directive in wiki">
       <div class="wiki-entry-row">
-        <div class="wiki-entry-col-dir"><dir-badge>{{entry.directive}}</dir-badge></div>
+        <div class="wiki-entry-col-dir"><dir-badge>{{directive.directive}}</dir-badge></div>
         <div class="wiki-entry-col-desc">
-          <span class="wiki-type">{{entry.type}}</span>
-          {{entry.description}}<br>
+          <span class="wiki-type">{{directive.type}}</span>
+          {{directive.description}}<br>
           <span class="wiki-type">Syntax:</span>
-          {{entry.syntax}}<br>
-          <span class="wiki-spec">Use for: <i>{{entry.useFor}}</i></span>
-          <div class="wiki-entry-code" @for="example in entry.examples">
+          {{directive.syntax}}<br>
+          <span class="wiki-spec">Use for: <i>{{directive.useFor}}</i></span>
+
+          <div class="wiki-entry-code" @if="directive.pairsWith.length">
+            Pairs with
+            <span @for="pairsWith in directive.pairsWith">
+              <dir-badge>{{pairsWith}}</dir-badge>
+            </span>
+          </div>
+
+
+          <div class="wiki-entry-code" @for="example in directive.examples" @if="directive.examples.length">
             <pre><code><no>{{example}}</no></code></pre>
           </div>
+
+          <div class="wiki-entry-code" @for="combination in directive.combinations" @if="directive.combinations.length">
+            <pre><code><no>{{combination}}</no></code></pre>
+          </div>
+
+
         </div>
       </div>
       <hr class="wiki-divider">

@@ -1,728 +1,799 @@
 {
   "directive": "Ayisha.js Wiki Directives",
   "version": "1.0.4",
-  "updatedAt": "2025-08-20T00:00:00.000Z",
-  "sections": [
+  "updatedAt": "2025-08-21T00:00:00.000Z",
+  "directives": [
     {
-      "id": "core",
-      "title": "Core Directives",
-      "entries": [
-        {
-          "directive": "@model",
-          "type": "Two-way binding",
-          "description": "Creates a bidirectional data binding between a form control and a state property. When the user changes the input, state updates. When state changes programmatically, the input reflects the new value.",
-          "syntax": "@model=\"stateProp\"",
-          "useFor": "Text inputs, textareas, selects, checkboxes, radios.",
-          "examples": [
-            "<input @model=\"name\">",
-            "<textarea @model=\"bio\"></textarea>",
-            "<input type=\"checkbox\" @model=\"accepted\">"
-          ],
-          "tips": [
-            "Works with any element that has a value-like property.",
-            "Use together with @validate for live validation."
-          ]
-        },
-        {
-          "directive": "@click",
-          "type": "Event handler",
-          "description": "Executes JavaScript when the element is clicked. Has full access to reactive state and local scope.",
-          "syntax": "@click=\"expression\"",
-          "useFor": "Buttons, links, any clickable element.",
-          "examples": [
-            "<button @click=\"count++\">Increment</button>",
-            "<a href=\"#\" @click=\"open = !open\">Toggle</a>"
-          ],
-          "tips": [
-            "You can chain multiple statements with semicolons.",
-            "Updates re-render automatically."
-          ]
-        },
-        {
-          "directive": "@for",
-          "type": "Loop",
-          "description": "Renders the element once per item in a list or object. Supports value-only or index/value tuple form.",
-          "syntax": "@for=\"item in items\"  |  @for=\"index, item in items\"",
-          "useFor": "Lists, tables, repeated UI.",
-          "examples": [
-            "<li @for=\"item in items\">{{item}}</li>",
-            "<li @for=\"i, item in items\">#{{i}} - {{item}}</li>"
-          ],
-          "tips": [
-            "Always pair with @key for better DOM updates.",
-            "Objects are iterated via their values."
-          ],
-          "pairsWith": ["@key"]
-        },
-        {
-          "directive": "@if",
-          "type": "Conditional rendering",
-          "description": "Conditionally renders the element in the DOM. When false, the element is not present in the DOM at all.",
-          "syntax": "@if=\"condition\"",
-          "useFor": "Optional blocks, conditional components, error messages.",
-          "examples": [
-            "<div @if=\"count > 5\">Many items!</div>"
-          ],
-          "tips": [
-            "Use @if to remove heavy content from DOM when hidden.",
-            "Use @show/@hide when you want to keep DOM and only toggle visibility."
-          ]
-        },
-        {
-          "directive": "@show",
-          "type": "Visibility toggle",
-          "description": "Toggles element visibility using CSS display without removing it from the DOM.",
-          "syntax": "@show=\"condition\"",
-          "useFor": "Frequently toggled content: dropdowns, modals.",
-          "examples": [
-            "<div @show=\"isOpen\">Visible</div>"
-          ],
-          "tips": [
-            "Element stays mounted; state and listeners are preserved."
-          ]
-        },
-        {
-          "directive": "@hide",
-          "type": "Inverse visibility",
-          "description": "Hides the element (display:none) when the expression is truthy. The opposite of @show.",
-          "syntax": "@hide=\"condition\"",
-          "useFor": "Hide-when logic, error states, overlays.",
-          "examples": [
-            "<div @hide=\"loading\">Content</div>"
-          ]
-        },
-        {
-          "directive": "@fetch",
-          "type": "HTTP requests",
-          "description": "Performs an async HTTP request to the given URL or expression. Use @result to store parsed JSON response.",
-          "syntax": "@fetch=\"urlOrExpression\" + @result=\"targetVar\"",
-          "useFor": "API calls, loading remote data, submitting forms.",
-          "examples": [
-            "<div @fetch=\"url\" @result=\"data\"></div>",
-            "<div @fetch=\"'/api/users/' + userId\" @result=\"user\"></div>"
-          ],
-          "pairsWith": ["@result"],
-          "tips": [
-            "Use event sub-directives (e.g., @fetch:click) for user-triggered fetches.",
-            "Supports string literals and interpolated expressions."
-          ]
-        },
-        {
-          "directive": "@result",
-          "type": "HTTP result binding",
-          "description": "Destination state variable for storing the response from @fetch.",
-          "syntax": "@result=\"stateProp\"",
-          "useFor": "Persisting fetched data in state.",
-          "examples": [
-            "<button @fetch:click=\"url\" @result=\"data\">Load</button>"
-          ],
-          "pairsWith": ["@fetch"]
-        },
-        {
-          "directive": "@validate",
-          "type": "Input validation",
-          "description": "Validates input values using built-in validators or custom regex. Results are exposed via the global _validate object. Requires @model.",
-          "syntax": "@validate=\"required,email,regex:^[A-Z]\\\\d{3}$\"",
-          "useFor": "Form validation, input checking.",
-          "examples": [
-            "<input @validate=\"email\" @model=\"email\">",
-            "<input @validate=\"password\" @model=\"pwd\">",
-            "<input @validate=\"required, phone\" @model=\"phone\">",
-            "<input @validate=\"^[A-Z]\\\\d{3}$\" @model=\"code\">"
-          ],
-          "tips": [
-            "Check _validate.fieldName for boolean validity.",
-            "Combine multiple rules with commas."
-          ],
-          "pairsWith": ["@model"]
-        },
-        {
-          "directive": "@form",
-          "type": "Form grouping & validity",
-          "description": "Aggregates all child @model fields into state[formName] and exposes overall form validity in _validate[formName] (true/false/null).",
-          "syntax": "@form=\"formName\"",
-          "useFor": "Form state snapshot and derived overall validity.",
-          "examples": [
-            "<form @form=\"login\">\n  <input @model=\"email\" @validate=\"email\">\n  <input type=\"password\" @model=\"password\" @validate=\"required|min:6\">\n  <button @class=\"{ 'btn-primary': _validate.login, 'btn-secondary': !_validate.login }\">Login</button>\n</form>",
-            "<form @form=\"profile\">\n  <input @model=\"name\" @validate=\"required|min:3\">\n</form>"
-          ],
-          "pairsWith": ["@model", "@validate"],
-          "tips": [
-            "_validate[formName] is true when all validated fields are true, false if any is false, null if none validated yet.",
-            "state[formName] mirrors current values of child @model fields."
-          ]
-        },
-        {
-          "directive": "@page",
-          "type": "SPA routing",
-          "description": "Marks an element as a route target. Visible only when _currentPage matches its value.",
-          "syntax": "@page=\"routeName\"",
-          "useFor": "Single-page routing targets.",
-          "examples": [
-            "<div @page=\"home\">Home</div>",
-            "<div @page=\"about\">About</div>"
-          ],
-          "pairsWith": ["@link"]
-        },
-        {
-          "directive": "@link",
-          "type": "SPA link",
-          "description": "Creates a navigation link that updates _currentPage without reloading the browser.",
-          "syntax": "@link=\"routeNameOrExpression\"",
-          "useFor": "SPA navigation.",
-          "examples": [
-            "<a @link=\"about\">About</a>",
-            "<a @link=\"'course/' + courseId\">Open course</a>"
-          ],
-          "pairsWith": ["@page"]
-        },
-        {
-          "directive": "@component",
-          "type": "Reusable components",
-          "description": "Loads and renders external HTML as a reusable component. Inherits parent's state and context.",
-          "syntax": "<component @src=\"pathOrExpression\"></component>",
-          "useFor": "Modular UI, shared components, layouts.",
-          "examples": [
-            "<component @src=\"'components/sections/courses-section.html'\"></component>",
-            "<component @page=\"enrol\" @src=\"'components/sections/enrol.html'\"></component>"
-          ],
-          "pairsWith": ["@src"]
-        },
-        {
-          "directive": "@src",
-          "type": "Component source",
-          "description": "Specifies the external HTML file path to load into a component.",
-          "syntax": "@src=\"'path.html'\" or @src=\"stateVar\"",
-          "useFor": "Supplying the source for @component.",
-          "examples": [
-            "<component @src=\"'components/header.html'\"></component>"
-          ],
-          "pairsWith": ["@component"]
-        },
-        {
-          "directive": "@scope",
-          "type": "Scoped state (per component instance)",
-          "description": "Isola una o più variabili creando versioni per istanza del componente, evitando collisioni tra istanze (es. card_0001, card_0002). Funziona bene con liste di componenti.",
-          "syntax": "@scope=\"varName\"  |  @scope=\"var1, var2\"",
-          "useFor": "Componenti riutilizzabili in liste, stato per istanza, prevenire conflitti di nomi.",
-          "examples": [
-            "<component @src=\"'components/course-card.html'\" @scope=\"course\"></component>",
-            "<li @for=\"it in items\" @key=\"it.id\">\n  <component @src=\"'components/item.html'\" @scope=\"item, cart\"></component>\n</li>"
-          ],
-          "tips": [
-            "Con più nomi separati da virgola, ogni variabile viene resa unica per istanza.",
-            "Le variabili scoperte vengono mappate anche dentro i binding del componente (@result e accessi puntati)."
-          ],
-          "pairsWith": ["@component"]
-        },
-        {
-          "directive": "#param",
-          "type": "Component parameters (props-like)",
-          "description": "Passa dati/espressioni dal genitore al componente tramite attributi che iniziano con #. All'interno del componente i parametri sono disponibili come variabili locali con lo stesso nome.",
-          "syntax": "#name=\"expression\"",
-          "useFor": "Passare dati al componente senza usare variabili globali.",
-          "examples": [
-            "<component @src=\"'components/course-card.html'\" #data=\"item\"></component>",
-            "<component @src=\"'/components/sections/lesson-ltem.html'\" #slugcourse=\"_params[0]\" #datalesson=\"lesson\"></component>",
-            "<component @src=\"'components/user-card.html'\" #title=\"user.name + ' (' + user.role + ')'\" ></component>"
-          ],
-          "tips": [
-            "I valori sono valutati nel contesto del genitore e resi disponibili nel contesto del componente.",
-            "Usa nomi descrittivi (#data, #item, #slugcourse, ecc.) per chiarezza."
-          ],
-          "pairsWith": ["@component"]
-        },
-        {
-          "directive": "@state",
-          "type": "Debug inspector",
-          "description": "Displays the entire reactive state object as formatted JSON, updating live as state changes.",
-          "syntax": "@state or @state=\"expression\"",
-          "useFor": "Development debugging, learning, state inspection.",
-          "examples": [
-            "<div @state></div>",
-            "<div @state=\"user\"></div>",
-            "<div @state=\"login\"></div>"
-          ],
-          "tips": [
-            "Useful during development; avoid in production."
-          ]
-        },
-        {
-          "directive": "@log",
-          "type": "Directive logger",
-          "description": "Shows a live, detailed log of directive execution, value changes, and timing on the current element.",
-          "syntax": "@log",
-          "useFor": "Understanding directive flow, debugging complex behavior.",
-          "examples": [
-            "<div @log></div>"
-          ]
-        },
-        {
-          "directive": "@class",
-          "type": "Dynamic CSS classes",
-          "description": "Applies CSS classes conditionally using an object or string expression. Supports event sub-directives (e.g., @class:focus).",
-          "syntax": "@class=\"{ className: condition }\" or @class=\"'class-a class-b'\"",
-          "useFor": "Conditional styling, interactive states.",
-          "examples": [
-            "<div @class=\"{ active: isActive, disabled: !enabled }\"></div>",
-            "<div @class=\"theme\"></div>"
-          ]
-        },
-        {
-          "directive": "@style",
-          "type": "Dynamic inline styles",
-          "description": "Sets inline styles from an object where keys are CSS properties (camelCase or kebab-case) and values are expressions.",
-          "syntax": "@style=\"{ color: textColor, 'background-color': bg }\"",
-          "useFor": "Dynamic styling, responsive layouts.",
-          "examples": [
-            "<div @style=\"{ color: 'red', fontSize: size + 'px' }\"></div>"
-          ]
-        },
-        {
-          "directive": "@set",
-          "type": "State initialization",
-          "description": "Initializes state properties once when the element is first mounted. Does not re-run on re-renders.",
-          "syntax": "@set=\"var = value\"",
-          "useFor": "Default values, element-scoped initialization.",
-          "examples": [
-            "<div @set=\"count = 4\"></div>"
-          ],
-          "tips": [
-            "For event-driven updates, use @click assignments instead."
-          ]
-        },
-        {
-          "directive": "@key",
-          "type": "Unique key",
-          "description": "Provides a unique identifier for items rendered with @for to optimize DOM updates.",
-          "syntax": "@key=\"uniqueValue\"",
-          "useFor": "Lists and tables rendered with @for.",
-          "examples": [
-            "<li @for=\"item in items\" @key=\"item.id\">{{item.name}}</li>"
-          ],
-          "pairsWith": ["@for"]
-        },
-        {
-          "directive": "@switch",
-          "type": "Switch-case",
-          "description": "Renders content based on the evaluated expression, with @case matches and an optional @default.",
-          "syntax": "@switch=\"expression\" + child @case/@default",
-          "useFor": "Multi-state UI blocks.",
-          "examples": [
-            "<div @switch=\"val\">",
-            "  <div @case=\"1\">One</div>",
-            "  <div @default>Other</div>",
-            "</div>"
-          ]
-        },
-        {
-          "directive": "@case",
-          "type": "Switch case arm",
-          "description": "Matches a specific value within an @switch block.",
-          "syntax": "@case=\"value\"",
-          "useFor": "Branching UI inside @switch.",
-          "examples": [
-            "<div @switch=\"val\"><div @case=\"1\">One</div></div>"
-          ],
-          "pairsWith": ["@switch", "@default"]
-        },
-        {
-          "directive": "@default",
-          "type": "Switch default arm",
-          "description": "Fallback branch used when no @case value matches inside @switch.",
-          "syntax": "@default",
-          "useFor": "Fallback UI in multi-state blocks.",
-          "examples": [
-            "<div @switch=\"val\"><div @default>Other</div></div>"
-          ],
-          "pairsWith": ["@switch", "@case"]
-        },
-        {
-          "directive": "@source",
-          "type": "Array source",
-          "description": "Supplies the source array used by @map, @filter, and @reduce. Use @result to store outputs.",
-          "syntax": "@source=\"arrayExpr\"",
-          "useFor": "Data transformation pipelines.",
-          "examples": [
-            "<div @source=\"items\"></div>"
-          ],
-          "pairsWith": ["@map", "@filter", "@reduce", "@result"]
-        },
-        {
-          "directive": "@map",
-          "type": "Array map",
-          "description": "Transforms each item using a mapping function. Use with @source and @result.",
-          "syntax": "@map=\"item => transform(item)\"",
-          "useFor": "Derived lists, value transformations.",
-          "examples": [
-            "<div @source=\"items\" @map=\"item => item * 2\" @result=\"double\"></div>"
-          ],
-          "pairsWith": ["@source", "@result"]
-        },
-        {
-          "directive": "@filter",
-          "type": "Array filter",
-          "description": "Filters items using a predicate function. Use with @source and @result.",
-          "syntax": "@filter=\"item => condition(item)\"",
-          "useFor": "Filtering lists, search results.",
-          "examples": [
-            "<div @source=\"items\" @filter=\"item => item > 5\" @result=\"filtered\"></div>"
-          ],
-          "pairsWith": ["@source", "@result"]
-        },
-        {
-          "directive": "@reduce",
-          "type": "Array reduce",
-          "description": "Accumulates values into a single output using a reducer function. Use @initial for the starting accumulator and @result for output.",
-          "syntax": "@reduce=\"(acc, item) => nextAcc\" + @initial + @result",
-          "useFor": "Sums, aggregations, complex computations.",
-          "examples": [
-            "<div @source=\"items\" @reduce=\"(sum, item) => sum + item\" @initial=\"0\" @result=\"total\"></div>"
-          ],
-          "pairsWith": ["@initial", "@result", "@source"]
-        },
-        {
-          "directive": "@initial",
-          "type": "Reducer initial value",
-          "description": "Sets the initial accumulator value for @reduce operations.",
-          "syntax": "@initial=\"value\"",
-          "useFor": "Starting accumulator values.",
-          "examples": [
-            "<div @source=\"items\" @reduce=\"(sum, item) => sum + item\" @initial=\"0\" @result=\"total\"></div>"
-          ],
-          "pairsWith": ["@reduce"]
-        },
-        {
-          "directive": "@animate",
-          "type": "Animation",
-          "description": "Applies a CSS animation or transition when the element enters the DOM.",
-          "syntax": "@animate=\"animationName\"",
-          "useFor": "Visual polish, transitions, fade/slide effects.",
-          "examples": [
-            "<div @animate=\"fade-in\"></div>"
-          ],
-          "tips": [
-            "Define the CSS animation using @keyframes in your stylesheet."
-          ]
-        },
-        {
-          "directive": "@when",
-          "type": "Conditional action gateway",
-          "description": "Valuta una condizione e, se vera, esegue @do e/o @go (eventualmente dopo @wait). Utile per orchestrare azioni reattive e navigazione condizionata.",
-          "syntax": "@when=\"condizione\" + (@do | @go) + [@wait]",
-          "useFor": "Avvio azioni condizionali, redirect protetti, gating di effetti.",
-          "examples": [
-            "<span @when=\"isReady\" @do=\"start()\"></span>",
-            "<button @when=\"isValid\" @go=\"'checkout'\"></button>",
-            "<div @when=\"loading\" @wait=\"500\" @do=\"showSpinner=false\"></div>"
-          ],
-          "tips": [
-            "@when richiede almeno @do o @go.",
-            "Puoi combinare @wait per ritardare l’azione."
-          ],
-          "pairsWith": ["@do", "@go", "@wait"]
-        },
-        {
-          "directive": "@do",
-          "type": "Statement runner",
-          "description": "Esegue una o più espressioni sul nodo. Insieme a @watch diventa un effetto reattivo che si attiva al variare dei valori osservati.",
-          "syntax": "@do=\"istruzione1; istruzione2\"",
-          "useFor": "Aggiornare più variabili, chiamare funzioni, effetti semplici.",
-          "examples": [
-            "<button @do=\"log=(log||[]); log.push('clicked')\">Log action</button>",
-            "<div @do=\"a=1; b=2\"></div>"
-          ],
-          "tips": [
-            "Con @watch, @do si riesegue ad ogni cambiamento dei valori osservati.",
-            "Usa più istruzioni separate da ;"
-          ],
-          "pairsWith": ["@watch", "@when"]
-        },
-        {
-          "directive": "@go",
-          "type": "SPA navigation (programmatic)",
-          "description": "Esegue una navigazione SPA verso una pagina/rotta. Utile per redirect da codice o azioni condizionali.",
-          "syntax": "@go=\"'route'\" oppure @go=\"espressione\"",
-          "useFor": "Redirect dopo una condizione, pulsanti di navigazione, wizard.",
-          "examples": [
-            "<button @go=\"'home'\">Home</button>",
-            "<button @go=\"'course/' + id\">Apri corso</button>",
-            "<span @when=\"loggedIn\" @go=\"'dashboard'\"></span>"
-          ],
-          "pairsWith": ["@when", "@wait"]
-        },
-        {
-          "directive": "@wait",
-          "type": "Delay",
-          "description": "Ritarda l’esecuzione di step successivi (come @then/@finally o azioni in @when) di N millisecondi.",
-          "syntax": "@wait=\"ms\"",
-          "useFor": "Piccoli ritardi, orchestrazione step asincroni, UX più fluida.",
-          "examples": [
-            "<button @wait=\"1000\" @then=\"done=true\" @finally=\"log=(log||[]);log.push('finished')\">Start</button>",
-            "<div @when=\"shouldDelay\" @wait=\"500\" @do=\"run()\"></div>"
-          ],
-          "pairsWith": ["@then", "@finally", "@when"]
-        },
-        {
-          "directive": "@then",
-          "type": "Post-directive hook",
-          "description": "Esegue una o più espressioni dopo l’esecuzione delle altre direttive sul nodo (completamento step precedente).",
-          "syntax": "@then=\"expr1;;expr2\"",
-          "useFor": "Aggiornare stato a fine step, logging a fine azione, concatenare operazioni.",
-          "examples": [
-            "<div @then=\"foo=1;;bar=2\"></div>",
-            "<button @wait=\"500\" @then=\"steps.push('step1')\"></button>"
-          ],
-          "tips": [
-            "Separa istruzioni con ;; per chiarezza.",
-            "Si esegue prima di @finally."
-          ]
-        },
-        {
-          "directive": "@finally",
-          "type": "Final hook",
-          "description": "Esegue una o più espressioni al termine di tutto (incluso @then). Utile per cleanup, logging o stati finali.",
-          "syntax": "@finally=\"expr1;;expr2\"",
-          "useFor": "Pulizia, segnare fine processo, logging finale.",
-          "examples": [
-            "<div @finally=\"foo=1;;bar=2\"></div>",
-            "<button @wait=\"500\" @then=\"steps.push('step1')\" @finally=\"steps.push('done')\">Run</button>"
-          ],
-          "tips": [
-            "Viene sempre dopo @then se entrambi presenti."
-          ]
-        },
-        {
-          "directive": "@hover",
-          "type": "Event handler",
-          "description": "Executes code when the element is hovered.",
-          "syntax": "@hover=\"expression\"",
-          "useFor": "Tooltips, previews, hover states.",
-          "examples": [
-            "<div @hover=\"showTooltip = true\">Hover me</div>"
-          ]
-        },
-        {
-          "directive": "@text",
-          "type": "Dynamic text",
-          "description": "Sets the element's textContent from an expression. If multiple assignments are detected, executes them instead of rendering text.",
-          "syntax": "@text=\"expression\"",
-          "useFor": "Dynamic labels, counters, computed text.",
-          "examples": [
-            "<span @text=\"name\"></span>"
-          ],
-          "tips": [
-            "Prefer @text over {{ }} for performance."
-          ]
-        },
-        {
-          "directive": "@input",
-          "type": "Input event handler",
-          "description": "Executes code on the input event (e.g., per keystroke).",
-          "syntax": "@input=\"expression\"",
-          "useFor": "Live search, counters, instant validation.",
-          "examples": [
-            "<input @input=\"search = event.target.value\">"
-          ]
-        },
-        {
-          "directive": "@change",
-          "type": "Change event handler",
-          "description": "Executes code on change (after blur or selection change).",
-          "syntax": "@change=\"expression\"",
-          "useFor": "Final validation, saving data.",
-          "examples": [
-            "<input @change=\"isValid = event.target.value.length > 3\">"
-          ]
-        },
-        {
-          "directive": "@focus",
-          "type": "Focus event handler",
-          "description": "Executes code when the element receives focus.",
-          "syntax": "@focus=\"expression\"",
-          "useFor": "Show help text, clear errors, highlight UI.",
-          "examples": [
-            "<input @focus=\"helpVisible = true; errors = ''\">"
-          ]
-        },
-        {
-          "directive": "@blur",
-          "type": "Blur event handler",
-          "description": "Executes code when the element loses focus.",
-          "syntax": "@blur=\"expression\"",
-          "useFor": "Hide help text, save data, capture final values.",
-          "examples": [
-            "<input @blur=\"helpVisible = false; lastValue = event.target.value\">"
-          ]
-        },
-        {
-          "directive": "@watch",
-          "type": "State watcher",
-          "description": "Watches for changes in state properties and executes code when they change. Receives newVal implicitly.",
-          "syntax": "@watch=\"prop => code\" or @watch=\"prop : code\"",
-          "useFor": "Side effects, logging, computed updates, fetch-on-change.",
-          "examples": [
-            "<div @watch=\"count => console.log('Count:', newVal)\"></div>",
-            "<div @watch=\"search => results = items.filter(i => i.includes(newVal))\"></div>"
-          ]
-        },
-        {
-          "directive": "@hover",
-          "type": "Event handler",
-          "description": "Executes code when the element is hovered.",
-          "syntax": "@hover=\"expression\"",
-          "useFor": "Tooltips, previews, hover states.",
-          "examples": [
-            "<div @hover=\"showTooltip = true\">Hover me</div>"
-          ]
-        },
-        {
-          "directive": "@text",
-          "type": "Dynamic text",
-          "description": "Sets the element's textContent from an expression. If multiple assignments are detected, executes them instead of rendering text.",
-          "syntax": "@text=\"expression\"",
-          "useFor": "Dynamic labels, counters, computed text.",
-          "examples": [
-            "<span @text=\"name\"></span>"
-          ],
-          "tips": [
-            "Prefer @text over {{ }} for performance."
-          ]
-        },
-        {
-          "directive": "@input",
-          "type": "Input event handler",
-          "description": "Executes code on the input event (e.g., per keystroke).",
-          "syntax": "@input=\"expression\"",
-          "useFor": "Live search, counters, instant validation.",
-          "examples": [
-            "<input @input=\"search = event.target.value\">"
-          ]
-        },
-        {
-          "directive": "@change",
-          "type": "Change event handler",
-          "description": "Executes code on change (after blur or selection change).",
-          "syntax": "@change=\"expression\"",
-          "useFor": "Final validation, saving data.",
-          "examples": [
-            "<input @change=\"isValid = event.target.value.length > 3\">"
-          ]
-        },
-        {
-          "directive": "@focus",
-          "type": "Focus event handler",
-          "description": "Executes code when the element receives focus.",
-          "syntax": "@focus=\"expression\"",
-          "useFor": "Show help text, clear errors, highlight UI.",
-          "examples": [
-            "<input @focus=\"helpVisible = true; errors = ''\">"
-          ]
-        },
-        {
-          "directive": "@blur",
-          "type": "Blur event handler",
-          "description": "Executes code when the element loses focus.",
-          "syntax": "@blur=\"expression\"",
-          "useFor": "Hide help text, save data, capture final values.",
-          "examples": [
-            "<input @blur=\"helpVisible = false; lastValue = event.target.value\">"
-          ]
-        }
+      "directive": "#param",
+      "type": "Component parameter (props-like)",
+      "description": "Pass data/expressions from parent into a component via attributes starting with #. Inside the component, parameters are available as local variables with the same name.",
+      "syntax": "#name=\"expression\"",
+      "useFor": "Passing data into components without relying on global state.",
+      "examples": [
+        "<component @src=\"'components/course-card.html'\" #data=\"item\"></component>",
+        "<component @src=\"'/components/sections/lesson-item.html'\" #slugcourse=\"_params[0]\" #datalesson=\"lesson\"></component>",
+        "<component @src=\"'components/user-card.html'\" #title=\"user.name + ' (' + user.role + ')'\" ></component>"
+      ],
+      "tips": [
+        "Values are evaluated in the parent context and then exposed in the child component context.",
+        "Use descriptive names (#data, #item, #slugcourse, etc.) for clarity."
+      ],
+      "pairsWith": ["@component", "@scope"]
+    },
+    {
+      "directive": "@animate",
+      "type": "Animation",
+      "description": "Adds a CSS class to trigger an animation/transition when the element is mounted.",
+      "syntax": "@animate=\"animationClass\"",
+      "useFor": "Visual polish, enter transitions, fade/slide effects.",
+      "examples": [
+        "<div @animate=\"fade-in\"></div>"
+      ],
+      "tips": [
+        "Define the CSS animation using @keyframes in your stylesheet."
       ]
     },
     {
-      "id": "sub",
-      "title": "Sub-directives & Events",
-      "entries": [
-        {
-          "directive": "@fetch:click",
-          "type": "Fetch on click",
-          "description": "Performs a fetch request only when the element is clicked.",
-          "syntax": "@fetch:click=\"urlExpr\" + @result",
-          "useFor": "On-demand loading, user-triggered API calls.",
-          "subOf": "@fetch",
-          "event": "click",
-          "examples": [
-            "<button @fetch:click=\"'/api/data'\" @result=\"data\">Load Data</button>"
-          ]
-        },
-        {
-          "directive": "@text:click",
-          "type": "Text on click",
-          "description": "Updates the element's text only when clicked.",
-          "syntax": "@text:click=\"expression\"",
-          "useFor": "Toggles, status indicators, interactive labels.",
-          "subOf": "@text",
-          "event": "click",
-          "examples": [
-            "<button @text:click=\"'Clicked!'\">Click me</button>"
-          ]
-        },
-        {
-          "directive": "@text:hover",
-          "type": "Text on hover",
-          "description": "Updates the element's text only while hovered. Reverts when hover ends.",
-          "syntax": "@text:hover=\"expression\"",
-          "useFor": "Hover tooltips, contextual help.",
-          "subOf": "@text",
-          "event": "hover",
-          "examples": [
-            "<div @text:hover=\"'Click for details'\">Hover me</div>"
-          ]
-        },
-        {
-          "directive": "@class:focus",
-          "type": "Class on focus",
-          "description": "Applies CSS classes only when the element receives focus; removes them on blur.",
-          "syntax": "@class:focus=\"{ className: condition }\"",
-          "useFor": "Form input styling, focus indicators, accessibility.",
-          "subOf": "@class",
-          "event": "focus",
-          "examples": [
-            "<input @class:focus=\"{ 'border-blue': true, shadow: true }\">"
-          ]
-        }
+      "directive": "@attr",
+      "type": "Dynamic attributes",
+      "description": "Sets multiple HTML attributes from an object mapping.",
+      "syntax": "@attr=\"{ src: url, alt: title }\"",
+      "useFor": "Binding attributes such as src, alt, href, aria-*.",
+      "examples": [
+        "<img @attr=\"{ src: imageUrl, alt: imageAlt }\">"
+      ],
+      "tips": [
+        "Also supports sub-directives per-attribute like @attr:src, @attr:alt."
       ]
     },
     {
-      "id": "specials",
-      "title": "Special Variables",
-      "entries": [
-        {
-          "directive": "state",
-          "type": "Special variable",
-          "description": "Global reactive state object that holds all reactive properties.",
-          "examples": [
-            "state.count",
-            "state.user?.name"
-          ],
-          "tips": [
-            "Mutating state triggers re-render of dependent parts."
-          ]
-        },
-        {
-          "directive": "_validate",
-          "type": "Special variable",
-          "description": "Holds validation results for inputs (true/false per field name) and for forms (true/false/null per form name when using @form), updated by @validate.",
-          "examples": [
-            "_validate.email",
-            "_validate.password",
-            "_validate.login"
-          ],
-          "tips": [
-            "null for a form means no validated fields yet or some fields still pending.",
-            "true when all validated fields inside the form are true; false if any field is false."
-          ]
-        },
-        {
-          "directive": "_currentPage",
-          "type": "Special variable",
-          "description": "Contains the active route name for SPA navigation controlled by @page/@link.",
-          "examples": [
-            "_currentPage === 'home'"
-          ]
-        }
+      "directive": "@attr:src",
+      "type": "Sub-directive",
+      "description": "Sets the src attribute specifically (event-scoped variants supported where applicable).",
+      "syntax": "@attr:src=\"expression\"",
+      "subOf": "@attr",
+      "examples": [
+        "<img @attr:src=\"imageUrl\">"
+      ]
+    },
+    {
+      "directive": "@blur",
+      "type": "Event handler",
+      "description": "Executes code when the element loses focus.",
+      "syntax": "@blur=\"expression\"",
+      "useFor": "Hide help text, save data, capture final values.",
+      "examples": [
+        "<input @blur=\"helpVisible = false; lastValue = event.target.value\">"
+      ]
+    },
+    {
+      "directive": "@case",
+      "type": "Switch case arm",
+      "description": "Matches a specific value inside an @switch block.",
+      "syntax": "@case=\"value\"",
+      "useFor": "Branching UI inside @switch.",
+      "examples": [
+        "<div @switch=\"val\"><div @case=\"1\">One</div></div>"
+      ],
+      "pairsWith": ["@switch", "@default"]
+    },
+    {
+      "directive": "@change",
+      "type": "Event handler",
+      "description": "Executes code on change (after blur or selection change).",
+      "syntax": "@change=\"expression\"",
+      "useFor": "Final validation, saving data.",
+      "examples": [
+        "<input @change=\"isValid = event.target.value.length > 3\">"
+      ]
+    },
+    {
+      "directive": "@class",
+      "type": "Dynamic CSS classes",
+      "description": "Applies CSS classes conditionally using an object or string expression. Supports event sub-directives (e.g., @class:focus).",
+      "syntax": "@class=\"{ className: condition }\" or @class=\"'class-a class-b'\"",
+      "useFor": "Conditional styling, interactive states.",
+      "examples": [
+        "<div @class=\"{ active: isActive, disabled: !enabled }\"></div>",
+        "<div @class=\"theme\"></div>"
+      ],
+      "combinations": [
+        "<input @class:focus=\"{ 'border-blue': true, shadow: true }\">"
+      ]
+    },
+    {
+      "directive": "@class:focus",
+      "type": "Sub-directive",
+      "description": "Applies CSS classes only when the element receives focus; removes them on blur.",
+      "syntax": "@class:focus=\"{ className: condition }\"",
+      "subOf": "@class",
+      "event": "focus",
+      "examples": [
+        "<input @class:focus=\"{ 'border-blue': true, shadow: true }\">"
+      ]
+    },
+    {
+      "directive": "@click",
+      "type": "Event handler",
+      "description": "Executes JavaScript when the element is clicked. Has full access to reactive state and local scope.",
+      "syntax": "@click=\"expression\"",
+      "useFor": "Buttons, links, any clickable element.",
+      "examples": [
+        "<button @click=\"count++\">Increment</button>",
+        "<a href=\"#\" @click=\"open = !open\">Toggle</a>"
+      ],
+      "tips": [
+        "You can chain multiple statements with semicolons.",
+        "Updates re-render automatically."
+      ]
+    },
+    {
+      "directive": "@component",
+      "type": "Reusable component",
+      "description": "Loads and renders external HTML as a component. Inherits parent state/context.",
+      "syntax": "<component @src=\"pathOrExpression\"></component>",
+      "useFor": "Modular UI, shared components, layouts.",
+      "examples": [
+        "<component @src=\"'components/sections/courses-section.html'\"></component>",
+        "<component @page=\"enrol\" @src=\"'components/sections/enrol.html'\"></component>"
+      ],
+      "pairsWith": ["@src", "#param", "@scope"],
+      "combinations": [
+        "<li @for=\"it in items\" @key=\"it.id\">\n  <component @src=\"'components/item.html'\" @scope=\"item\" #data=\"it\"></component>\n</li>"
+      ]
+    },
+    {
+      "directive": "@date",
+      "type": "Formatter",
+      "description": "Formats an ISO date into a localized date/time string (e.g., \"August 1, 2025, 08:37\").",
+      "syntax": "@date=\"dateExpr\"",
+      "useFor": "Readable timestamps.",
+      "examples": [
+        "<li @date=\"createdAt\"></li>"
+      ]
+    },
+    {
+      "directive": "@dateonly",
+      "type": "Formatter",
+      "description": "Formats an ISO date showing only day, month, year.",
+      "syntax": "@dateonly=\"dateExpr\"",
+      "examples": [
+        "<li @dateonly=\"createdAt\"></li>"
+      ]
+    },
+    {
+      "directive": "@default",
+      "type": "Switch default arm",
+      "description": "Fallback branch used when no @case matches inside @switch.",
+      "syntax": "@default",
+      "useFor": "Fallback UI in multi-state blocks.",
+      "examples": [
+        "<div @switch=\"val\"><div @default>Other</div></div>"
+      ],
+      "pairsWith": ["@switch", "@case"]
+    },
+    {
+      "directive": "@do",
+      "type": "Statement runner",
+      "description": "Runs one or more expressions on the node. Combined with @watch it becomes a reactive effect that re-runs when watched values change.",
+      "syntax": "@do=\"stmt1; stmt2\"",
+      "useFor": "Update multiple variables, call functions, simple effects.",
+      "examples": [
+        "<button @do=\"log=(log||[]); log.push('clicked')\">Log action</button>",
+        "<div @do=\"a=1; b=2\"></div>"
+      ],
+      "pairsWith": ["@watch", "@when"],
+      "combinations": [
+        "<span @when=\"isReady\" @do=\"start()\"></span>",
+        "<div @watch=\"count => total = count * price\" @do=\"console.log('updated')\"></div>"
+      ]
+    },
+    {
+      "directive": "@error",
+      "type": "Error target (fetch/json)",
+      "description": "Variable where errors from @fetch/@json are stored; defaults to _error if not provided.",
+      "syntax": "@error=\"errorVarName\"",
+      "useFor": "Custom error binding for HTTP/JSON operations.",
+      "examples": [
+        "<div @fetch=\"url\" @result=\"data\" @error=\"apiError\"></div>"
+      ],
+      "pairsWith": ["@fetch", "@json", "@result", "@then", "@finally"]
+    },
+    {
+      "directive": "@fetch",
+      "type": "HTTP request",
+      "description": "Performs an async HTTP request to the given URL/expression. Use @result to store parsed JSON; configure with @method/@headers/@payload; capture errors with @error.",
+      "syntax": "@fetch=\"urlExpr\" [+ @method + @headers + @payload + @result + @error]",
+      "useFor": "API calls, loading remote data, submitting forms.",
+      "examples": [
+        "<div @fetch=\"'/api/users/' + userId\" @result=\"user\"></div>",
+        "<div @fetch=\"apiUrl\" @method=\"'POST'\" @payload=\"{ name }\" @headers=\"{ Authorization: 'Bearer ' + token }\" @result=\"res\" @error=\"err\"></div>"
+      ],
+      "tips": [
+        "Use event sub-directives (e.g., @fetch:click) for user-triggered fetches.",
+        "Supports string literals, interpolated strings, and expressions."
+      ],
+      "pairsWith": ["@result", "@method", "@headers", "@payload", "@error", "@then", "@finally"],
+      "combinations": [
+        "<button @fetch:click=\"'/api/data'\" @result=\"data\" @then=\"loaded=true\" @finally=\"loading=false\"></button>"
+      ]
+    },
+    {
+      "directive": "@fetch:click",
+      "type": "Sub-directive (event)",
+      "description": "Performs a fetch request only when the element is clicked.",
+      "syntax": "@fetch:click=\"urlExpr\" + @result",
+      "useFor": "On-demand loading, user-triggered API calls.",
+      "subOf": "@fetch",
+      "event": "click",
+      "examples": [
+        "<button @fetch:click=\"'/api/data'\" @result=\"data\">Load Data</button>"
+      ]
+    },
+    {
+      "directive": "@file",
+      "type": "File input",
+      "description": "Reads a selected file as base64 and stores it in the given state variable.",
+      "syntax": "@file=\"stateVar\"",
+      "examples": [
+        "<input type=\"file\" @file=\"pic\">"
+      ]
+    },
+    {
+      "directive": "@files",
+      "type": "Multiple file input",
+      "description": "Reads multiple selected files as base64 and stores them in an array in the given state variable (appends if already present).",
+      "syntax": "@files=\"stateVar\"",
+      "examples": [
+        "<input type=\"file\" multiple @files=\"gallery\">"
+      ]
+    },
+    {
+      "directive": "@filter",
+      "type": "Array filter",
+      "description": "Filters items using a predicate function. Use with @source and usually @result.",
+      "syntax": "@filter=\"item => condition(item)\"",
+      "useFor": "Filtering lists, search results.",
+      "examples": [
+        "<div @source=\"items\" @filter=\"item => item > 5\" @result=\"filtered\"></div>"
+      ],
+      "pairsWith": ["@source", "@result"]
+    },
+    {
+      "directive": "@focus",
+      "type": "Event handler",
+      "description": "Executes code when the element receives focus.",
+      "syntax": "@focus=\"expression\"",
+      "examples": [
+        "<input @focus=\"helpVisible = true; errors = ''\">"
+      ]
+    },
+    {
+      "directive": "@for",
+      "type": "Loop",
+      "description": "Renders the element once per item in a list or object. Supports value-only or index/value tuple form.",
+      "syntax": "@for=\"item in items\"  |  @for=\"index, item in items\"",
+      "useFor": "Lists, tables, repeated UI.",
+      "examples": [
+        "<li @for=\"item in items\">{{item}}</li>",
+        "<li @for=\"i, item in items\">#{{i}} - {{item}}</li>"
+      ],
+      "tips": [
+        "Always pair with @key for better DOM updates.",
+        "Objects are iterated via their values."
+      ],
+      "pairsWith": ["@key"]
+    },
+    {
+      "directive": "@form",
+      "type": "Form grouping & validity",
+      "description": "Aggregates all child @model fields into state[formName] and exposes overall form validity in _validate[formName] (true/false/null).",
+      "syntax": "@form=\"formName\"",
+      "useFor": "Form state snapshot and derived overall validity.",
+      "examples": [
+        "<form @form=\"login\">\n  <input @model=\"email\" @validate=\"email\">\n  <input type=\"password\" @model=\"password\" @validate=\"required|min:6\">\n  <button @class=\"{ 'btn-primary': _validate.login, 'btn-secondary': !_validate.login }\">Login</button>\n</form>",
+        "<form @form=\"profile\">\n  <input @model=\"name\" @validate=\"required|min:3\">\n</form>"
+      ],
+      "pairsWith": ["@model", "@validate"],
+      "tips": [
+        "_validate[formName] is true when all validated fields are true; false if any is false; null if none validated yet.",
+        "state[formName] mirrors current values of child @model fields."
+      ]
+    },
+    {
+      "directive": "@go",
+      "type": "SPA navigation (programmatic)",
+      "description": "Navigates to a SPA route (updates _currentPage and _params, pushes history, and triggers re-render).",
+      "syntax": "@go=\"'route'\" or @go=\"expression\"",
+      "useFor": "Programmatic redirects after conditions, navigation buttons, wizards.",
+      "examples": [
+        "<button @go=\"'home'\">Home</button>",
+        "<button @go=\"'course/' + id\">Open course</button>"
+      ],
+      "pairsWith": ["@when", "@wait"],
+      "combinations": [
+        "<span @when=\"loggedIn\" @go=\"'dashboard'\"></span>",
+        "<span @when=\"isReady\" @wait=\"300\" @go=\"'next/step'\"></span>"
+      ]
+    },
+    {
+      "directive": "@headers",
+      "type": "Fetch option",
+      "description": "Custom headers object for @fetch requests.",
+      "syntax": "@headers=\"{ Authorization: 'Bearer ...', 'X-Custom': 'v' }\"",
+      "subOf": "@fetch",
+      "examples": [
+        "<div @fetch=\"url\" @method=\"'POST'\" @payload=\"data\" @headers=\"{ Authorization: 'Bearer ' + token }\" @result=\"res\"></div>"
+      ]
+    },
+    {
+      "directive": "@hide",
+      "type": "Visibility toggle (inverse)",
+      "description": "Hides the element (display:none) when the expression is truthy. The opposite of @show.",
+      "syntax": "@hide=\"condition\"",
+      "examples": [
+        "<div @hide=\"loading\">Content</div>"
+      ]
+    },
+    {
+      "directive": "@hover",
+      "type": "Event handler",
+      "description": "Executes code on mouseover/mouseout (both enter and leave).",
+      "syntax": "@hover=\"expression\"",
+      "useFor": "Tooltips, previews, hover states.",
+      "examples": [
+        "<div @hover=\"showTooltip = !showTooltip\">Hover me</div>"
+      ]
+    },
+    {
+      "directive": "@if",
+      "type": "Conditional rendering",
+      "description": "Conditionally renders the element in the DOM. When false, the element is not present in the DOM at all.",
+      "syntax": "@if=\"condition\"",
+      "useFor": "Optional blocks, conditional components, error messages.",
+      "examples": [
+        "<div @if=\"count > 5\">Many items!</div>"
+      ],
+      "tips": [
+        "Use @if to remove heavy content from DOM when hidden.",
+        "Use @show/@hide when you want to keep DOM and only toggle visibility."
+      ]
+    },
+    {
+      "directive": "@initial",
+      "type": "Reducer initial value",
+      "description": "Sets the initial accumulator value for @reduce operations.",
+      "syntax": "@initial=\"value\"",
+      "useFor": "Starting accumulator values.",
+      "examples": [
+        "<div @source=\"items\" @reduce=\"(sum, item) => sum + item\" @initial=\"0\" @result=\"total\"></div>"
+      ],
+      "pairsWith": ["@reduce"]
+    },
+    {
+      "directive": "@input",
+      "type": "Event handler",
+      "description": "Executes code on the input event (e.g., per keystroke).",
+      "syntax": "@input=\"expression\"",
+      "useFor": "Live search, counters, instant validation.",
+      "examples": [
+        "<input @input=\"search = event.target.value\">"
+      ]
+    },
+    {
+      "directive": "@json",
+      "type": "Local JSON loader",
+      "description": "Loads a local JSON file (GET) and stores it via @result; supports @then/@finally and @error variable.",
+      "syntax": "@json=\"'path.json'\" + @result + [@then/@finally/@error]",
+      "useFor": "Static/local data loading.",
+      "examples": [
+        "<span @json=\"'/courses/html-master.json'\" @result=\"htmlcourse\" @then=\"lessons=htmlcourse.lessons\" @finally=\"step=1\"></span>"
+      ],
+      "pairsWith": ["@result", "@then", "@finally", "@error"]
+    },
+    {
+      "directive": "@key",
+      "type": "Unique key",
+      "description": "Provides a unique identifier for items rendered with @for to optimize DOM updates.",
+      "syntax": "@key=\"uniqueValue\"",
+      "useFor": "Lists and tables rendered with @for.",
+      "examples": [
+        "<li @for=\"item in items\" @key=\"item.id\">{{item.name}}</li>"
+      ],
+      "pairsWith": ["@for"]
+    },
+    {
+      "directive": "@link",
+      "type": "SPA link",
+      "description": "Creates a navigation link that updates _currentPage without reload. Accepts literal route names, interpolated strings or expressions.",
+      "syntax": "@link=\"routeNameOrExpression\"",
+      "useFor": "SPA navigation.",
+      "examples": [
+        "<a @link=\"about\">About</a>",
+        "<a @link=\"'course/' + courseId\">Open course</a>"
+      ],
+      "pairsWith": ["@page"],
+      "tips": [
+        "You can pass a literal route (e.g., about) or build it dynamically.",
+        "On click it updates history, dispatches popstate and schedules a re-render."
+      ]
+    },
+    {
+      "directive": "@log",
+      "type": "Directive logger",
+      "description": "Shows a live, detailed log of directive execution, value changes, and timing on the current element.",
+      "syntax": "@log",
+      "useFor": "Understanding directive flow, debugging complex behavior.",
+      "examples": [
+        "<div @log></div>"
+      ]
+    },
+    {
+      "directive": "@map",
+      "type": "Array map",
+      "description": "Transforms each item using a mapping function. Use with @source and typically @result.",
+      "syntax": "@map=\"item => transform(item)\"",
+      "useFor": "Derived lists, value transformations.",
+      "examples": [
+        "<div @source=\"items\" @map=\"item => item * 2\" @result=\"double\"></div>"
+      ],
+      "pairsWith": ["@source", "@result"]
+    },
+    {
+      "directive": "@method",
+      "type": "Fetch option",
+      "description": "Method for @fetch requests (e.g., 'GET', 'POST').",
+      "syntax": "@method=\"'POST'\"",
+      "subOf": "@fetch",
+      "examples": [
+        "<div @fetch=\"url\" @method=\"'POST'\" @payload=\"{foo:1}\" @result=\"res\"></div>"
+      ]
+    },
+    {
+      "directive": "@model",
+      "type": "Two-way binding",
+      "description": "Creates bidirectional data binding between a form control and a state property.",
+      "syntax": "@model=\"stateProp\"",
+      "useFor": "Text inputs, textareas, selects, checkboxes, radios.",
+      "examples": [
+        "<input @model=\"name\">",
+        "<textarea @model=\"bio\"></textarea>",
+        "<input type=\"checkbox\" @model=\"accepted\">"
+      ],
+      "tips": [
+        "Works with any element that has a value-like property.",
+        "Combine with @validate for live validation."
+      ]
+    },
+    {
+      "directive": "@not",
+      "type": "Conditional rendering (negated)",
+      "description": "Renders the element when the expression is falsy.",
+      "syntax": "@not=\"condition\"",
+      "examples": [
+        "<div @not=\"isLoggedIn\">Please login</div>"
+      ]
+    },
+    {
+      "directive": "@page",
+      "type": "SPA routing",
+      "description": "Marks an element as a route target. Visible only when _currentPage matches its value.",
+      "syntax": "@page=\"routeName\"",
+      "useFor": "Single-page routing targets.",
+      "examples": [
+        "<div @page=\"home\">Home</div>",
+        "<div @page=\"about\">About</div>"
+      ],
+      "pairsWith": ["@link"]
+    },
+    {
+      "directive": "@payload",
+      "type": "Fetch option",
+      "description": "Body to send with @fetch (e.g., for POST/PUT).",
+      "syntax": "@payload=\"objectExpr\"",
+      "subOf": "@fetch",
+      "examples": [
+        "<div @fetch=\"url\" @method=\"'POST'\" @payload=\"{ name }\" @result=\"res\"></div>"
+      ]
+    },
+    {
+      "directive": "@prev",
+      "type": "Navigation helper",
+      "description": "Navigates back to the previous route/page (history back).",
+      "syntax": "@prev",
+      "useFor": "Back buttons, breadcrumb navigation.",
+      "examples": [
+        "<button @prev>Go Back</button>"
+      ]
+    },
+    {
+      "directive": "@reduce",
+      "type": "Array reduce",
+      "description": "Accumulates values into a single output using a reducer function. Use @initial for the starting accumulator and @result for output.",
+      "syntax": "@reduce=\"(acc, item) => nextAcc\" + @initial + @result",
+      "useFor": "Sums, aggregations, complex computations.",
+      "examples": [
+        "<div @source=\"items\" @reduce=\"(sum, item) => sum + item\" @initial=\"0\" @result=\"total\"></div>"
+      ],
+      "pairsWith": ["@initial", "@result", "@source"]
+    },
+    {
+      "directive": "@result",
+      "type": "Result target",
+      "description": "Destination state variable for storing the response/data produced by @fetch/@json or the @source pipeline.",
+      "syntax": "@result=\"stateProp\"",
+      "useFor": "Persisting fetched/transformed data in state.",
+      "examples": [
+        "<button @fetch:click=\"'/api/data'\" @result=\"data\">Load</button>",
+        "<div @source=\"items\" @map=\"x => x*2\" @result=\"double\"></div>"
+      ],
+      "pairsWith": ["@fetch", "@json", "@source", "@map", "@filter", "@reduce", "@initial"]
+    },
+    {
+      "directive": "@scope",
+      "type": "Scoped state (per component instance)",
+      "description": "Isolates one or more variables by creating instance-specific versions per component (e.g., card_0001, card_0002), avoiding collisions in lists of components.",
+      "syntax": "@scope=\"varName\"  |  @scope=\"var1, var2\"",
+      "useFor": "Reusable components in lists; per-instance state; prevent name conflicts.",
+      "examples": [
+        "<component @src=\"'components/course-card.html'\" @scope=\"course\"></component>",
+        "<li @for=\"it in items\" @key=\"it.id\">\n  <component @src=\"'components/item.html'\" @scope=\"item, cart\"></component>\n</li>"
+      ],
+      "tips": [
+        "Multiple comma-separated names are made unique per instance.",
+        "Scoped names also map inside component bindings (including @result and dotted access)."
+      ],
+      "pairsWith": ["@component", "#param"]
+    },
+    {
+      "directive": "@set",
+      "type": "State initialization",
+      "description": "Initializes state properties once when the element is first mounted (not re-run on re-render).",
+      "syntax": "@set=\"var = value\"",
+      "useFor": "Default values, element-scoped initialization.",
+      "examples": [
+        "<div @set=\"count = 4\"></div>"
+      ],
+      "tips": [
+        "For event-driven updates, use event handlers like @click instead."
+      ],
+      "combinations": [
+        "<button @set:click=\"count = 0\">Reset</button>"
+      ]
+    },
+    {
+      "directive": "@show",
+      "type": "Visibility toggle",
+      "description": "Shows the element (display) when the expression is truthy without removing it from the DOM.",
+      "syntax": "@show=\"condition\"",
+      "useFor": "Frequently toggled content: dropdowns, modals.",
+      "examples": [
+        "<div @show=\"isOpen\">Visible</div>"
+      ],
+      "tips": [
+        "Element stays mounted; state and listeners are preserved."
+      ]
+    },
+    {
+      "directive": "@src",
+      "type": "Component source",
+      "description": "Specifies the external HTML file path to load into a component.",
+      "syntax": "@src=\"'path.html'\" or @src=\"stateVar\"",
+      "useFor": "Supplying the source for @component.",
+      "examples": [
+        "<component @src=\"'components/header.html'\"></component>"
+      ],
+      "pairsWith": ["@component"]
+    },
+    {
+      "directive": "@state",
+      "type": "Debug inspector",
+      "description": "Displays the entire reactive state (or an expression) as JSON, updating live.",
+      "syntax": "@state or @state=\"expression\"",
+      "useFor": "Development debugging, learning, state inspection.",
+      "examples": [
+        "<div @state></div>",
+        "<div @state=\"user\"></div>"
+      ],
+      "tips": [
+        "Useful during development; avoid in production."
+      ]
+    },
+    {
+      "directive": "@style",
+      "type": "Dynamic inline styles",
+      "description": "Sets inline styles from an object where keys are CSS properties (camelCase or kebab-case) and values are expressions.",
+      "syntax": "@style=\"{ color: textColor, 'background-color': bg }\"",
+      "useFor": "Dynamic styling, responsive layouts.",
+      "examples": [
+        "<div @style=\"{ color: 'red', fontSize: size + 'px' }\"></div>"
+      ]
+    },
+    {
+      "directive": "@switch",
+      "type": "Switch-case",
+      "description": "Renders content based on the evaluated expression, with @case matches and an optional @default.",
+      "syntax": "@switch=\"expression\" + child @case/@default",
+      "useFor": "Multi-state UI blocks.",
+      "examples": [
+        "<div @switch=\"val\">\n  <div @case=\"1\">One</div>\n  <div @default>Other</div>\n</div>"
+      ]
+    },
+    {
+      "directive": "@text",
+      "type": "Dynamic text",
+      "description": "Sets the element's textContent from an expression. If assignments are detected, executes them instead of rendering text.",
+      "syntax": "@text=\"expression\"",
+      "useFor": "Dynamic labels, counters, computed text.",
+      "examples": [
+        "<span @text=\"name\"></span>"
+      ],
+      "tips": [
+        "Prefer @text over {{ }} for performance.",
+        "Use sub-directives for event-scoped updates (e.g., @text:hover)."
+      ]
+    },
+    {
+      "directive": "@text:click",
+      "type": "Sub-directive (event)",
+      "description": "Updates the element's text only when clicked.",
+      "syntax": "@text:click=\"expression\"",
+      "subOf": "@text",
+      "event": "click",
+      "examples": [
+        "<button @text:click=\"'Clicked!'\">Click me</button>"
+      ]
+    },
+    {
+      "directive": "@text:hover",
+      "type": "Sub-directive (event)",
+      "description": "Updates the element's text on hover and can revert on mouseout.",
+      "syntax": "@text:hover=\"expression\"",
+      "subOf": "@text",
+      "event": "hover",
+      "examples": [
+        "<div @text:hover=\"'Click for details'\">Hover me</div>"
+      ]
+    },
+    {
+      "directive": "@then",
+      "type": "Post-step hook",
+      "description": "Runs one or more expressions after the other directives on the node have completed.",
+      "syntax": "@then=\"expr1;;expr2\"",
+      "useFor": "Update state at end of step, logging, chaining operations.",
+      "examples": [
+        "<div @then=\"foo=1;;bar=2\"></div>",
+        "<button @wait=\"500\" @then=\"steps.push('step1')\"></button>"
+      ],
+      "tips": [
+        "Separate statements with ;; for clarity.",
+        "Runs before @finally if both present."
+      ]
+    },
+    {
+      "directive": "@time",
+      "type": "Formatter",
+      "description": "Formats an ISO date showing only time (hours and minutes).",
+      "syntax": "@time=\"dateExpr\"",
+      "examples": [
+        "<li @time=\"createdAt\"></li>"
+      ]
+    },
+    {
+      "directive": "@validate",
+      "type": "Input validation",
+      "description": "Validates input values using built-in validators or custom regex. Results go into _validate[fieldName] and forms into _validate[formName] when @form is used.",
+      "syntax": "@validate=\"required,email,regex:^[A-Z]\\\\d{3}$\"",
+      "useFor": "Form validation, input checking.",
+      "examples": [
+        "<input @validate=\"email\" @model=\"email\">",
+        "<input @validate=\"required, phone\" @model=\"phone\">",
+        "<input @validate=\"^[A-Z]\\\\d{3}$\" @model=\"code\">"
+      ],
+      "tips": [
+        "Check _validate.fieldName for boolean validity.",
+        "Combine multiple rules with commas."
+      ],
+      "pairsWith": ["@model", "@form"]
+    },
+    {
+      "directive": "@wait",
+      "type": "Delay",
+      "description": "Delays the execution of subsequent step(s) (e.g., within @when) by N milliseconds.",
+      "syntax": "@wait=\"ms\"",
+      "useFor": "Small delays, async step orchestration, smoother UX.",
+      "examples": [
+        "<button @wait=\"1000\" @then=\"done=true\" @finally=\"log=(log||[]);log.push('finished')\">Start</button>",
+        "<div @when=\"shouldDelay\" @wait=\"500\" @do=\"run()\"></div>"
+      ],
+      "pairsWith": ["@then", "@finally", "@when"]
+    },
+    {
+      "directive": "@watch",
+      "type": "State watcher",
+      "description": "Watches for changes in state properties and executes code when they change. Receives the new value implicitly (newVal).",
+      "syntax": "@watch=\"prop => code\" or @watch=\"prop : code\"",
+      "useFor": "Side effects, logging, computed updates, fetch-on-change.",
+      "examples": [
+        "<div @watch=\"count => console.log('Count:', newVal)\"></div>",
+        "<div @watch=\"search => results = items.filter(i => i.includes(newVal))\"></div>"
+      ],
+      "pairsWith": ["@do"]
+    },
+    {
+      "directive": "@when",
+      "type": "Conditional action gateway",
+      "description": "Evaluates a condition and, if true, executes @do and/or @go (optionally after @wait).",
+      "syntax": "@when=\"condition\" + (@do | @go) + [@wait]",
+      "useFor": "Triggering conditional actions, guarded redirects, gating effects.",
+      "examples": [
+        "<span @when=\"isReady\" @do=\"start()\"></span>",
+        "<button @when=\"isValid\" @go=\"'checkout'\"></button>",
+        "<div @when=\"loading\" @wait=\"500\" @do=\"showSpinner=false\"></div>"
+      ],
+      "tips": [
+        "@when requires at least one of @do or @go.",
+        "Combine @wait to delay the action."
+      ],
+      "pairsWith": ["@do", "@go", "@wait"],
+      "combinations": [
+        "<span @when=\"ok\" @go=\"'next'\"></span>",
+        "<span @when=\"ok\" @do=\"save()\"></span>",
+        "<span @when=\"ok\" @wait=\"300\" @do=\"save();\" @go=\"'done'\"></span>"
+      ]
+    },
+    {
+      "directive": "_currentPage",
+      "type": "Special variable",
+      "description": "Contains the active route name for SPA navigation controlled by @page/@link/@go/@prev.",
+      "examples": [
+        "_currentPage === 'home'"
+      ]
+    },
+    {
+      "directive": "_error",
+      "type": "Special variable",
+      "description": "Default error container used by @fetch/@json when @error is not specified. Stores an object with error and details.",
+      "examples": [
+        "_error?.error",
+        "_error?.details"
+      ],
+      "pairsWith": ["@fetch", "@json", "@error"]
+    },
+    {
+      "directive": "_params",
+      "type": "Special variable",
+      "description": "Array of route parameters set by @link/@go (segments after the first route segment).",
+      "examples": [
+        "_params[0]",
+        "_params.join('/')"
+      ]
+    },
+    {
+      "directive": "_validate",
+      "type": "Special variable",
+      "description": "Holds validation results for inputs (true/false per field name) and for forms (true/false/null per form name when using @form), updated by @validate.",
+      "examples": [
+        "_validate.email",
+        "_validate.password",
+        "_validate.login"
+      ],
+      "tips": [
+        "null for a form means no validated fields yet or some fields still pending.",
+        "true when all validated fields inside the form are true; false if any field is false."
+      ],
+      "pairsWith": ["@validate", "@form"]
+    },
+    {
+      "directive": "state",
+      "type": "Special variable",
+      "description": "Global reactive state object that holds all reactive properties.",
+      "examples": [
+        "state.count",
+        "state.user?.name"
+      ],
+      "tips": [
+        "Mutating state triggers re-render of dependent parts."
       ]
     }
   ]
