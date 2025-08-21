@@ -984,19 +984,18 @@
           return String(val);
         });
         if (missingPlaceholder) {
-          return Promise.resolve(undefined);
+          return null;
         }
       }
       if (url === undefined || url === null) {
         url = expr;
       }
 
-      // Se l'URL finale è "non popolato", non avviare la richiesta
       if (isInvalidUrlString(url)) {
-        return Promise.resolve(undefined);
+        return null;
       }
 
-      if (!url) return Promise.resolve(undefined);
+      if (!url) return null;
 
       if (typeof url === 'string') {
         url = url.trim();
@@ -1075,18 +1074,12 @@
         if (this.evaluator.state[rk] !== cached) {
           this.evaluator.state[rk] = cached;
         }
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(cached);
-        }
-        return this.readyPromise[fid];
+        return null;
       }
 
       // Se lo stesso URL ha già dato errore, non ripetere automaticamente (a meno di force/event)
       if (!force && !event && this.fetched[url]?.error) {
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-        }
-        return this.readyPromise[fid];
+        return null;
       }
 
       if (this.pendingFetches[fid]) {
@@ -1944,7 +1937,7 @@
           return String(val);
         });
         if (missingPlaceholder) {
-          return Promise.resolve(undefined);
+          return null;
         }
       }
       if (url === undefined || url === null) {
@@ -1953,10 +1946,10 @@
 
       // Se l'URL finale è "non popolato", non avviare la richiesta
       if (isInvalidUrlString(url)) {
-        return Promise.resolve(undefined);
+        return null;
       }
 
-      if (!url) return Promise.resolve(undefined);
+      if (!url) return null;
 
       if (/^https?:\/\//.test(url)) {
         return Promise.reject(new Error('@json accetta solo file locali'));
@@ -1971,10 +1964,7 @@
       if (!force && !event && this.errorInfoByUrl.has(url)) {
         const info = this.errorInfoByUrl.get(url);
         if (Date.now() - info.ts < this.errorCooldownMs) {
-          if (!this.readyPromise[fid]) {
-            this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-          }
-          return this.readyPromise[fid];
+          return null;
         } else {
           this.errorInfoByUrl.delete(url);
         }
@@ -1982,10 +1972,7 @@
 
       // Se lo stesso URL ha già dato errore, non ripetere automaticamente (a meno di force/event)
       if (!force && !event && this.fetched[url]?.error) {
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-        }
-        return this.readyPromise[fid];
+        return null;
       }
 
       if (!force && !event && this.inflightByUrl.has(url)) {
@@ -1999,10 +1986,7 @@
         if (this.evaluator.state[rk] !== cached) {
           this.evaluator.state[rk] = cached;
         }
-        if (!this.readyPromise[fid]) {
-          this.readyPromise[fid] = Promise.resolve(cached);
-        }
-        return this.readyPromise[fid];
+        return Promise.resolve(cached);
       }
 
       if (this.pendingJsons[fid]) {
@@ -2101,9 +2085,7 @@
 
           console.error('@json error:', err);
 
-          if (!this.readyPromise[fid]) {
-            this.readyPromise[fid] = Promise.resolve(this.evaluator.state[rk]);
-          }
+          return null;
         })
         .finally(() => {
           this.pendingJsons[fid] = false;
@@ -2129,8 +2111,31 @@
       const autoExpr = this.evaluator.autoVarExpr(expr);
       const resultVar = vNode.directives['@result'] || 'result';
       const ctxWithVNode = Object.assign({}, ctx, { _vNode: vNode });
+      
+      // Controllare se è cache hit prima di chiamare setupJson
+      let url = this.evaluator.evalExpr(autoExpr, ctxWithVNode);
+      if (url === undefined) {
+        url = autoExpr;
+      }
+      if (typeof url === 'string') {
+        url = url.trim();
+        const first = url[0], last = url[url.length - 1];
+        if (first && first === last && (first === '`' || first === '"' || first === "'")) {
+          url = url.slice(1, -1).trim();
+        }
+      }
+      if (!/^https?:\/\//.test(url)) {
+        if (!url.startsWith('/')) {
+          url = '/' + url.replace(/^\.\//,'');
+        }
+        url = location.origin + url;
+      }
+      
+      const isCached = this.jsonManager.cacheByUrl.has(url);
       const jsonPromise = this.jsonManager.setupJson(autoExpr, resultVar, ctxWithVNode);
-      if (completionListener && jsonPromise && typeof jsonPromise.then === 'function') {
+      
+      // SOLO aggiungere task per nuove richieste HTTP (non cache hit)
+      if (completionListener && jsonPromise && typeof jsonPromise.then === 'function' && !isCached) {
         completionListener.addTask(
           jsonPromise.then(data => {
             ctxWithVNode._eventResult = data;
@@ -2138,6 +2143,8 @@
           })
         );
       }
+      // Se jsonPromise è null o cache hit, NON aggiungere task
+      
       if (vNode.directives['@watch']) {
         this.handleWatchDirective(vNode, autoExpr, resultVar);
       }
@@ -2155,7 +2162,7 @@
             url = expression;
           }
           const jsonPromise = this.jsonManager.setupJson(url, resultVar, ctxWithVNode, e, true);
-          if (jsonPromise) {
+          if (jsonPromise && typeof jsonPromise.then === 'function') {
             jsonPromise.then(data => {
               ctxWithVNode._eventResult = data;
             }).finally(() => { if (done) done(); });
@@ -2188,7 +2195,10 @@
           }, { oneShot: true });
         } else {
           window.ayisha.addWatcher(watchExpr, () => {
-            this.jsonManager.setupJson(expr, resultVar, undefined, undefined, true);
+            const jsonPromise = this.jsonManager.setupJson(expr, resultVar, undefined, undefined, true);
+            if (jsonPromise && typeof jsonPromise.then === 'function') {
+              jsonPromise.catch(() => {});
+            }
           }, { oneShot: true });
         }
       });
@@ -2933,15 +2943,17 @@
       const ctxWithVNode = Object.assign({}, ctx, { _vNode: vNode });
 
       const fetchPromise = this.fetchManager.setupFetch(autoExpr, resultVar, ctxWithVNode);
+      
+      // SOLO aggiungere task se fetchPromise è una Promise valida
       if (completionListener && fetchPromise && typeof fetchPromise.then === 'function') {
         completionListener.addTask(
           fetchPromise.then(data => {
-            console.log('Fetch result:', data);
             ctxWithVNode._eventResult = data;
             return data;
           })
         );
       }
+      // Se fetchPromise è null (cache hit, errore, URL invalido), NON aggiungere task
 
       if (vNode.directives['@watch']) {
         this.handleWatchDirective(vNode, autoExpr, resultVar);
