@@ -36,14 +36,15 @@
            @class="{active: location.pathname.includes('wiki')}" 
            @click="mobileNavOpen = false">Wiki</a>
         <a href="#" 
+           @link="tutorials"
            @class="{active: location.pathname.includes('tutorial')}" 
-           @click="mobileNavOpen = false">Tutorial</a>
-        <a href="#" 
+           @click="mobileNavOpen = false">Tutorials</a>
+        <!-- <a href="#" 
            @class="{active: location.pathname.includes('faq')}" 
            @click="mobileNavOpen = false">FAQ</a>
         <a href="#" 
            @class="{active: location.pathname.includes('examples')}" 
-           @click="mobileNavOpen = false">Examples</a>
+           @click="mobileNavOpen = false">Examples</a> -->
       </div>
     </nav>
   </div>
