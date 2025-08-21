@@ -4035,22 +4035,48 @@
           e.preventDefault();
           const raw = vNode.directives['@link'];
           let targetPage = raw;
+
           try {
             if (this.evaluator && typeof raw === 'string') {
               const evaluated = this.evaluator.evalAttrValue(raw, ctx);
-              if (evaluated === raw) {
-                const exprVal = this.evaluator.evalExpr(raw, ctx);
-                targetPage = (exprVal != null && exprVal !== undefined) ? exprVal : evaluated;
-              } else {
+
+              if (evaluated !== raw) {
                 targetPage = evaluated;
+              } else {
+                const t = raw.trim();
+
+                const looksLikeLiteralRoute =
+                  /^[a-zA-Z0-9_\/\.-]+$/.test(t) &&
+                  !t.startsWith("'") && !t.startsWith('"') &&
+                  !t.includes('{') && !t.includes('}') &&
+                  !t.includes(' ');
+
+                if (looksLikeLiteralRoute) {
+                  targetPage = t;
+                } else {
+                  const exprVal = this.evaluator.evalExpr(raw, ctx);
+                  targetPage = (exprVal != null && exprVal !== undefined) ? exprVal : evaluated;
+                }
               }
             }
           } catch {}
-          let finalPage = this.resolvePath(String(targetPage));
+
+          if (targetPage && typeof targetPage === 'object') {
+            targetPage = Array.isArray(targetPage) ? targetPage.join('/') : (typeof raw === 'string' ? raw.trim() : '');
+          } else if (typeof targetPage !== 'string') {
+            targetPage = String(targetPage ?? '').trim();
+          }
+
+          let finalPage = this.resolvePath(targetPage);
+          if (!finalPage || finalPage === '[object Object]') {
+            finalPage = (typeof raw === 'string') ? this.resolvePath(raw.trim()) : '';
+          }
+
           const segments = finalPage.split('/').filter(Boolean);
           state._currentPage = segments[0] || '';
           state._params = segments.slice(1);
           const url = '/' + segments.join('/');
+
           if (window && window.history && typeof window.history.pushState === 'function') {
             window.history.pushState({}, '', url);
             window.dispatchEvent(new PopStateEvent('popstate'));

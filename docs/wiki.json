@@ -406,6 +406,156 @@
           ]
         },
         {
+          "directive": "@when",
+          "type": "Conditional action gateway",
+          "description": "Valuta una condizione e, se vera, esegue @do e/o @go (eventualmente dopo @wait). Utile per orchestrare azioni reattive e navigazione condizionata.",
+          "syntax": "@when=\"condizione\" + (@do | @go) + [@wait]",
+          "useFor": "Avvio azioni condizionali, redirect protetti, gating di effetti.",
+          "examples": [
+            "<span @when=\"isReady\" @do=\"start()\"></span>",
+            "<button @when=\"isValid\" @go=\"'checkout'\"></button>",
+            "<div @when=\"loading\" @wait=\"500\" @do=\"showSpinner=false\"></div>"
+          ],
+          "tips": [
+            "@when richiede almeno @do o @go.",
+            "Puoi combinare @wait per ritardare l’azione."
+          ],
+          "pairsWith": ["@do", "@go", "@wait"]
+        },
+        {
+          "directive": "@do",
+          "type": "Statement runner",
+          "description": "Esegue una o più espressioni sul nodo. Insieme a @watch diventa un effetto reattivo che si attiva al variare dei valori osservati.",
+          "syntax": "@do=\"istruzione1; istruzione2\"",
+          "useFor": "Aggiornare più variabili, chiamare funzioni, effetti semplici.",
+          "examples": [
+            "<button @do=\"log=(log||[]); log.push('clicked')\">Log action</button>",
+            "<div @do=\"a=1; b=2\"></div>"
+          ],
+          "tips": [
+            "Con @watch, @do si riesegue ad ogni cambiamento dei valori osservati.",
+            "Usa più istruzioni separate da ;"
+          ],
+          "pairsWith": ["@watch", "@when"]
+        },
+        {
+          "directive": "@go",
+          "type": "SPA navigation (programmatic)",
+          "description": "Esegue una navigazione SPA verso una pagina/rotta. Utile per redirect da codice o azioni condizionali.",
+          "syntax": "@go=\"'route'\" oppure @go=\"espressione\"",
+          "useFor": "Redirect dopo una condizione, pulsanti di navigazione, wizard.",
+          "examples": [
+            "<button @go=\"'home'\">Home</button>",
+            "<button @go=\"'course/' + id\">Apri corso</button>",
+            "<span @when=\"loggedIn\" @go=\"'dashboard'\"></span>"
+          ],
+          "pairsWith": ["@when", "@wait"]
+        },
+        {
+          "directive": "@wait",
+          "type": "Delay",
+          "description": "Ritarda l’esecuzione di step successivi (come @then/@finally o azioni in @when) di N millisecondi.",
+          "syntax": "@wait=\"ms\"",
+          "useFor": "Piccoli ritardi, orchestrazione step asincroni, UX più fluida.",
+          "examples": [
+            "<button @wait=\"1000\" @then=\"done=true\" @finally=\"log=(log||[]);log.push('finished')\">Start</button>",
+            "<div @when=\"shouldDelay\" @wait=\"500\" @do=\"run()\"></div>"
+          ],
+          "pairsWith": ["@then", "@finally", "@when"]
+        },
+        {
+          "directive": "@then",
+          "type": "Post-directive hook",
+          "description": "Esegue una o più espressioni dopo l’esecuzione delle altre direttive sul nodo (completamento step precedente).",
+          "syntax": "@then=\"expr1;;expr2\"",
+          "useFor": "Aggiornare stato a fine step, logging a fine azione, concatenare operazioni.",
+          "examples": [
+            "<div @then=\"foo=1;;bar=2\"></div>",
+            "<button @wait=\"500\" @then=\"steps.push('step1')\"></button>"
+          ],
+          "tips": [
+            "Separa istruzioni con ;; per chiarezza.",
+            "Si esegue prima di @finally."
+          ]
+        },
+        {
+          "directive": "@finally",
+          "type": "Final hook",
+          "description": "Esegue una o più espressioni al termine di tutto (incluso @then). Utile per cleanup, logging o stati finali.",
+          "syntax": "@finally=\"expr1;;expr2\"",
+          "useFor": "Pulizia, segnare fine processo, logging finale.",
+          "examples": [
+            "<div @finally=\"foo=1;;bar=2\"></div>",
+            "<button @wait=\"500\" @then=\"steps.push('step1')\" @finally=\"steps.push('done')\">Run</button>"
+          ],
+          "tips": [
+            "Viene sempre dopo @then se entrambi presenti."
+          ]
+        },
+        {
+          "directive": "@hover",
+          "type": "Event handler",
+          "description": "Executes code when the element is hovered.",
+          "syntax": "@hover=\"expression\"",
+          "useFor": "Tooltips, previews, hover states.",
+          "examples": [
+            "<div @hover=\"showTooltip = true\">Hover me</div>"
+          ]
+        },
+        {
+          "directive": "@text",
+          "type": "Dynamic text",
+          "description": "Sets the element's textContent from an expression. If multiple assignments are detected, executes them instead of rendering text.",
+          "syntax": "@text=\"expression\"",
+          "useFor": "Dynamic labels, counters, computed text.",
+          "examples": [
+            "<span @text=\"name\"></span>"
+          ],
+          "tips": [
+            "Prefer @text over {{ }} for performance."
+          ]
+        },
+        {
+          "directive": "@input",
+          "type": "Input event handler",
+          "description": "Executes code on the input event (e.g., per keystroke).",
+          "syntax": "@input=\"expression\"",
+          "useFor": "Live search, counters, instant validation.",
+          "examples": [
+            "<input @input=\"search = event.target.value\">"
+          ]
+        },
+        {
+          "directive": "@change",
+          "type": "Change event handler",
+          "description": "Executes code on change (after blur or selection change).",
+          "syntax": "@change=\"expression\"",
+          "useFor": "Final validation, saving data.",
+          "examples": [
+            "<input @change=\"isValid = event.target.value.length > 3\">"
+          ]
+        },
+        {
+          "directive": "@focus",
+          "type": "Focus event handler",
+          "description": "Executes code when the element receives focus.",
+          "syntax": "@focus=\"expression\"",
+          "useFor": "Show help text, clear errors, highlight UI.",
+          "examples": [
+            "<input @focus=\"helpVisible = true; errors = ''\">"
+          ]
+        },
+        {
+          "directive": "@blur",
+          "type": "Blur event handler",
+          "description": "Executes code when the element loses focus.",
+          "syntax": "@blur=\"expression\"",
+          "useFor": "Hide help text, save data, capture final values.",
+          "examples": [
+            "<input @blur=\"helpVisible = false; lastValue = event.target.value\">"
+          ]
+        },
+        {
           "directive": "@watch",
           "type": "State watcher",
           "description": "Watches for changes in state properties and executes code when they change. Receives newVal implicitly.",
