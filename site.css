@@ -1922,11 +1922,13 @@ li {
   flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
+  min-width: 0; /* evita overflow dei badge nella colonna di sinistra */
 }
 
 .wiki-entry-col-desc {
   color: var(--text-primary);
   line-height: 1.7;
+  min-width: 0; /* consente al contenuto (testo/codice) di restringersi dentro la grid */
 }
 
 dir-badge, .dir-badge {
@@ -1975,6 +1977,22 @@ dir-badge, .dir-badge {
   color: var(--text-primary);
   overflow-x: auto;
   position: relative;
+  max-width: 100%;
+  box-sizing: border-box; /* evita che padding/border facciano sbordare il box */
+}
+
+/* Evita overflow nei blocchi di codice della wiki */
+.wiki-entry-code pre,
+.wiki-entry-code pre code,
+.wiki-entry-code no {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.wiki-entry-code pre code {
+  display: block;      /* evita inline box strani con figli block */
+  white-space: pre;    /* mantieni formattazione del codice */
+  overflow-x: auto;    /* scroll orizzontale per righe lunghe */
 }
 
 .wiki-entry-code no::before {

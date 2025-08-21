@@ -20,13 +20,20 @@
   </section>
 
 
-  <div class="search-container" role="search" @watch="search" @do="wiki=rowWiki.directives.filter(item=>item.directive.includes(search))">
-    <input type="text" class="search-input" placeholder="Search directives..." @model="search"
-      aria-label="Search directives">
+  <div class="search-container" role="search" @watch="search" @do="wikisearch=rowWiki.directives.filter(item=>item.directive.includes(search))">
+    <input type="text" class="search-input" placeholder="Search directives..." @model="search" aria-label="Search directives">
   </div>
 
   <section class="philosophy">
-    <div class="wiki-dictionary" @for="directive in wiki">
+
+    <span @when="wikisearch.length>0" @do="wikiResults=wikisearch"></span>
+    <span @when="wikisearch==false" @do="wikiResults=rowWiki.directives"></span>
+
+
+
+    <h3 @not="wikiResults.length" >Loading...</h3>
+
+    <div class="wiki-dictionary" @for="directive in wikiResults">
       <div class="wiki-entry-row">
         <div class="wiki-entry-col-dir"><dir-badge>{{directive.directive}}</dir-badge></div>
         <div class="wiki-entry-col-desc">
@@ -42,19 +49,16 @@
               <dir-badge>{{pairsWith}}</dir-badge>
             </span>
           </div>
-
-
           <div class="wiki-entry-code" @for="example in directive.examples" @if="directive.examples.length">
             <pre><code><no>{{example}}</no></code></pre>
           </div>
-
           <div class="wiki-entry-code" @for="combination in directive.combinations" @if="directive.combinations.length">
             <pre><code><no>{{combination}}</no></code></pre>
           </div>
-
-
         </div>
       </div>
       <hr class="wiki-divider">
   </section>
+  <div @state="wikisearch"></div>
+  <div @state="wikiResults"></div>
 </main>

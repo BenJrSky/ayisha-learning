@@ -2518,7 +2518,16 @@
 
       let clsMap = {};
       try {
+        const raw = typeof expr === 'string' ? expr.trim() : expr;
         let result = this.evalExpr(expr, ctx);
+
+        // Support object literal passed as a plain string (e.g. {'open': mobileNavOpen})
+        if ((result === undefined || result === null) && typeof raw === 'string' && raw.startsWith('{') && raw.endsWith('}')) {
+          try {
+            result = this.evaluator.evalExpr(`(${raw})`, ctx);
+          } catch {}
+        }
+
         if (typeof result === 'string') {
           let str = result.trim();
           if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
@@ -2695,6 +2704,23 @@
         const processedCode = codeToRun.replace(/\bstate\./g, '');
 
         if (this.handleSpecialClickPatterns(processedCode, ctx, state)) {
+          return;
+        }
+
+        // Handle simple toggle pattern: foo = !foo
+        const toggleMatch = processedCode.match(/^\s*([a-zA-Z_$][\w$]*)\s*=\s*!\s*\1\s*$/);
+        if (toggleMatch) {
+          const varName = toggleMatch[1];
+          const cur = state[varName];
+          state[varName] = !Boolean(cur);
+          if (!window.ayisha?._isRendering && !window.ayisha?._componentRenderQueued) {
+            clearTimeout(window.ayisha?._componentRenderTimeout);
+            window.ayisha._componentRenderQueued = true;
+            window.ayisha._componentRenderTimeout = setTimeout(() => {
+              window.ayisha._componentRenderQueued = false;
+              window.ayisha.render();
+            }, 0);
+          }
           return;
         }
 
