@@ -1,4 +1,4 @@
-<main class="container" @json="docs/wiki.json" @result="rowWiki" @then="wiki=rowWiki.directives">
+<main class="container" @json="docs/wiki.json" @result="rowWiki" @then="wikisearch=rowWiki.directives">
   <section class="hero">
     <div class="hero-background"></div>
     <div class="hero-content">
@@ -54,6 +54,4 @@
       </div>
       <hr class="wiki-divider">
   </section>
-  <div @state="wikisearch"></div>
-  <div @state="wikiResults"></div>
 </main>
