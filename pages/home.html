@@ -33,8 +33,8 @@
     <pre><code><no><script src="https://cdn.jsdelivr.net/gh/BenJrSky/ayisha.js@main/dist/ayisha-1.0.4-min.js"></script></no></code></pre>
     <p><strong>Option 2:</strong> Download locally</p>
     <pre><code><no><script src="/ayisha.js"></script></no></code></pre>
-    <p>Discover all features in the <a href="/pages/wiki.html">Directives Wiki</a> or follow the <a
-        href="/tutorial.html">Step-by-step Tutorial</a>.</p>
+    <p>Discover all features in the <a @link="wiki">Directives Wiki</a> or follow the <a
+        @link="tutorials">Step-by-step Tutorial</a>.</p>
   </section>
 
   <section class="hello-world">
@@ -42,7 +42,7 @@
     <pre><code><no><div class="hello-inline">
   <input @model="name" placeholder="Type your name...">
   <p @if="name.length">Hello, <strong>{{ name }}</strong>!</p>
-  <p @show="name.length==0">What's your name?</p>
+  <p @show="name.le==0">What's your name?</p>
 </div></no></code></pre>
     <div class="hello-inline">
       <input @model="name" placeholder="Type your name...">
@@ -209,3 +209,5 @@
     name = '';
   </init>
 </main>
+
+<div @state></div>
