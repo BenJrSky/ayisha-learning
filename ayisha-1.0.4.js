@@ -3571,6 +3571,12 @@
           }
         } else {
           executeNow();
+          // Notifica il completionListener per esecuzione immediata
+          if (completionListener) {
+            setTimeout(() => {
+              completionListener.markSyncDone();
+            }, 0);
+          }
         }
       } else if (!isTrue && wasTrue) {
         window._ayishaWhenLastState[directiveKey] = false;
@@ -6280,15 +6286,22 @@ window.__AYISHA_HYDRATION_DATA__ = ${JSON.stringify(this._hydrationData)};
       }
 
       let completionListener = null;
-      if (vNode && (vNode.directives?.['@then'] || vNode.directives?.['@finally'])) {
-        completionListener = new DirectiveCompletionListener(vNode, mergedCtx, this);
-
-        if (vNode.directives['@then']) {
-          completionListener.addThen(vNode.directives['@then']);
-        }
-
-        if (vNode.directives['@finally']) {
-          completionListener.addFinally(vNode.directives['@finally']);
+      if (vNode && vNode.directives && Object.keys(vNode.directives).length > 0) {
+        // Escludi @then e @finally dal conteggio per evitare loop
+        const hasOtherDirectives = Object.keys(vNode.directives)
+          .some(key => key !== '@then' && key !== '@finally');
+        
+        if (hasOtherDirectives || vNode.directives['@then'] || vNode.directives['@finally']) {
+          completionListener = new DirectiveCompletionListener(vNode, mergedCtx, this);
+          
+          // Registra @then e @finally se presenti
+          if (vNode.directives['@then']) {
+            completionListener.addThen(vNode.directives['@then']);
+          }
+          
+          if (vNode.directives['@finally']) {
+            completionListener.addFinally(vNode.directives['@finally']);
+          }
         }
       }
 

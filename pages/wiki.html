@@ -33,6 +33,8 @@
         {{test}}
     </h3>
     
+    <button @click="count++" @then="log.push('Clicked!')" @finally="console.log('Done')">Click me</button>
+    
     <div>Log:</div>
     <ul>
         <li @for="entry in log" @key="entry">{{entry}}</li>
