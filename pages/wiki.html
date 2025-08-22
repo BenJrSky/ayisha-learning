@@ -27,22 +27,6 @@
 
     <h3 @not="wikisearch.length" >Loading...</h3>
 
-    <h3 @when="search=='@click'" 
-        @do="test='Ben'; log.push('@do executed: ' + test)" 
-        @then="test='Ciao'; log.push('@then executed: ' + test)">
-        {{test}}
-    </h3>
-    
-    <button @click="count++" @then="log.push('Clicked!')" @finally="console.log('Done')">Click me</button>
-    
-    <div>Log:</div>
-    <ul>
-        <li @for="entry in log" @key="entry">{{entry}}</li>
-    </ul>
-
-    <span @state="test"></span>
-
-
     <div class="wiki-dictionary" @for="directive in wikisearch">
       <div class="wiki-entry-row">
         <div class="wiki-entry-col-dir"><dir-badge>{{directive.directive}}</dir-badge></div>
