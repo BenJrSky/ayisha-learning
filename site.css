@@ -1161,6 +1161,528 @@ main, .container, .section, .page-header, .courses-grid {
   }
 }
 
+/* Tutorial Styles */
+.tutorials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.tutorial-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.tutorial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #4f46e5;
+}
+
+.tutorial-icon {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.tutorial-card h3 {
+  color: #1f2937;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.tutorial-card p {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.tutorial-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.difficulty {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.difficulty.beginner {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.difficulty.intermediate {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.difficulty.advanced {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.duration {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.directives-used {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.directive-tag {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+}
+
+/* Tutorial Container */
+.tutorial-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.tutorial-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.tutorial-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.progress-bar {
+  width: 300px;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #7c3aed);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+/* Tutorial Steps */
+.tutorial-step {
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.step-number {
+  background: #4f46e5;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.step-title {
+  color: #1f2937;
+  margin: 0;
+}
+
+.step-description {
+  color: #6b7280;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Live Demo */
+.live-demo {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.live-demo h4 {
+  color: #1e40af;
+  margin-bottom: 1rem;
+}
+
+.demo-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Code Examples */
+.code-example {
+  margin: 2rem 0;
+}
+
+.code-example h4 {
+  color: #059669;
+  margin-bottom: 1rem;
+}
+
+.code-example pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+/* Step Explanations */
+.step-explanation {
+  background: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.step-explanation p {
+  margin-bottom: 0.5rem;
+  color: #92400e;
+}
+
+.step-explanation code {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Todo App Specific Styles */
+.todo-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.todo-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+.todo-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+}
+
+.todo-form .todo-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.todo-list {
+  margin: 1.5rem 0;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.todo-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 1rem;
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.todo-text.editable {
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+.todo-text.editable:hover {
+  background: #e5e7eb;
+}
+
+.todo-edit-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 2px solid #4f46e5;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.todo-id {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-family: monospace;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.bulk-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.todo-stats, .todo-summary {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.current-filter, .edit-hint {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.storage-info {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Tutorial Navigation */
+.tutorial-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3rem 0;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.step-indicator {
+  font-weight: 600;
+  color: #4f46e5;
+}
+
+/* Completion */
+.tutorial-completion {
+  margin-top: 3rem;
+}
+
+.completion-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.completion-card h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.completion-card ul {
+  text-align: left;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.completion-card li {
+  margin-bottom: 0.5rem;
+}
+
+.next-steps {
+  margin-top: 2rem;
+}
+
+.next-steps h4 {
+  margin-bottom: 1rem;
+}
+
+.next-steps .btn {
+  margin: 0 0.5rem;
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #4f46e5;
+  border: 2px solid #4f46e5;
+}
+
+.btn-outline:hover {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn-outline.active {
+  background: #4f46e5;
+  color: white;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+.btn-warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.btn-warning:hover {
+  background: #d97706;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn.disabled:hover {
+  background: inherit;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tutorials-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tutorial-step {
+    padding: 1.5rem;
+  }
+  
+  .todo-form {
+    flex-direction: column;
+  }
+  
+  .todo-form .todo-input {
+    margin-bottom: 1rem;
+  }
+  
+  .tutorial-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .filter-buttons, .bulk-actions {
+    flex-direction: column;
+  }
+  
+  .todo-stats, .todo-summary {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
 /* Content Sections - Improved spacing and consistency */
 .philosophy,
 .install,
@@ -2342,93 +2864,45 @@ no::before {
   }
 }
 
-/* ===================================================================
-   TUTORIAL PAGE STYLES
-   =================================================================== */
-
-/* Tutorial-specific styles */
-.tutorial-step {
-  background: white;
-  border-radius: 16px;
-  padding: 3rem;
-  margin: 3rem 0;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s ease;
+/* Course directives display */
+.course-directives {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.tutorial-step:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+.course-directives code {
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
 }
 
-.step-number {
-  display: inline-block;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: white;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
+/* Course icon */
+.course-icon {
+  font-size: 2.5rem;
   text-align: center;
-  line-height: 3rem;
-  font-weight: 700;
-  margin-right: 1.5rem;
   margin-bottom: 1rem;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+  display: block;
 }
 
-.step-title {
-  display: inline-block;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 2rem;
-  line-height: 1.3;
+/* Difficulty tags */
+.ayisha-tag.beginner {
+  background: #10b981;
+  color: white;
 }
 
-.step-description {
-  color: #6b7280;
-  margin-bottom: 2.5rem;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  padding: 0 0.5rem;
+.ayisha-tag.intermediate {
+  background: #f59e0b;
+  color: white;
 }
 
-.live-demo {
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 2.5rem;
-  margin: 2.5rem 0;
-}
-
-.live-demo h4 {
-  color: #2d3748;
-  margin-bottom: 1.5rem;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.code-explanation {
-  background: #1f2937;
-  color: #e5e7eb;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1.5rem 0;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  font-size: 0.9rem;
-  overflow-x: auto;
-  line-height: 1.6;
-}
-
-.highlight {
-  background: #fbbf24;
-  color: #92400e;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-weight: 600;
-  margin: 0 0.2rem;
+.ayisha-tag.advanced {
+  background: #ef4444;
+  color: white;
 }
 
 /* Blog-specific styles */
@@ -2555,132 +3029,7 @@ no::before {
   transition: width 0.3s ease;
 }
 
-/* Step progress section - compact and always visible */
-.step-progress {
-  background: linear-gradient(135deg, #fffbeb, #fef3c7);
-  border: 2px solid #fbbf24;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.15);
-  position: relative;
-}
 
-.step-progress::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #fbbf24, #f59e0b);
-  border-radius: 12px 12px 0 0;
-}
-
-.step-progress h4 {
-  color: #92400e;
-  margin: 0 0 1rem 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.step-progress .progress-bar {
-  width: 100%;
-  height: 8px;
-  background: #fde68a;
-  border-radius: 4px;
-  overflow: hidden;
-  margin: 1rem 0;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.step-progress .progress-fill {
-  height: 100%;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  transition: width 0.5s ease;
-  position: relative;
-}
-
-.step-progress .progress-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 2px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.step-progress p {
-  color: #92400e;
-  font-size: 0.95rem;
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Step progress compact component */
-.step-progress-compact {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin: 1.5rem 0;
-  padding: 0.75rem 0;
-}
-
-.progress-bar-small {
-  width: 120px;
-  height: 6px;
-  background: #fde68a;
-  border-radius: 3px;
-  overflow: hidden;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #fbbf24;
-}
-
-.progress-fill-small {
-  height: 100%;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  transition: width 0.5s ease;
-  position: relative;
-}
-
-.progress-fill-small::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 1px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.progress-percentage {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #92400e;
-  min-width: 35px;
-  text-align: right;
-}
-
-/* Responsive compact progress */
-@media (max-width: 768px) {
-  .step-progress-compact {
-    gap: 0.5rem;
-    margin: 1rem 0;
-  }
-  
-  .progress-bar-small {
-    width: 80px;
-    height: 5px;
-  }
-  
-  .progress-percentage {
-    font-size: 0.8rem;
-    min-width: 30px;
-  }
-}
 
 /* ===================================================================
    VALIDATION SECTION STYLES - Built-in Validators Documentation
