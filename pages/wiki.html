@@ -23,9 +23,23 @@
     <input type="text" class="search-input" placeholder="Search directives..." @model="search" aria-label="Search directives">
   </div>
 
-  <section class="philosophy">
+  <section class="philosophy" @set="log=[]">
 
     <h3 @not="wikisearch.length" >Loading...</h3>
+
+    <h3 @when="search=='@click'" 
+        @do="test='Ben'; log.push('@do executed: ' + test)" 
+        @then="test='Ciao'; log.push('@then executed: ' + test)">
+        {{test}}
+    </h3>
+    
+    <div>Log:</div>
+    <ul>
+        <li @for="entry in log" @key="entry">{{entry}}</li>
+    </ul>
+
+    <span @state="test"></span>
+
 
     <div class="wiki-dictionary" @for="directive in wikisearch">
       <div class="wiki-entry-row">

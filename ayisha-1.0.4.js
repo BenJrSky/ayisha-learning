@@ -2134,7 +2134,6 @@
       const isCached = this.jsonManager.cacheByUrl.has(url);
       const jsonPromise = this.jsonManager.setupJson(autoExpr, resultVar, ctxWithVNode);
       
-      // SOLO aggiungere task per nuove richieste HTTP (non cache hit)
       if (completionListener && jsonPromise && typeof jsonPromise.then === 'function' && !isCached) {
         completionListener.addTask(
           jsonPromise.then(data => {
@@ -2143,8 +2142,7 @@
           })
         );
       }
-      // Se jsonPromise è null o cache hit, NON aggiungere task
-      
+
       if (vNode.directives['@watch']) {
         this.handleWatchDirective(vNode, autoExpr, resultVar);
       }
@@ -2955,6 +2953,8 @@
       }
       // Se fetchPromise è null (cache hit, errore, URL invalido), NON aggiungere task
 
+      // Removed direct handling of @then/@finally here
+
       if (vNode.directives['@watch']) {
         this.handleWatchDirective(vNode, autoExpr, resultVar);
       }
@@ -3704,20 +3704,34 @@
   }
 
   class ThenDirective extends Directive {
-    apply(vNode, ctx, state, el, completionListener = null) {
-      if (completionListener) {
-        completionListener.addTask(() => Promise.resolve());
-      }
+  apply(vNode, ctx, state, el, completionListener = null) {
+    const expr = vNode.directives['@then'];
+    if (completionListener && expr) {
+      completionListener.addThen(() => {
+        try {
+          this.evaluator.executeDirectiveExpression(expr, ctx, state, el);
+        } catch (err) {
+          this.showError(el, err, expr);
+        }
+      });
     }
   }
+}
 
-  class FinallyDirective extends Directive {
-    apply(vNode, ctx, state, el, completionListener = null) {
-      if (completionListener) {
-        completionListener.addTask(() => Promise.resolve());
-      }
+class FinallyDirective extends Directive {
+  apply(vNode, ctx, state, el, completionListener = null) {
+    const expr = vNode.directives['@finally'];
+    if (completionListener && expr) {
+      completionListener.addFinally(() => {
+        try {
+          this.evaluator.executeDirectiveExpression(expr, ctx, state, el);
+        } catch (err) {
+          this.showError(el, err, expr);
+        }
+      });
     }
   }
+}
 
   class KeyDirective extends Directive {
     apply(vNode, ctx, state, el, completionListener = null) {
