@@ -17,9 +17,10 @@
       <h3>Basic Setup & Input</h3>
     </div>
     <p class="step-description">
-      Let's start by creating a simple input field to add new todos. We'll use <code>@model</code> for two-way data binding.
+      Let's start by creating a simple input field to add new todos. We'll use <code>@model</code> for two-way data
+      binding.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
       <div class="demo-container">
@@ -27,18 +28,22 @@
         <p @if="newTodo">You're typing: "<strong @text="newTodo"></strong>"</p>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><input @model="newTodo" placeholder="What needs to be done?">
 <p @if="newTodo">You're typing: "<strong @text="newTodo"></strong>"</p></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
-      <p><strong>@model</strong> creates two-way data binding between the input and the <code>newTodo</code> variable.</p>
+      <p><strong>@model</strong> creates two-way data binding between the input and the <code>newTodo</code> variable.
+      </p>
       <p><strong>@if</strong> conditionally shows content when <code>newTodo</code> has a value.</p>
       <p><strong>@text</strong> displays the dynamic content safely.</p>
     </div>
+
+    <component @src="components/step-component.html" #next="2" #prev="1" #totalSteps="8"></component>
+
   </div>
 
   <!-- Step 2: Adding Todos -->
@@ -50,22 +55,21 @@
     <p class="step-description">
       Now let's add a button to create new todos and store them in an array using <code>@click</code>.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
       <div class="demo-container">
         <div class="todo-form">
           <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-                  @class="{disabled: !newTodo.trim()}" 
-                  class="btn btn-primary">Add Todo</button>
+          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
+            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
         </div>
         <div class="todo-count" @if="todos.length">
           <p>Total todos: <strong @text="todos.length"></strong></p>
         </div>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
@@ -73,12 +77,13 @@
   Add Todo
 </button></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
       <p><strong>@click</strong> executes JavaScript when the button is clicked.</p>
       <p><strong>@class</strong> conditionally applies CSS classes based on expressions.</p>
       <p>We create todo objects with <code>id</code>, <code>text</code>, and <code>completed</code> properties.</p>
     </div>
+
   </div>
 
   <!-- Step 3: Displaying Todos -->
@@ -88,19 +93,19 @@
       <h3>Displaying Todos with @for</h3>
     </div>
     <p class="step-description">
-      Let's display our todos using <code>@for</code> to loop through the array and <code>@key</code> for efficient updates.
+      Let's display our todos using <code>@for</code> to loop through the array and <code>@key</code> for efficient
+      updates.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
       <div class="demo-container">
         <div class="todo-form">
           <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-                  @class="{disabled: !newTodo.trim()}" 
-                  class="btn btn-primary">Add Todo</button>
+          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
+            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
         </div>
-        
+
         <div class="todo-list" @if="todos.length">
           <div @for="todo in todos" @key="todo.id" class="todo-item">
             <input type="checkbox" @model="todo.completed" class="todo-checkbox">
@@ -108,11 +113,11 @@
             <span class="todo-id">ID: <span @text="todo.id"></span></span>
           </div>
         </div>
-        
+
         <p @if="!todos.length" class="empty-state">No todos yet. Add one above!</p>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><div @for="todo in todos" @key="todo.id" class="todo-item">
@@ -120,7 +125,7 @@
   <span @text="todo.text" @class="{completed: todo.completed}"></span>
 </div></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
       <p><strong>@for</strong> loops through arrays or objects to render repeated elements.</p>
       <p><strong>@key</strong> provides a unique identifier for efficient DOM updates.</p>
@@ -137,17 +142,16 @@
     <p class="step-description">
       Add delete functionality using array methods and <code>@click</code> events.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
       <div class="demo-container">
         <div class="todo-form">
           <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-                  @class="{disabled: !newTodo.trim()}" 
-                  class="btn btn-primary">Add Todo</button>
+          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
+            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
         </div>
-        
+
         <div class="todo-list" @if="todos.length">
           <div @for="todo in todos" @key="todo.id" class="todo-item">
             <input type="checkbox" @model="todo.completed" class="todo-checkbox">
@@ -155,21 +159,21 @@
             <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
           </div>
         </div>
-        
+
         <div class="todo-stats" @if="todos.length">
           <p>Active: <strong @text="todos.filter(t => !t.completed).length"></strong></p>
           <p>Completed: <strong @text="todos.filter(t => t.completed).length"></strong></p>
         </div>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><button @click="todos = todos.filter(t => t.id !== todo.id)">
   Delete
 </button></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
       <p>We use JavaScript's <code>filter()</code> method to remove items from the array.</p>
       <p>The expression <code>t => t.id !== todo.id</code> keeps all todos except the one being deleted.</p>
@@ -186,38 +190,40 @@
     <p class="step-description">
       Add filter buttons to show all, active, or completed todos using <code>@switch</code> and computed properties.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
       <div class="demo-container">
         <div class="todo-form">
           <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-                  @class="{disabled: !newTodo.trim()}" 
-                  class="btn btn-primary">Add Todo</button>
+          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
+            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
         </div>
-        
+
         <div class="filter-buttons" @if="todos.length">
           <button @click="filter = 'all'" @class="{active: filter === 'all'}" class="btn btn-outline">All</button>
-          <button @click="filter = 'active'" @class="{active: filter === 'active'}" class="btn btn-outline">Active</button>
-          <button @click="filter = 'completed'" @class="{active: filter === 'completed'}" class="btn btn-outline">Completed</button>
+          <button @click="filter = 'active'" @class="{active: filter === 'active'}"
+            class="btn btn-outline">Active</button>
+          <button @click="filter = 'completed'" @class="{active: filter === 'completed'}"
+            class="btn btn-outline">Completed</button>
         </div>
-        
+
         <div class="todo-list" @if="todos.length">
-          <div @for="todo in (filter === 'all' ? todos : filter === 'active' ? todos.filter(t => !t.completed) : todos.filter(t => t.completed))" 
-               @key="todo.id" class="todo-item">
+          <div
+            @for="todo in (filter === 'all' ? todos : filter === 'active' ? todos.filter(t => !t.completed) : todos.filter(t => t.completed))"
+            @key="todo.id" class="todo-item">
             <input type="checkbox" @model="todo.completed" class="todo-checkbox">
             <span @text="todo.text" @class="{completed: todo.completed}" class="todo-text"></span>
             <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
           </div>
         </div>
-        
+
         <div class="current-filter" @if="todos.length">
           <p>Showing: <strong @text="filter"></strong> todos</p>
         </div>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><div @for="todo in (filter === 'all' ? todos : 
@@ -227,7 +233,7 @@
   <!-- todo content -->
 </div></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
       <p>We use ternary operators to conditionally filter the todos array.</p>
       <p>The <code>filter</code> variable controls which todos are displayed.</p>
@@ -244,43 +250,37 @@
     <p class="step-description">
       Add the ability to edit todos inline by double-clicking, using conditional rendering.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
       <div class="demo-container">
         <div class="todo-form">
           <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-                  @class="{disabled: !newTodo.trim()}" 
-                  class="btn btn-primary">Add Todo</button>
+          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
+            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
         </div>
-        
+
         <div class="todo-list" @if="todos.length">
           <div @for="todo in todos" @key="todo.id" class="todo-item">
             <input type="checkbox" @model="todo.completed" class="todo-checkbox">
-            
+
             <!-- View Mode -->
-            <span @if="editingId !== todo.id" 
-                  @text="todo.text" 
-                  @class="{completed: todo.completed}" 
-                  @click="editingId = todo.id; editingText = todo.text" 
-                  class="todo-text editable">Double-click to edit</span>
-            
+            <span @if="editingId !== todo.id" @text="todo.text" @class="{completed: todo.completed}"
+              @click="editingId = todo.id; editingText = todo.text" class="todo-text editable">Double-click to
+              edit</span>
+
             <!-- Edit Mode -->
-            <input @if="editingId === todo.id" 
-                   @model="editingText" 
-                   @blur="todo.text = editingText; editingId = null" 
-                   @focus="this.select()" 
-                   class="todo-edit-input">
-            
+            <input @if="editingId === todo.id" @model="editingText" @blur="todo.text = editingText; editingId = null"
+              @focus="this.select()" class="todo-edit-input">
+
             <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
           </div>
         </div>
-        
+
         <p @if="editingId" class="edit-hint">Press Enter or click outside to save changes</p>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><!-- View Mode -->
@@ -294,7 +294,7 @@
        @model="editingText" 
        @blur="todo.text = editingText; editingId = null"></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
       <p><strong>@blur</strong> triggers when an input loses focus, perfect for saving edits.</p>
       <p><strong>@focus</strong> triggers when an element gains focus, useful for selecting text.</p>
@@ -311,29 +311,25 @@
     <p class="step-description">
       Add bulk actions like "Mark All Complete" and "Clear Completed" using array methods.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
       <div class="demo-container">
         <div class="todo-form">
           <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-                  @class="{disabled: !newTodo.trim()}" 
-                  class="btn btn-primary">Add Todo</button>
+          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
+            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
         </div>
-        
+
         <div class="bulk-actions" @if="todos.length">
-          <button @click="todos.forEach(t => t.completed = true)" 
-                  @class="{disabled: todos.every(t => t.completed)}" 
-                  class="btn btn-outline">Mark All Complete</button>
-          <button @click="todos.forEach(t => t.completed = false)" 
-                  @class="{disabled: todos.every(t => !t.completed)}" 
-                  class="btn btn-outline">Mark All Active</button>
-          <button @click="todos = todos.filter(t => !t.completed)" 
-                  @class="{disabled: !todos.some(t => t.completed)}" 
-                  class="btn btn-warning">Clear Completed</button>
+          <button @click="todos.forEach(t => t.completed = true)" @class="{disabled: todos.every(t => t.completed)}"
+            class="btn btn-outline">Mark All Complete</button>
+          <button @click="todos.forEach(t => t.completed = false)" @class="{disabled: todos.every(t => !t.completed)}"
+            class="btn btn-outline">Mark All Active</button>
+          <button @click="todos = todos.filter(t => !t.completed)" @class="{disabled: !todos.some(t => t.completed)}"
+            class="btn btn-warning">Clear Completed</button>
         </div>
-        
+
         <div class="todo-list" @if="todos.length">
           <div @for="todo in todos" @key="todo.id" class="todo-item">
             <input type="checkbox" @model="todo.completed" class="todo-checkbox">
@@ -341,15 +337,15 @@
             <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
           </div>
         </div>
-        
+
         <div class="todo-summary" @if="todos.length">
-          <p>Total: <strong @text="todos.length"></strong> | 
-             Active: <strong @text="todos.filter(t => !t.completed).length"></strong> | 
-             Completed: <strong @text="todos.filter(t => t.completed).length"></strong></p>
+          <p>Total: <strong @text="todos.length"></strong> |
+            Active: <strong @text="todos.filter(t => !t.completed).length"></strong> |
+            Completed: <strong @text="todos.filter(t => t.completed).length"></strong></p>
         </div>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><button @click="todos.forEach(t => t.completed = true)" 
@@ -362,7 +358,7 @@
   Clear Completed
 </button></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
       <p><strong>forEach()</strong> executes a function for each array element.</p>
       <p><strong>every()</strong> returns true if all elements pass a test.</p>
@@ -379,23 +375,22 @@
     <p class="step-description">
       Save todos to localStorage and load them on page refresh using <code>@watch</code>.
     </p>
-    
+
     <div class="live-demo">
       <h4>🎯 Live Demo</h4>
-      <div class="demo-container" 
-           @watch="todos => localStorage.setItem('ayisha-todos', JSON.stringify(todos))">
+      <div class="demo-container" @watch="todos => localStorage.setItem('ayisha-todos', JSON.stringify(todos))">
         <div class="todo-form">
           <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-                  @class="{disabled: !newTodo.trim()}" 
-                  class="btn btn-primary">Add Todo</button>
+          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
+            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
         </div>
-        
+
         <div class="storage-info">
           <p>✅ Your todos are automatically saved to localStorage!</p>
-          <button @click="localStorage.removeItem('ayisha-todos'); todos = []" class="btn btn-warning btn-sm">Clear Storage</button>
+          <button @click="localStorage.removeItem('ayisha-todos'); todos = []" class="btn btn-warning btn-sm">Clear
+            Storage</button>
         </div>
-        
+
         <div class="todo-list" @if="todos.length">
           <div @for="todo in todos" @key="todo.id" class="todo-item">
             <input type="checkbox" @model="todo.completed" class="todo-checkbox">
@@ -403,11 +398,12 @@
             <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
           </div>
         </div>
-        
-        <p @if="!todos.length" class="empty-state">No todos found. Add some above or they'll be loaded from storage on page refresh!</p>
+
+        <p @if="!todos.length" class="empty-state">No todos found. Add some above or they'll be loaded from storage on
+          page refresh!</p>
       </div>
     </div>
-    
+
     <div class="code-example">
       <h4>📋 Code</h4>
       <pre><code><no><!-- Watch for changes and save to localStorage -->
@@ -422,7 +418,7 @@
   todos = savedTodos ? JSON.parse(savedTodos) : [];
 </init></no></code></pre>
     </div>
-    
+
     <div class="step-explanation">
       <p><strong>@watch</strong> executes code whenever the watched value changes.</p>
       <p><strong>localStorage</strong> provides persistent storage in the browser.</p>
@@ -430,18 +426,7 @@
     </div>
   </div>
 
-  <!-- Navigation -->
-  <div class="tutorial-navigation">
-    <button @click="currentStep = Math.max(1, currentStep - 1)" 
-            @class="{disabled: currentStep === 1}" 
-            class="btn btn-secondary">← Previous</button>
-    
-    <span class="step-indicator">Step <span @text="currentStep"></span> of 8</span>
-    
-    <button @click="currentStep = Math.min(8, currentStep + 1)" 
-            @class="{disabled: currentStep === 8}" 
-            class="btn btn-primary">Next →</button>
-  </div>
+
 
   <!-- Completion -->
   <div class="tutorial-completion" @show="currentStep === 8">
@@ -461,8 +446,13 @@
       <div class="next-steps">
         <h4>What's Next?</h4>
         <button @click="selectedTutorial = 'weather'" class="btn btn-primary">Try Weather App Tutorial</button>
-        <button @click="selectedTutorial = null" class="btn btn-outline">Choose Another Tutorial</button>
+        <button @click="selectedTutorial = null; currentStep = 1" class="btn btn-outline">Choose Another
+          Tutorial</button>
       </div>
     </div>
   </div>
+
+      <component @src="components/step-progress.html"></component>
+
+
 </section>

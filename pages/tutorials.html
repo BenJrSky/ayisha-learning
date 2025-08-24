@@ -18,10 +18,6 @@
     </div>
   </section>
 
-  <init>
-    selectedTutorial=''
-  </init>
-
   <section class="philosophy" @show="!selectedTutorial">
     <h2>Choose Your Tutorial</h2>
     <p>Select a tutorial below to start learning Ayisha.js through hands-on practice. Each tutorial builds a complete application while teaching core concepts and directives.</p>
@@ -32,103 +28,105 @@
       <li><strong>Practical Projects:</strong> Todo apps, weather dashboards, and more</li>
       <li><strong>Complete Coverage:</strong> Learn all major Ayisha.js directives</li>
     </ul>
-    
-    <div class="tutorial-cards">
-      <div class="tutorial-card" @click="selectedTutorial = 'todo'">
-        <h3>📝 Todo App</h3>
-        <p>Build a complete todo application with add, edit, delete, and filter functionality. Perfect for learning reactive state management.</p>
-        <div class="tutorial-meta">
-          <span class="difficulty beginner">Beginner</span>
-          <span class="duration">~30 min</span>
+  </section>
+
+  <section class="comparison">
+    <div class="landing">
+      <div class="course-grid">
+        <div class="course-card" @click="selectedTutorial = 'todo'" style="cursor: pointer;">
+          <div class="course-icon">📝</div>
+          <h3>Todo App</h3>
+          <p>Build a complete todo application with add, edit, delete, and filter functionality. Perfect for learning reactive state management.</p>
+          <div class="course-meta">
+            <span class="difficulty beginner">Beginner</span>
+            <span class="duration">~30 min</span>
+          </div>
+          <div class="course-tags">
+            <span class="tag">@model</span>
+            <span class="tag">@click</span>
+            <span class="tag">@for</span>
+            <span class="tag">@if</span>
+          </div>
         </div>
-        <p><strong>Learn
-    </div>
 
-    <div class="tutorial-card" @click="selectedTutorial = 'weather'">
-      <div class="tutorial-icon">🌤️</div>
-      <h3>Weather App</h3>
-      <p>Create a weather dashboard with API integration and dynamic updates</p>
-      <div class="tutorial-meta">
-        <span class="difficulty intermediate">Intermediate</span>
-        <span class="duration">~45 min</span>
-      </div>
-      <div class="directives-used">
-        <span class="directive-tag">@fetch</span>
-        <span class="directive-tag">@json</span>
-        <span class="directive-tag">@watch</span>
-        <span class="directive-tag">@animate</span>
-      </div>
-    </div>
+        <div class="course-card" @click="selectedTutorial = 'weather'" style="cursor: pointer;">
+          <div class="course-icon">🌤️</div>
+          <h3>Weather App</h3>
+          <p>Create a weather dashboard with API integration and dynamic updates</p>
+          <div class="course-meta">
+            <span class="difficulty intermediate">Intermediate</span>
+            <span class="duration">~45 min</span>
+          </div>
+          <div class="course-tags">
+            <span class="tag">@fetch</span>
+            <span class="tag">@json</span>
+            <span class="tag">@watch</span>
+            <span class="tag">@animate</span>
+          </div>
+        </div>
 
-    <div class="tutorial-card" @click="selectedTutorial = 'blog'">
-      <div class="tutorial-icon">📰</div>
-      <h3>Blog System</h3>
-      <p>Build a complete blog with posts, comments, and search functionality</p>
-      <div class="tutorial-meta">
-        <span class="difficulty advanced">Advanced</span>
-        <span class="duration">~60 min</span>
-      </div>
-      <div class="directives-used">
-        <span class="directive-tag">@component</span>
-        <span class="directive-tag">@page</span>
-        <span class="directive-tag">@validate</span>
-        <span class="directive-tag">@filter</span>
-      </div>
-    </div>
+        <div class="course-card" @click="selectedTutorial = 'blog'" style="cursor: pointer;">
+          <div class="course-icon">📰</div>
+          <h3>Blog System</h3>
+          <p>Build a complete blog with posts, comments, and search functionality</p>
+          <div class="course-meta">
+            <span class="difficulty advanced">Advanced</span>
+            <span class="duration">~60 min</span>
+          </div>
+          <div class="course-tags">
+            <span class="tag">@component</span>
+            <span class="tag">@page</span>
+            <span class="tag">@validate</span>
+            <span class="tag">@filter</span>
+          </div>
+        </div>
 
-    <div class="tutorial-card" @click="selectedTutorial = 'ecommerce'">
-      <div class="tutorial-icon">🛒</div>
-      <h3>E-commerce Cart</h3>
-      <p>Create a shopping cart with products, quantities, and checkout flow</p>
-      <div class="tutorial-meta">
-        <span class="difficulty intermediate">Intermediate</span>
-        <span class="duration">~50 min</span>
-      </div>
-      <div class="directives-used">
-        <span class="directive-tag">@reduce</span>
-        <span class="directive-tag">@map</span>
-        <span class="directive-tag">@switch</span>
-        <span class="directive-tag">@case</span>
-      </div>
-    </div>
+        <div class="course-card" @click="selectedTutorial = 'ecommerce'" style="cursor: pointer;">
+          <div class="course-icon">🛒</div>
+          <h3>E-commerce Cart</h3>
+          <p>Create a shopping cart with products, quantities, and checkout flow</p>
+          <div class="course-meta">
+            <span class="difficulty intermediate">Intermediate</span>
+            <span class="duration">~50 min</span>
+          </div>
+          <div class="course-tags">
+            <span class="tag">@reduce</span>
+            <span class="tag">@map</span>
+            <span class="tag">@switch</span>
+            <span class="tag">@case</span>
+          </div>
+        </div>
 
-    <div class="tutorial-card" @click="selectedTutorial = 'dashboard'">
-      <div class="tutorial-icon">📊</div>
-      <h3>Analytics Dashboard</h3>
-      <p>Build an interactive dashboard with charts, filters, and real-time data</p>
-      <div class="tutorial-meta">
-        <span class="difficulty advanced">Advanced</span>
-        <span class="duration">~75 min</span>
-      </div>
-      <div class="directives-used">
-        <span class="directive-tag">@source</span>
-        <span class="directive-tag">@initial</span>
-        <span class="directive-tag">@then</span>
-        <span class="directive-tag">@finally</span>
+        <div class="course-card" @click="selectedTutorial = 'dashboard'" style="cursor: pointer;">
+          <div class="course-icon">📊</div>
+          <h3>Analytics Dashboard</h3>
+          <p>Build an interactive dashboard with charts, filters, and real-time data</p>
+          <div class="course-meta">
+            <span class="difficulty advanced">Advanced</span>
+            <span class="duration">~75 min</span>
+          </div>
+          <div class="course-tags">
+            <span class="tag">@source</span>
+            <span class="tag">@initial</span>
+            <span class="tag">@then</span>
+            <span class="tag">@finally</span>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- Tutorial Components -->
+  <component @src="../components/tutorials/todo-tutorial.html" @show="selectedTutorial === 'todo'"></component>
+  <component @src="../components/tutorials/weather-tutorial.html" @show="selectedTutorial === 'weather'"></component>
+  <component @src="../components/tutorials/blog-tutorial.html" @show="selectedTutorial === 'blog'"></component>
+  <component @src="../components/tutorials/ecommerce-tutorial.html" @show="selectedTutorial === 'ecommerce'"></component>
+  <component @src="../components/tutorials/dashboard-tutorial.html" @show="selectedTutorial === 'dashboard'"></component>
+
+  <!-- Back to Selection Button -->
+  <div class="tutorial-navigation" @show="selectedTutorial">
+    <button class="btn btn-secondary" @click="selectedTutorial = null; currentStep = 1">← Back to Tutorials</button>
   </div>
-</section>
-
-<!-- Todo Tutorial Component -->
-<component @src="../components/tutorials/todo-tutorial.html" @show="selectedTutorial === 'todo'"></component>
-
-<!-- Weather Tutorial Component -->
-<component @src="../components/tutorials/weather-tutorial.html" @show="selectedTutorial === 'weather'"></component>
-
-<!-- Blog Tutorial Component -->
-<component @src="../components/tutorials/blog-tutorial.html" @show="selectedTutorial === 'blog'"></component>
-
-<!-- E-commerce Tutorial Component -->
-<component @src="../components/tutorials/ecommerce-tutorial.html" @show="selectedTutorial === 'ecommerce'"></component>
-
-<!-- Dashboard Tutorial Component -->
-<component @src="../components/tutorials/dashboard-tutorial.html" @show="selectedTutorial === 'dashboard'"></component>
-
-<!-- Back to Selection Button -->
-<div class="tutorial-navigation" @show="selectedTutorial">
-  <button class="btn btn-secondary" @click="selectedTutorial = null; currentStep = 1">← Back to Tutorials</button>
-</div>
 
 </main>
 

@@ -1,0 +1,9 @@
+  <div class="tutorial-navigation" >
+    <button @click="currentStep = prev" @class="{disabled: currentStep === 1}"
+      class="btn btn-secondary">← Previous</button>
+
+    <span class="step-indicator">Step <span @text="currentStep"></span> of {{totalSteps}}</span>
+
+    <button @click="currentStep = next" @class="{disabled: currentStep === 8}"
+      class="btn btn-primary">Next →</button>
+  </div>

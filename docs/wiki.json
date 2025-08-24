@@ -588,15 +588,20 @@
     {
       "directive": "@state",
       "type": "Debug inspector",
-      "description": "Displays the entire reactive state (or an expression) as JSON, updating live.",
+      "description": "Displays the entire reactive state (or an expression) as JSON, updating live. Shows all global variables including _currentPage, _params, _validate, _screenSize, _locale, _error, and custom state properties.",
       "syntax": "@state or @state=\"expression\"",
       "useFor": "Development debugging, learning, state inspection.",
       "examples": [
         "<div @state></div>",
-        "<div @state=\"user\"></div>"
+        "<div @state=\"user\"></div>",
+        "<div @state=\"_currentPage\"></div>",
+        "<div @state=\"_screenSize\"></div>",
+        "<div @state=\"_locale\"></div>"
       ],
       "tips": [
-        "Useful during development; avoid in production."
+        "Useful during development; avoid in production.",
+        "Global variables available: _currentPage (current route), _params (route parameters), _validate (validation results), _screenSize (screen dimensions), _locale (language settings), _error (fetch/json errors).",
+        "Use specific expressions like @state=\"_currentPage\" to inspect individual global variables."
       ]
     },
     {
