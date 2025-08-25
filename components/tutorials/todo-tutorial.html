@@ -1,13 +1,25 @@
- <div class="section">
-    <h1 class="tutorial-title">Building a Todo App with Ayisha.js</h1>
-    <p class="tutorial-description">Learn how to build a complete todo application step by step using Ayisha.js reactive framework.</p>
-    
+<main class="container">
+  <section class="hero">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+      <img src="/ayisha-logo-black.png" alt="Ayisha.js Logo" class="hero-logo">
+      <h1>Building a Todo App with Ayisha.js</h1>
+      <p class="hero-subtitle">Learn how to build a complete todo application step by step using Ayisha.js reactive
+        framework.</p>
+      <a class="cta" @link="course?.hero?.ctaUrl || 'enroll.html'" @text="course?.hero?.ctaText || 'Iscriviti ora'"></a>
+    </div>
+  </section>
+
+  <div class="section">
+
+
 
     <!-- Step 1: Getting Started with @model -->
     <section @show="currentStep === 1" class="tutorial-step">
       <h2>Step 1: Getting Started with @model</h2>
-      <p>Let's start by creating a simple input field that binds to our data using the <code>@model</code> directive.</p>
-      
+      <p>Let's start by creating a simple input field that binds to our data using the <code>@model</code> directive.
+      </p>
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -43,7 +55,7 @@
     <section @show="currentStep === 2" class="tutorial-step">
       <h2>Step 2: Event Handling with @click</h2>
       <p>Now let's add a button to add todos to our list using the <code>@click</code> directive.</p>
-      
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -87,7 +99,7 @@
     <section @show="currentStep === 3" class="tutorial-step">
       <h2>Step 3: Displaying Lists with @for</h2>
       <p>Let's display our todos in a list using the <code>@for</code> directive to iterate over the array.</p>
-      
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -139,7 +151,7 @@
     <section @show="currentStep === 4" class="tutorial-step">
       <h2>Step 4: Conditional Rendering with @if</h2>
       <p>Let's add conditional rendering to show different messages based on whether we have todos or not.</p>
-      
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -197,7 +209,7 @@
     <section @show="currentStep === 5" class="tutorial-step">
       <h2>Step 5: Working with Objects and @text</h2>
       <p>Let's upgrade our todos to be objects with text and completion status, and display them properly.</p>
-      
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -225,7 +237,8 @@
 
       <div class="live-demo">
         <h3>Live Demo:</h3>
-        <div class="hello-inline" data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": false}]}'>
+        <div class="hello-inline"
+          data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": false}]}'>
           <div class="todo-app-container">
             <div class="todo-header">
               <h2>My Todo App</h2>
@@ -234,7 +247,8 @@
             <div class="todo-input-section">
               <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
               <div class="todo-buttons">
-                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add
+                  Todo</button>
                 <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
               </div>
             </div>
@@ -255,7 +269,7 @@
     <section @show="currentStep === 6" class="tutorial-step">
       <h2>Step 6: Interactive Checkboxes</h2>
       <p>Let's add checkboxes to mark todos as completed using two-way data binding.</p>
-      
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -287,7 +301,8 @@
 
       <div class="live-demo">
         <h3>Live Demo:</h3>
-        <div class="hello-inline" data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+        <div class="hello-inline"
+          data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
           <div class="todo-app-container">
             <div class="todo-header">
               <h2>My Todo App</h2>
@@ -296,7 +311,8 @@
             <div class="todo-input-section">
               <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
               <div class="todo-buttons">
-                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add
+                  Todo</button>
                 <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
               </div>
             </div>
@@ -320,8 +336,9 @@
     <!-- Step 7: Dynamic Styling with @style -->
     <section @show="currentStep === 7" class="tutorial-step">
       <h2>Step 7: Dynamic Styling with @style</h2>
-      <p>Let's add dynamic styling to show completed todos with different appearance using the <code>@style</code> directive.</p>
-      
+      <p>Let's add dynamic styling to show completed todos with different appearance using the <code>@style</code>
+        directive.</p>
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -353,7 +370,8 @@
 
       <div class="live-demo">
         <h3>Live Demo:</h3>
-        <div class="hello-inline" data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+        <div class="hello-inline"
+          data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
           <div class="todo-app-container">
             <div class="todo-header">
               <h2>My Todo App</h2>
@@ -362,7 +380,8 @@
             <div class="todo-input-section">
               <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
               <div class="todo-buttons">
-                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add
+                  Todo</button>
                 <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
               </div>
             </div>
@@ -386,8 +405,9 @@
     <!-- Step 8: Filtering Lists with @show -->
     <section @show="currentStep === 8" class="tutorial-step">
       <h2>Step 8: Filtering Lists with @show</h2>
-      <p>Let's add filtering functionality to show all, active, or completed todos using the <code>@show</code> directive.</p>
-      
+      <p>Let's add filtering functionality to show all, active, or completed todos using the <code>@show</code>
+        directive.</p>
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -424,7 +444,8 @@
 
       <div class="live-demo">
         <h3>Live Demo:</h3>
-        <div class="hello-inline" data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+        <div class="hello-inline"
+          data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
           <div class="todo-app-container">
             <div class="todo-header">
               <h2>My Todo App</h2>
@@ -433,7 +454,8 @@
             <div class="todo-input-section">
               <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
               <div class="todo-buttons">
-                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add
+                  Todo</button>
                 <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
               </div>
             </div>
@@ -442,12 +464,17 @@
               <span @text="todos.filter(t => t.completed).length"></span> completed
             </div>
             <div class="todo-filters">
-              <button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
-              <button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
-              <button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+              <button @click="filter = 'all'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+              <button @click="filter = 'active'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+              <button @click="filter = 'completed'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
             </div>
             <ul @if="todos.length > 0" class="todo-list">
-              <li @for="todo in todos" @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
+              <li @for="todo in todos"
+                @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)"
+                class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
                 <label class="todo-checkbox-label">
                   <input type="checkbox" @model="todo.completed">
                   <span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"></span>
@@ -463,7 +490,7 @@
     <section @show="currentStep === 9" class="tutorial-step">
       <h2>Step 9: Deleting Individual Items</h2>
       <p>Let's add the ability to delete individual todos with a delete button for each item.</p>
-      
+
       <div class="code-example">
         <h3>Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -501,7 +528,8 @@
 
       <div class="live-demo">
         <h3>Live Demo:</h3>
-        <div class="hello-inline" data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+        <div class="hello-inline"
+          data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
           <div class="todo-app-container">
             <div class="todo-header">
               <h2>My Todo App</h2>
@@ -510,7 +538,8 @@
             <div class="todo-input-section">
               <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
               <div class="todo-buttons">
-                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add
+                  Todo</button>
                 <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
               </div>
             </div>
@@ -519,12 +548,17 @@
               <span @text="todos.filter(t => t.completed).length"></span> completed
             </div>
             <div class="todo-filters">
-              <button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
-              <button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
-              <button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+              <button @click="filter = 'all'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+              <button @click="filter = 'active'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+              <button @click="filter = 'completed'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
             </div>
             <ul @if="todos.length > 0" class="todo-list">
-              <li @for="todo in todos" @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
+              <li @for="todo in todos"
+                @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)"
+                class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
                 <label class="todo-checkbox-label">
                   <input type="checkbox" @model="todo.completed">
                   <span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"></span>
@@ -540,8 +574,9 @@
     <!-- Step 10: Complete Todo App -->
     <section @show="currentStep === 10" class="tutorial-step">
       <h2>Step 10: Complete Todo App</h2>
-      <p>Congratulations! You've built a complete todo application with all the essential features. Here's the final version with all functionality combined.</p>
-      
+      <p>Congratulations! You've built a complete todo application with all the essential features. Here's the final
+        version with all functionality combined.</p>
+
       <div class="code-example">
         <h3>Complete Code:</h3>
         <pre><code>&lt;div class="todo-app-container"&gt;
@@ -582,7 +617,8 @@
 
       <div class="live-demo">
         <h3>Final Demo:</h3>
-        <div class="hello-inline" data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+        <div class="hello-inline"
+          data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
           <div class="todo-app-container">
             <div class="todo-header">
               <h2>My Todo App</h2>
@@ -591,7 +627,8 @@
             <div class="todo-input-section">
               <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
               <div class="todo-buttons">
-                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add
+                  Todo</button>
                 <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
               </div>
             </div>
@@ -600,15 +637,20 @@
               <span @text="todos.filter(t => t.completed).length"></span> completed
             </div>
             <div class="todo-filters">
-              <button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
-              <button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
-              <button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+              <button @click="filter = 'all'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+              <button @click="filter = 'active'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+              <button @click="filter = 'completed'" class="todo-filter-btn"
+                @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
             </div>
             <div @if="todos.length === 0" class="empty-state">
               <p>No todos yet. Add one above!</p>
             </div>
             <ul @if="todos.length > 0" class="todo-list">
-              <li @for="todo in todos" @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
+              <li @for="todo in todos"
+                @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)"
+                class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
                 <label class="todo-checkbox-label">
                   <input type="checkbox" @model="todo.completed">
                   <span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"></span>
@@ -637,18 +679,44 @@
       </div>
     </section>
 
-        <!-- Step Navigation -->
+    <!-- Step Navigation -->
     <div class="step-navigation">
-      <button class="step-nav-btn" @click="currentStep = 1" @style="{backgroundColor: currentStep === 1 ? '#007bff' : '#f8f9fa', color: currentStep === 1 ? 'white' : '#333'}">Step 1</button>
-      <button class="step-nav-btn" @click="currentStep = 2" @style="{backgroundColor: currentStep === 2 ? '#007bff' : '#f8f9fa', color: currentStep === 2 ? 'white' : '#333'}">Step 2</button>
-      <button class="step-nav-btn" @click="currentStep = 3" @style="{backgroundColor: currentStep === 3 ? '#007bff' : '#f8f9fa', color: currentStep === 3 ? 'white' : '#333'}">Step 3</button>
-      <button class="step-nav-btn" @click="currentStep = 4" @style="{backgroundColor: currentStep === 4 ? '#007bff' : '#f8f9fa', color: currentStep === 4 ? 'white' : '#333'}">Step 4</button>
-      <button class="step-nav-btn" @click="currentStep = 5" @style="{backgroundColor: currentStep === 5 ? '#007bff' : '#f8f9fa', color: currentStep === 5 ? 'white' : '#333'}">Step 5</button>
-      <button class="step-nav-btn" @click="currentStep = 6" @style="{backgroundColor: currentStep === 6 ? '#007bff' : '#f8f9fa', color: currentStep === 6 ? 'white' : '#333'}">Step 6</button>
-      <button class="step-nav-btn" @click="currentStep = 7" @style="{backgroundColor: currentStep === 7 ? '#007bff' : '#f8f9fa', color: currentStep === 7 ? 'white' : '#333'}">Step 7</button>
-      <button class="step-nav-btn" @click="currentStep = 8" @style="{backgroundColor: currentStep === 8 ? '#007bff' : '#f8f9fa', color: currentStep === 8 ? 'white' : '#333'}">Step 8</button>
-      <button class="step-nav-btn" @click="currentStep = 9" @style="{backgroundColor: currentStep === 9 ? '#007bff' : '#f8f9fa', color: currentStep === 9 ? 'white' : '#333'}">Step 9</button>
-      <button class="step-nav-btn" @click="currentStep = 10" @style="{backgroundColor: currentStep === 10 ? '#007bff' : '#f8f9fa', color: currentStep === 10 ? 'white' : '#333'}">Step 10</button>
+      <button class="step-nav-btn" @click="currentStep = 1"
+        @style="{backgroundColor: currentStep === 1 ? '#007bff' : '#f8f9fa', color: currentStep === 1 ? 'white' : '#333'}">Step
+        1</button>
+      <button class="step-nav-btn" @click="currentStep = 2"
+        @style="{backgroundColor: currentStep === 2 ? '#007bff' : '#f8f9fa', color: currentStep === 2 ? 'white' : '#333'}">Step
+        2</button>
+      <button class="step-nav-btn" @click="currentStep = 3"
+        @style="{backgroundColor: currentStep === 3 ? '#007bff' : '#f8f9fa', color: currentStep === 3 ? 'white' : '#333'}">Step
+        3</button>
+      <button class="step-nav-btn" @click="currentStep = 4"
+        @style="{backgroundColor: currentStep === 4 ? '#007bff' : '#f8f9fa', color: currentStep === 4 ? 'white' : '#333'}">Step
+        4</button>
+      <button class="step-nav-btn" @click="currentStep = 5"
+        @style="{backgroundColor: currentStep === 5 ? '#007bff' : '#f8f9fa', color: currentStep === 5 ? 'white' : '#333'}">Step
+        5</button>
+      <button class="step-nav-btn" @click="currentStep = 6"
+        @style="{backgroundColor: currentStep === 6 ? '#007bff' : '#f8f9fa', color: currentStep === 6 ? 'white' : '#333'}">Step
+        6</button>
+      <button class="step-nav-btn" @click="currentStep = 7"
+        @style="{backgroundColor: currentStep === 7 ? '#007bff' : '#f8f9fa', color: currentStep === 7 ? 'white' : '#333'}">Step
+        7</button>
+      <button class="step-nav-btn" @click="currentStep = 8"
+        @style="{backgroundColor: currentStep === 8 ? '#007bff' : '#f8f9fa', color: currentStep === 8 ? 'white' : '#333'}">Step
+        8</button>
+      <button class="step-nav-btn" @click="currentStep = 9"
+        @style="{backgroundColor: currentStep === 9 ? '#007bff' : '#f8f9fa', color: currentStep === 9 ? 'white' : '#333'}">Step
+        9</button>
+      <button class="step-nav-btn" @click="currentStep = 10"
+        @style="{backgroundColor: currentStep === 10 ? '#007bff' : '#f8f9fa', color: currentStep === 10 ? 'white' : '#333'}">Step
+        10</button>
     </div>
-    
+
   </div>
+
+  <nav class="page-nav">
+    <a @link="tutorials">← Back to tutorials</a>
+  </nav>
+
+</main>
