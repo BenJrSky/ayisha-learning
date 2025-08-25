@@ -33,7 +33,7 @@
   <section class="comparison">
     <div class="landing">
       <div class="course-grid">
-        <div class="course-card" @click="selectedTutorial = 'todo'" style="cursor: pointer;">
+        <div class="course-card" @link="tutorial/todo" style="cursor: pointer;">
           <div class="course-icon">📝</div>
           <h3>Todo App</h3>
           <p>Build a complete todo application with add, edit, delete, and filter functionality. Perfect for learning reactive state management.</p>
@@ -117,7 +117,7 @@
   </section>
 
   <!-- Tutorial Components -->
-  <component @src="../components/tutorials/todo-tutorial.html" @show="selectedTutorial === 'todo'"></component>
+  <component @src="../components/tutorials/todo-tutorial.html" @page="tutorial/todo"></component>
   <component @src="../components/tutorials/weather-tutorial.html" @show="selectedTutorial === 'weather'"></component>
   <component @src="../components/tutorials/blog-tutorial.html" @show="selectedTutorial === 'blog'"></component>
   <component @src="../components/tutorials/ecommerce-tutorial.html" @show="selectedTutorial === 'ecommerce'"></component>

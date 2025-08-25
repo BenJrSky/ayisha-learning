@@ -1,458 +1,654 @@
-<section class="tutorial-container">
-  <div class="tutorial-header">
-    <h2>📝 Todo App Tutorial</h2>
-    <p>Learn Ayisha.js by building a complete todo application with all essential features.</p>
-    <div class="tutorial-progress">
-      <div class="progress-bar">
-        <div class="progress-fill" @style="{width: (currentStep / 8) * 100 + '%'}"></div>
+ <div class="section">
+    <h1 class="tutorial-title">Building a Todo App with Ayisha.js</h1>
+    <p class="tutorial-description">Learn how to build a complete todo application step by step using Ayisha.js reactive framework.</p>
+    
+
+    <!-- Step 1: Getting Started with @model -->
+    <section @show="currentStep === 1" class="tutorial-step">
+      <h2>Step 1: Getting Started with @model</h2>
+      <p>Let's start by creating a simple input field that binds to our data using the <code>@model</code> directive.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+  &lt;/div&gt;
+  &lt;p&gt;You typed: &lt;span @text="newTodo"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
       </div>
-      <span class="progress-text">Step <span @text="currentStep"></span> of 8</span>
-    </div>
-  </div>
 
-  <!-- Step 1: Basic Setup -->
-  <div class="tutorial-step" @show="currentStep === 1">
-    <div class="step-header">
-      <span class="step-number">1</span>
-      <h3>Basic Setup & Input</h3>
-    </div>
-    <p class="step-description">
-      Let's start by creating a simple input field to add new todos. We'll use <code>@model</code> for two-way data
-      binding.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container">
-        <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-        <p @if="newTodo">You're typing: "<strong @text="newTodo"></strong>"</p>
-      </div>
-    </div>
-
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><input @model="newTodo" placeholder="What needs to be done?">
-<p @if="newTodo">You're typing: "<strong @text="newTodo"></strong>"</p></no></code></pre>
-    </div>
-
-    <div class="step-explanation">
-      <p><strong>@model</strong> creates two-way data binding between the input and the <code>newTodo</code> variable.
-      </p>
-      <p><strong>@if</strong> conditionally shows content when <code>newTodo</code> has a value.</p>
-      <p><strong>@text</strong> displays the dynamic content safely.</p>
-    </div>
-
-    <component @src="components/step-component.html" #next="2" #prev="1" #totalSteps="8"></component>
-
-  </div>
-
-  <!-- Step 2: Adding Todos -->
-  <div class="tutorial-step" @show="currentStep === 2">
-    <div class="step-header">
-      <span class="step-number">2</span>
-      <h3>Adding Todos with @click</h3>
-    </div>
-    <p class="step-description">
-      Now let's add a button to create new todos and store them in an array using <code>@click</code>.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container">
-        <div class="todo-form">
-          <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
-            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
-        </div>
-        <div class="todo-count" @if="todos.length">
-          <p>Total todos: <strong @text="todos.length"></strong></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''" 
-        @class="{disabled: !newTodo.trim()}">
-  Add Todo
-</button></no></code></pre>
-    </div>
-
-    <div class="step-explanation">
-      <p><strong>@click</strong> executes JavaScript when the button is clicked.</p>
-      <p><strong>@class</strong> conditionally applies CSS classes based on expressions.</p>
-      <p>We create todo objects with <code>id</code>, <code>text</code>, and <code>completed</code> properties.</p>
-    </div>
-
-  </div>
-
-  <!-- Step 3: Displaying Todos -->
-  <div class="tutorial-step" @show="currentStep === 3">
-    <div class="step-header">
-      <span class="step-number">3</span>
-      <h3>Displaying Todos with @for</h3>
-    </div>
-    <p class="step-description">
-      Let's display our todos using <code>@for</code> to loop through the array and <code>@key</code> for efficient
-      updates.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container">
-        <div class="todo-form">
-          <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
-            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
-        </div>
-
-        <div class="todo-list" @if="todos.length">
-          <div @for="todo in todos" @key="todo.id" class="todo-item">
-            <input type="checkbox" @model="todo.completed" class="todo-checkbox">
-            <span @text="todo.text" @class="{completed: todo.completed}" class="todo-text"></span>
-            <span class="todo-id">ID: <span @text="todo.id"></span></span>
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": ""}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+            </div>
+            <p>You typed: <span @text="newTodo"></span></p>
           </div>
         </div>
-
-        <p @if="!todos.length" class="empty-state">No todos yet. Add one above!</p>
       </div>
-    </div>
+    </section>
 
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><div @for="todo in todos" @key="todo.id" class="todo-item">
-  <input type="checkbox" @model="todo.completed">
-  <span @text="todo.text" @class="{completed: todo.completed}"></span>
-</div></no></code></pre>
-    </div>
+    <!-- Step 2: Event Handling with @click -->
+    <section @show="currentStep === 2" class="tutorial-step">
+      <h2>Step 2: Event Handling with @click</h2>
+      <p>Now let's add a button to add todos to our list using the <code>@click</code> directive.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push(newTodo); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;p&gt;Total todos: &lt;span @text="todos.length"&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      </div>
 
-    <div class="step-explanation">
-      <p><strong>@for</strong> loops through arrays or objects to render repeated elements.</p>
-      <p><strong>@key</strong> provides a unique identifier for efficient DOM updates.</p>
-      <p>We can bind to nested properties like <code>todo.completed</code> and <code>todo.text</code>.</p>
-    </div>
-  </div>
-
-  <!-- Step 4: Delete Functionality -->
-  <div class="tutorial-step" @show="currentStep === 4">
-    <div class="step-header">
-      <span class="step-number">4</span>
-      <h3>Delete Todos</h3>
-    </div>
-    <p class="step-description">
-      Add delete functionality using array methods and <code>@click</code> events.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container">
-        <div class="todo-form">
-          <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
-            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
-        </div>
-
-        <div class="todo-list" @if="todos.length">
-          <div @for="todo in todos" @key="todo.id" class="todo-item">
-            <input type="checkbox" @model="todo.completed" class="todo-checkbox">
-            <span @text="todo.text" @class="{completed: todo.completed}" class="todo-text"></span>
-            <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "todos": []}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push(newTodo); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <p>Total todos: <span @text="todos.length"></span></p>
           </div>
         </div>
-
-        <div class="todo-stats" @if="todos.length">
-          <p>Active: <strong @text="todos.filter(t => !t.completed).length"></strong></p>
-          <p>Completed: <strong @text="todos.filter(t => t.completed).length"></strong></p>
-        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><button @click="todos = todos.filter(t => t.id !== todo.id)">
-  Delete
-</button></no></code></pre>
-    </div>
+    <!-- Step 3: Displaying Lists with @for -->
+    <section @show="currentStep === 3" class="tutorial-step">
+      <h2>Step 3: Displaying Lists with @for</h2>
+      <p>Let's display our todos in a list using the <code>@for</code> directive to iterate over the array.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push(newTodo); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;ul class="todo-list"&gt;
+    &lt;li @for="todo in todos" class="todo-item"&gt;
+      &lt;span @text="todo"&gt;&lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
 
-    <div class="step-explanation">
-      <p>We use JavaScript's <code>filter()</code> method to remove items from the array.</p>
-      <p>The expression <code>t => t.id !== todo.id</code> keeps all todos except the one being deleted.</p>
-      <p>Ayisha.js automatically re-renders when the <code>todos</code> array changes.</p>
-    </div>
-  </div>
-
-  <!-- Step 5: Filtering -->
-  <div class="tutorial-step" @show="currentStep === 5">
-    <div class="step-header">
-      <span class="step-number">5</span>
-      <h3>Filtering with @switch and @case</h3>
-    </div>
-    <p class="step-description">
-      Add filter buttons to show all, active, or completed todos using <code>@switch</code> and computed properties.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container">
-        <div class="todo-form">
-          <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
-            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
-        </div>
-
-        <div class="filter-buttons" @if="todos.length">
-          <button @click="filter = 'all'" @class="{active: filter === 'all'}" class="btn btn-outline">All</button>
-          <button @click="filter = 'active'" @class="{active: filter === 'active'}"
-            class="btn btn-outline">Active</button>
-          <button @click="filter = 'completed'" @class="{active: filter === 'completed'}"
-            class="btn btn-outline">Completed</button>
-        </div>
-
-        <div class="todo-list" @if="todos.length">
-          <div
-            @for="todo in (filter === 'all' ? todos : filter === 'active' ? todos.filter(t => !t.completed) : todos.filter(t => t.completed))"
-            @key="todo.id" class="todo-item">
-            <input type="checkbox" @model="todo.completed" class="todo-checkbox">
-            <span @text="todo.text" @class="{completed: todo.completed}" class="todo-text"></span>
-            <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "todos": ["Learn Ayisha.js", "Build a todo app"]}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push(newTodo); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <ul class="todo-list">
+              <li @for="todo in todos" class="todo-item">
+                <span @text="todo"></span>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <div class="current-filter" @if="todos.length">
-          <p>Showing: <strong @text="filter"></strong> todos</p>
-        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><div @for="todo in (filter === 'all' ? todos : 
-                    filter === 'active' ? todos.filter(t => !t.completed) : 
-                    todos.filter(t => t.completed))" 
-     @key="todo.id">
-  <!-- todo content -->
-</div></no></code></pre>
-    </div>
+    <!-- Step 4: Conditional Rendering with @if -->
+    <section @show="currentStep === 4" class="tutorial-step">
+      <h2>Step 4: Conditional Rendering with @if</h2>
+      <p>Let's add conditional rendering to show different messages based on whether we have todos or not.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push(newTodo); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div @if="todos.length === 0" class="empty-state"&gt;
+    &lt;p&gt;No todos yet. Add one above!&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
+    &lt;li @for="todo in todos" class="todo-item"&gt;
+      &lt;span @text="todo"&gt;&lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
 
-    <div class="step-explanation">
-      <p>We use ternary operators to conditionally filter the todos array.</p>
-      <p>The <code>filter</code> variable controls which todos are displayed.</p>
-      <p>JavaScript's <code>filter()</code> method creates new arrays without modifying the original.</p>
-    </div>
-  </div>
-
-  <!-- Step 6: Edit Functionality -->
-  <div class="tutorial-step" @show="currentStep === 6">
-    <div class="step-header">
-      <span class="step-number">6</span>
-      <h3>Inline Editing</h3>
-    </div>
-    <p class="step-description">
-      Add the ability to edit todos inline by double-clicking, using conditional rendering.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container">
-        <div class="todo-form">
-          <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
-            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
-        </div>
-
-        <div class="todo-list" @if="todos.length">
-          <div @for="todo in todos" @key="todo.id" class="todo-item">
-            <input type="checkbox" @model="todo.completed" class="todo-checkbox">
-
-            <!-- View Mode -->
-            <span @if="editingId !== todo.id" @text="todo.text" @class="{completed: todo.completed}"
-              @click="editingId = todo.id; editingText = todo.text" class="todo-text editable">Double-click to
-              edit</span>
-
-            <!-- Edit Mode -->
-            <input @if="editingId === todo.id" @model="editingText" @blur="todo.text = editingText; editingId = null"
-              @focus="this.select()" class="todo-edit-input">
-
-            <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "todos": []}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push(newTodo); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <div @if="todos.length === 0" class="empty-state">
+              <p>No todos yet. Add one above!</p>
+            </div>
+            <ul @if="todos.length > 0" class="todo-list">
+              <li @for="todo in todos" class="todo-item">
+                <span @text="todo"></span>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <p @if="editingId" class="edit-hint">Press Enter or click outside to save changes</p>
       </div>
-    </div>
+    </section>
 
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><!-- View Mode -->
-<span @if="editingId !== todo.id" 
-      @click="editingId = todo.id; editingText = todo.text">
-  {{todo.text}}
-</span>
+    <!-- Step 5: Working with Objects and @text -->
+    <section @show="currentStep === 5" class="tutorial-step">
+      <h2>Step 5: Working with Objects and @text</h2>
+      <p>Let's upgrade our todos to be objects with text and completion status, and display them properly.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div @if="todos.length === 0" class="empty-state"&gt;
+    &lt;p&gt;No todos yet. Add one above!&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
+    &lt;li @for="todo in todos" class="todo-item"&gt;
+      &lt;span @text="todo.text"&gt;&lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
 
-<!-- Edit Mode -->
-<input @if="editingId === todo.id" 
-       @model="editingText" 
-       @blur="todo.text = editingText; editingId = null"></no></code></pre>
-    </div>
-
-    <div class="step-explanation">
-      <p><strong>@blur</strong> triggers when an input loses focus, perfect for saving edits.</p>
-      <p><strong>@focus</strong> triggers when an element gains focus, useful for selecting text.</p>
-      <p>We use <code>editingId</code> to track which todo is being edited.</p>
-    </div>
-  </div>
-
-  <!-- Step 7: Bulk Actions -->
-  <div class="tutorial-step" @show="currentStep === 7">
-    <div class="step-header">
-      <span class="step-number">7</span>
-      <h3>Bulk Actions</h3>
-    </div>
-    <p class="step-description">
-      Add bulk actions like "Mark All Complete" and "Clear Completed" using array methods.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container">
-        <div class="todo-form">
-          <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
-            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
-        </div>
-
-        <div class="bulk-actions" @if="todos.length">
-          <button @click="todos.forEach(t => t.completed = true)" @class="{disabled: todos.every(t => t.completed)}"
-            class="btn btn-outline">Mark All Complete</button>
-          <button @click="todos.forEach(t => t.completed = false)" @class="{disabled: todos.every(t => !t.completed)}"
-            class="btn btn-outline">Mark All Active</button>
-          <button @click="todos = todos.filter(t => !t.completed)" @class="{disabled: !todos.some(t => t.completed)}"
-            class="btn btn-warning">Clear Completed</button>
-        </div>
-
-        <div class="todo-list" @if="todos.length">
-          <div @for="todo in todos" @key="todo.id" class="todo-item">
-            <input type="checkbox" @model="todo.completed" class="todo-checkbox">
-            <span @text="todo.text" @class="{completed: todo.completed}" class="todo-text"></span>
-            <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": false}]}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <div @if="todos.length === 0" class="empty-state">
+              <p>No todos yet. Add one above!</p>
+            </div>
+            <ul @if="todos.length > 0" class="todo-list">
+              <li @for="todo in todos" class="todo-item">
+                <span @text="todo.text"></span>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <div class="todo-summary" @if="todos.length">
-          <p>Total: <strong @text="todos.length"></strong> |
-            Active: <strong @text="todos.filter(t => !t.completed).length"></strong> |
-            Completed: <strong @text="todos.filter(t => t.completed).length"></strong></p>
-        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><button @click="todos.forEach(t => t.completed = true)" 
-        @class="{disabled: todos.every(t => t.completed)}">
-  Mark All Complete
-</button>
+    <!-- Step 6: Interactive Checkboxes -->
+    <section @show="currentStep === 6" class="tutorial-step">
+      <h2>Step 6: Interactive Checkboxes</h2>
+      <p>Let's add checkboxes to mark todos as completed using two-way data binding.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-stats"&gt;
+    &lt;span @text="todos.filter(t =&gt; !t.completed).length"&gt;&lt;/span&gt; active
+    &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
+  &lt;/div&gt;
+  &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
+    &lt;li @for="todo in todos" class="todo-item"&gt;
+      &lt;label class="todo-checkbox-label"&gt;
+        &lt;input type="checkbox" @model="todo.completed"&gt;
+        &lt;span @text="todo.text"&gt;&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
 
-<button @click="todos = todos.filter(t => !t.completed)" 
-        @class="{disabled: !todos.some(t => t.completed)}">
-  Clear Completed
-</button></no></code></pre>
-    </div>
-
-    <div class="step-explanation">
-      <p><strong>forEach()</strong> executes a function for each array element.</p>
-      <p><strong>every()</strong> returns true if all elements pass a test.</p>
-      <p><strong>some()</strong> returns true if at least one element passes a test.</p>
-    </div>
-  </div>
-
-  <!-- Step 8: Local Storage -->
-  <div class="tutorial-step" @show="currentStep === 8">
-    <div class="step-header">
-      <span class="step-number">8</span>
-      <h3>Persistence with @watch</h3>
-    </div>
-    <p class="step-description">
-      Save todos to localStorage and load them on page refresh using <code>@watch</code>.
-    </p>
-
-    <div class="live-demo">
-      <h4>🎯 Live Demo</h4>
-      <div class="demo-container" @watch="todos => localStorage.setItem('ayisha-todos', JSON.stringify(todos))">
-        <div class="todo-form">
-          <input @model="newTodo" placeholder="What needs to be done?" class="todo-input">
-          <button @click="todos.push({id: Date.now(), text: newTodo, completed: false}); newTodo = ''"
-            @class="{disabled: !newTodo.trim()}" class="btn btn-primary">Add Todo</button>
-        </div>
-
-        <div class="storage-info">
-          <p>✅ Your todos are automatically saved to localStorage!</p>
-          <button @click="localStorage.removeItem('ayisha-todos'); todos = []" class="btn btn-warning btn-sm">Clear
-            Storage</button>
-        </div>
-
-        <div class="todo-list" @if="todos.length">
-          <div @for="todo in todos" @key="todo.id" class="todo-item">
-            <input type="checkbox" @model="todo.completed" class="todo-checkbox">
-            <span @text="todo.text" @class="{completed: todo.completed}" class="todo-text"></span>
-            <button @click="todos = todos.filter(t => t.id !== todo.id)" class="btn btn-danger btn-sm">Delete</button>
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <div class="todo-stats">
+              <span @text="todos.filter(t => !t.completed).length"></span> active
+              <span @text="todos.filter(t => t.completed).length"></span> completed
+            </div>
+            <ul @if="todos.length > 0" class="todo-list">
+              <li @for="todo in todos" class="todo-item">
+                <label class="todo-checkbox-label">
+                  <input type="checkbox" @model="todo.completed">
+                  <span @text="todo.text"></span>
+                </label>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <p @if="!todos.length" class="empty-state">No todos found. Add some above or they'll be loaded from storage on
-          page refresh!</p>
       </div>
-    </div>
+    </section>
 
-    <div class="code-example">
-      <h4>📋 Code</h4>
-      <pre><code><no><!-- Watch for changes and save to localStorage -->
-<div @watch="todos => localStorage.setItem('ayisha-todos', JSON.stringify(todos))">
-  <!-- todo app content -->
-</div>
-
-<!-- In <init> block -->
-<init>
-  // Load todos from localStorage on startup
-  const savedTodos = localStorage.getItem('ayisha-todos');
-  todos = savedTodos ? JSON.parse(savedTodos) : [];
-</init></no></code></pre>
-    </div>
-
-    <div class="step-explanation">
-      <p><strong>@watch</strong> executes code whenever the watched value changes.</p>
-      <p><strong>localStorage</strong> provides persistent storage in the browser.</p>
-      <p><strong>JSON.stringify/parse</strong> converts objects to/from JSON strings.</p>
-    </div>
-  </div>
-
-
-
-  <!-- Completion -->
-  <div class="tutorial-completion" @show="currentStep === 8">
-    <div class="completion-card">
-      <h3>🎉 Congratulations!</h3>
-      <p>You've built a complete Todo application using Ayisha.js! You've learned:</p>
-      <ul>
-        <li>✅ Two-way data binding with <code>@model</code></li>
-        <li>✅ Event handling with <code>@click</code>, <code>@blur</code>, <code>@focus</code></li>
-        <li>✅ Conditional rendering with <code>@if</code> and <code>@show</code></li>
-        <li>✅ List rendering with <code>@for</code> and <code>@key</code></li>
-        <li>✅ Dynamic styling with <code>@class</code></li>
-        <li>✅ Data persistence with <code>@watch</code></li>
-        <li>✅ Array manipulation and filtering</li>
-        <li>✅ State management patterns</li>
-      </ul>
-      <div class="next-steps">
-        <h4>What's Next?</h4>
-        <button @click="selectedTutorial = 'weather'" class="btn btn-primary">Try Weather App Tutorial</button>
-        <button @click="selectedTutorial = null; currentStep = 1" class="btn btn-outline">Choose Another
-          Tutorial</button>
+    <!-- Step 7: Dynamic Styling with @style -->
+    <section @show="currentStep === 7" class="tutorial-step">
+      <h2>Step 7: Dynamic Styling with @style</h2>
+      <p>Let's add dynamic styling to show completed todos with different appearance using the <code>@style</code> directive.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-stats"&gt;
+    &lt;span @text="todos.filter(t =&gt; !t.completed).length"&gt;&lt;/span&gt; active
+    &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
+  &lt;/div&gt;
+  &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
+    &lt;li @for="todo in todos" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}"&gt;
+      &lt;label class="todo-checkbox-label"&gt;
+        &lt;input type="checkbox" @model="todo.completed"&gt;
+        &lt;span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"&gt;&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
       </div>
+
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <div class="todo-stats">
+              <span @text="todos.filter(t => !t.completed).length"></span> active
+              <span @text="todos.filter(t => t.completed).length"></span> completed
+            </div>
+            <ul @if="todos.length > 0" class="todo-list">
+              <li @for="todo in todos" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
+                <label class="todo-checkbox-label">
+                  <input type="checkbox" @model="todo.completed">
+                  <span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"></span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 8: Filtering Lists with @show -->
+    <section @show="currentStep === 8" class="tutorial-step">
+      <h2>Step 8: Filtering Lists with @show</h2>
+      <p>Let's add filtering functionality to show all, active, or completed todos using the <code>@show</code> directive.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-stats"&gt;
+    &lt;span @text="todos.filter(t =&gt; !t.completed).length"&gt;&lt;/span&gt; active
+    &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
+  &lt;/div&gt;
+  &lt;div class="todo-filters"&gt;
+    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
+    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
+    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
+    &lt;li @for="todo in todos" @show="filter === 'all' || (filter === 'active' &amp;&amp; !todo.completed) || (filter === 'completed' &amp;&amp; todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}"&gt;
+      &lt;label class="todo-checkbox-label"&gt;
+        &lt;input type="checkbox" @model="todo.completed"&gt;
+        &lt;span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"&gt;&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <div class="todo-stats">
+              <span @text="todos.filter(t => !t.completed).length"></span> active
+              <span @text="todos.filter(t => t.completed).length"></span> completed
+            </div>
+            <div class="todo-filters">
+              <button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+              <button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+              <button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+            </div>
+            <ul @if="todos.length > 0" class="todo-list">
+              <li @for="todo in todos" @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
+                <label class="todo-checkbox-label">
+                  <input type="checkbox" @model="todo.completed">
+                  <span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"></span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 9: Deleting Individual Items -->
+    <section @show="currentStep === 9" class="tutorial-step">
+      <h2>Step 9: Deleting Individual Items</h2>
+      <p>Let's add the ability to delete individual todos with a delete button for each item.</p>
+      
+      <div class="code-example">
+        <h3>Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-stats"&gt;
+    &lt;span @text="todos.filter(t =&gt; !t.completed).length"&gt;&lt;/span&gt; active
+    &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
+  &lt;/div&gt;
+  &lt;div class="todo-filters"&gt;
+    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
+    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
+    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
+    &lt;li @for="todo in todos" @show="filter === 'all' || (filter === 'active' &amp;&amp; !todo.completed) || (filter === 'completed' &amp;&amp; todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}"&gt;
+      &lt;label class="todo-checkbox-label"&gt;
+        &lt;input type="checkbox" @model="todo.completed"&gt;
+        &lt;span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"&gt;&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;button @click="todos.splice(todos.indexOf(todo), 1)" class="todo-delete-btn"&gt;×&lt;/button&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <div class="live-demo">
+        <h3>Live Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <div class="todo-stats">
+              <span @text="todos.filter(t => !t.completed).length"></span> active
+              <span @text="todos.filter(t => t.completed).length"></span> completed
+            </div>
+            <div class="todo-filters">
+              <button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+              <button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+              <button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+            </div>
+            <ul @if="todos.length > 0" class="todo-list">
+              <li @for="todo in todos" @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
+                <label class="todo-checkbox-label">
+                  <input type="checkbox" @model="todo.completed">
+                  <span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"></span>
+                </label>
+                <button @click="todos.splice(todos.indexOf(todo), 1)" class="todo-delete-btn">×</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 10: Complete Todo App -->
+    <section @show="currentStep === 10" class="tutorial-step">
+      <h2>Step 10: Complete Todo App</h2>
+      <p>Congratulations! You've built a complete todo application with all the essential features. Here's the final version with all functionality combined.</p>
+      
+      <div class="code-example">
+        <h3>Complete Code:</h3>
+        <pre><code>&lt;div class="todo-app-container"&gt;
+  &lt;div class="todo-header"&gt;
+    &lt;h2&gt;My Todo App&lt;/h2&gt;
+    &lt;p&gt;Built with Ayisha.js&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-input-section"&gt;
+    &lt;input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?"&gt;
+    &lt;div class="todo-buttons"&gt;
+      &lt;button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn"&gt;Add Todo&lt;/button&gt;
+      &lt;button @click="todos = []" class="todo-btn todo-btn-secondary"&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="todo-stats"&gt;
+    &lt;span @text="todos.filter(t =&gt; !t.completed).length"&gt;&lt;/span&gt; active
+    &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
+  &lt;/div&gt;
+  &lt;div class="todo-filters"&gt;
+    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
+    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
+    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div @if="todos.length === 0" class="empty-state"&gt;
+    &lt;p&gt;No todos yet. Add one above!&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
+    &lt;li @for="todo in todos" @show="filter === 'all' || (filter === 'active' &amp;&amp; !todo.completed) || (filter === 'completed' &amp;&amp; todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}"&gt;
+      &lt;label class="todo-checkbox-label"&gt;
+        &lt;input type="checkbox" @model="todo.completed"&gt;
+        &lt;span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"&gt;&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;button @click="todos.splice(todos.indexOf(todo), 1)" class="todo-delete-btn"&gt;×&lt;/button&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <div class="live-demo">
+        <h3>Final Demo:</h3>
+        <div class="hello-inline" data-state='{"newTodo": "", "filter": "all", "todos": [{"text": "Learn Ayisha.js", "completed": false}, {"text": "Build a todo app", "completed": true}, {"text": "Deploy the app", "completed": false}]}'>
+          <div class="todo-app-container">
+            <div class="todo-header">
+              <h2>My Todo App</h2>
+              <p>Built with Ayisha.js</p>
+            </div>
+            <div class="todo-input-section">
+              <input type="text" @model="newTodo" class="todo-input" placeholder="What needs to be done?">
+              <div class="todo-buttons">
+                <button @click="todos.push({text: newTodo, completed: false}); newTodo = ''" class="todo-btn">Add Todo</button>
+                <button @click="todos = []" class="todo-btn todo-btn-secondary">Clear All</button>
+              </div>
+            </div>
+            <div class="todo-stats">
+              <span @text="todos.filter(t => !t.completed).length"></span> active
+              <span @text="todos.filter(t => t.completed).length"></span> completed
+            </div>
+            <div class="todo-filters">
+              <button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+              <button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+              <button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+            </div>
+            <div @if="todos.length === 0" class="empty-state">
+              <p>No todos yet. Add one above!</p>
+            </div>
+            <ul @if="todos.length > 0" class="todo-list">
+              <li @for="todo in todos" @show="filter === 'all' || (filter === 'active' && !todo.completed) || (filter === 'completed' && todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}">
+                <label class="todo-checkbox-label">
+                  <input type="checkbox" @model="todo.completed">
+                  <span @text="todo.text" @style="{textDecoration: todo.completed ? 'line-through' : 'none'}"></span>
+                </label>
+                <button @click="todos.splice(todos.indexOf(todo), 1)" class="todo-delete-btn">×</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tutorial-summary">
+        <h3>What You've Learned:</h3>
+        <ul>
+          <li><strong>@model</strong> - Two-way data binding for inputs</li>
+          <li><strong>@click</strong> - Event handling for user interactions</li>
+          <li><strong>@for</strong> - Iterating over arrays to display lists</li>
+          <li><strong>@if/@show</strong> - Conditional rendering and visibility</li>
+          <li><strong>@text</strong> - Dynamic text content</li>
+          <li><strong>@style</strong> - Dynamic styling based on state</li>
+          <li><strong>State Management</strong> - Working with objects and arrays</li>
+          <li><strong>Filtering</strong> - Showing/hiding items based on conditions</li>
+          <li><strong>CRUD Operations</strong> - Create, Read, Update, Delete functionality</li>
+        </ul>
+        <p>You now have a solid foundation in Ayisha.js and can build interactive web applications!</p>
+      </div>
+    </section>
+
+        <!-- Step Navigation -->
+    <div class="step-navigation">
+      <button class="step-nav-btn" @click="currentStep = 1" @style="{backgroundColor: currentStep === 1 ? '#007bff' : '#f8f9fa', color: currentStep === 1 ? 'white' : '#333'}">Step 1</button>
+      <button class="step-nav-btn" @click="currentStep = 2" @style="{backgroundColor: currentStep === 2 ? '#007bff' : '#f8f9fa', color: currentStep === 2 ? 'white' : '#333'}">Step 2</button>
+      <button class="step-nav-btn" @click="currentStep = 3" @style="{backgroundColor: currentStep === 3 ? '#007bff' : '#f8f9fa', color: currentStep === 3 ? 'white' : '#333'}">Step 3</button>
+      <button class="step-nav-btn" @click="currentStep = 4" @style="{backgroundColor: currentStep === 4 ? '#007bff' : '#f8f9fa', color: currentStep === 4 ? 'white' : '#333'}">Step 4</button>
+      <button class="step-nav-btn" @click="currentStep = 5" @style="{backgroundColor: currentStep === 5 ? '#007bff' : '#f8f9fa', color: currentStep === 5 ? 'white' : '#333'}">Step 5</button>
+      <button class="step-nav-btn" @click="currentStep = 6" @style="{backgroundColor: currentStep === 6 ? '#007bff' : '#f8f9fa', color: currentStep === 6 ? 'white' : '#333'}">Step 6</button>
+      <button class="step-nav-btn" @click="currentStep = 7" @style="{backgroundColor: currentStep === 7 ? '#007bff' : '#f8f9fa', color: currentStep === 7 ? 'white' : '#333'}">Step 7</button>
+      <button class="step-nav-btn" @click="currentStep = 8" @style="{backgroundColor: currentStep === 8 ? '#007bff' : '#f8f9fa', color: currentStep === 8 ? 'white' : '#333'}">Step 8</button>
+      <button class="step-nav-btn" @click="currentStep = 9" @style="{backgroundColor: currentStep === 9 ? '#007bff' : '#f8f9fa', color: currentStep === 9 ? 'white' : '#333'}">Step 9</button>
+      <button class="step-nav-btn" @click="currentStep = 10" @style="{backgroundColor: currentStep === 10 ? '#007bff' : '#f8f9fa', color: currentStep === 10 ? 'white' : '#333'}">Step 10</button>
     </div>
+    
   </div>
-
-      <component @src="components/step-progress.html"></component>
-
-
-</section>

@@ -1,0 +1,11 @@
+
+  <component @src="/components/tutorials/todo-tutorial.html" @show="_params[0]=='todo'"></component>
+  <component @src="../components/tutorials/weather-tutorial.html" @show="selectedTutorial === 'weather'"></component>
+  <component @src="../components/tutorials/blog-tutorial.html" @show="selectedTutorial === 'blog'"></component>
+  <component @src="../components/tutorials/ecommerce-tutorial.html" @show="selectedTutorial === 'ecommerce'"></component>
+  <component @src="../components/tutorials/dashboard-tutorial.html" @show="selectedTutorial === 'dashboard'"></component>
+
+  <!-- Back to Selection Button -->
+  <div class="tutorial-navigation">
+    <button class="btn btn-secondary" @link="tutorials">← Back to Tutorials</button>
+  </div>
