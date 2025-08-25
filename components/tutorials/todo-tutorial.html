@@ -427,9 +427,9 @@
     &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
   &lt;/div&gt;
   &lt;div class="todo-filters"&gt;
-    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
-    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
-    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
+    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#ffc107' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
+    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#ffc107' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
+    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#ffc107' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
   &lt;/div&gt;
   &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
     &lt;li @for="todo in todos" @show="filter === 'all' || (filter === 'active' &amp;&amp; !todo.completed) || (filter === 'completed' &amp;&amp; todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}"&gt;
@@ -465,11 +465,11 @@
             </div>
             <div class="todo-filters">
               <button @click="filter = 'all'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+                @style="{backgroundColor: filter === 'all' ? '#ffc107' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
               <button @click="filter = 'active'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+                @style="{backgroundColor: filter === 'active' ? '#ffc107' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
               <button @click="filter = 'completed'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+                @style="{backgroundColor: filter === 'completed' ? '#ffc107' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
             </div>
             <ul @if="todos.length > 0" class="todo-list">
               <li @for="todo in todos"
@@ -510,9 +510,9 @@
     &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
   &lt;/div&gt;
   &lt;div class="todo-filters"&gt;
-    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
-    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
-    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
+    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#ffc107' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
+    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#ffc107' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
+    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#ffc107' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
   &lt;/div&gt;
   &lt;ul @if="todos.length &gt; 0" class="todo-list"&gt;
     &lt;li @for="todo in todos" @show="filter === 'all' || (filter === 'active' &amp;&amp; !todo.completed) || (filter === 'completed' &amp;&amp; todo.completed)" class="todo-item" @style="{opacity: todo.completed ? 0.6 : 1}"&gt;
@@ -549,11 +549,11 @@
             </div>
             <div class="todo-filters">
               <button @click="filter = 'all'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+                @style="{backgroundColor: filter === 'all' ? '#ffc107' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
               <button @click="filter = 'active'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+                @style="{backgroundColor: filter === 'active' ? '#ffc107' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
               <button @click="filter = 'completed'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+                @style="{backgroundColor: filter === 'completed' ? '#ffc107' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
             </div>
             <ul @if="todos.length > 0" class="todo-list">
               <li @for="todo in todos"
@@ -596,9 +596,9 @@
     &lt;span @text="todos.filter(t =&gt; t.completed).length"&gt;&lt;/span&gt; completed
   &lt;/div&gt;
   &lt;div class="todo-filters"&gt;
-    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
-    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
-    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
+    &lt;button @click="filter = 'all'" class="todo-filter-btn" @style="{backgroundColor: filter === 'all' ? '#ffc107' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}"&gt;All&lt;/button&gt;
+    &lt;button @click="filter = 'active'" class="todo-filter-btn" @style="{backgroundColor: filter === 'active' ? '#ffc107' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}"&gt;Active&lt;/button&gt;
+    &lt;button @click="filter = 'completed'" class="todo-filter-btn" @style="{backgroundColor: filter === 'completed' ? '#ffc107' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}"&gt;Completed&lt;/button&gt;
   &lt;/div&gt;
   &lt;div @if="todos.length === 0" class="empty-state"&gt;
     &lt;p&gt;No todos yet. Add one above!&lt;/p&gt;
@@ -638,11 +638,11 @@
             </div>
             <div class="todo-filters">
               <button @click="filter = 'all'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
+                @style="{backgroundColor: filter === 'all' ? '#ffc107' : '#f8f9fa', color: filter === 'all' ? 'white' : '#333'}">All</button>
               <button @click="filter = 'active'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'active' ? '#007bff' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
+                @style="{backgroundColor: filter === 'active' ? '#ffc107' : '#f8f9fa', color: filter === 'active' ? 'white' : '#333'}">Active</button>
               <button @click="filter = 'completed'" class="todo-filter-btn"
-                @style="{backgroundColor: filter === 'completed' ? '#007bff' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
+                @style="{backgroundColor: filter === 'completed' ? '#ffc107' : '#f8f9fa', color: filter === 'completed' ? 'white' : '#333'}">Completed</button>
             </div>
             <div @if="todos.length === 0" class="empty-state">
               <p>No todos yet. Add one above!</p>
@@ -681,42 +681,38 @@
 
     <!-- Step Navigation -->
     <div class="step-navigation">
-      <button class="step-nav-btn" @click="currentStep = 1"
-        @style="{backgroundColor: currentStep === 1 ? '#007bff' : '#f8f9fa', color: currentStep === 1 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 1"
+        @style="{backgroundColor: currentStep === 1 ? '#ffc107' : '#f8f9fa', color: currentStep === 1 ? 'white' : '#333'}">Step
         1</button>
-      <button class="step-nav-btn" @click="currentStep = 2"
-        @style="{backgroundColor: currentStep === 2 ? '#007bff' : '#f8f9fa', color: currentStep === 2 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 2"
+        @style="{backgroundColor: currentStep === 2 ? '#ffc107' : '#f8f9fa', color: currentStep === 2 ? 'white' : '#333'}">Step
         2</button>
-      <button class="step-nav-btn" @click="currentStep = 3"
-        @style="{backgroundColor: currentStep === 3 ? '#007bff' : '#f8f9fa', color: currentStep === 3 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 3"
+        @style="{backgroundColor: currentStep === 3 ? '#ffc107' : '#f8f9fa', color: currentStep === 3 ? 'white' : '#333'}">Step
         3</button>
-      <button class="step-nav-btn" @click="currentStep = 4"
-        @style="{backgroundColor: currentStep === 4 ? '#007bff' : '#f8f9fa', color: currentStep === 4 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 4"
+        @style="{backgroundColor: currentStep === 4 ? '#ffc107' : '#f8f9fa', color: currentStep === 4 ? 'white' : '#333'}">Step
         4</button>
-      <button class="step-nav-btn" @click="currentStep = 5"
-        @style="{backgroundColor: currentStep === 5 ? '#007bff' : '#f8f9fa', color: currentStep === 5 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 5"
+        @style="{backgroundColor: currentStep === 5 ? '#ffc107' : '#f8f9fa', color: currentStep === 5 ? 'white' : '#333'}">Step
         5</button>
-      <button class="step-nav-btn" @click="currentStep = 6"
-        @style="{backgroundColor: currentStep === 6 ? '#007bff' : '#f8f9fa', color: currentStep === 6 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 6"
+        @style="{backgroundColor: currentStep === 6 ? '#ffc107' : '#f8f9fa', color: currentStep === 6 ? 'white' : '#333'}">Step
         6</button>
-      <button class="step-nav-btn" @click="currentStep = 7"
-        @style="{backgroundColor: currentStep === 7 ? '#007bff' : '#f8f9fa', color: currentStep === 7 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 7"
+        @style="{backgroundColor: currentStep === 7 ? '#ffc107' : '#f8f9fa', color: currentStep === 7 ? 'white' : '#333'}">Step
         7</button>
-      <button class="step-nav-btn" @click="currentStep = 8"
-        @style="{backgroundColor: currentStep === 8 ? '#007bff' : '#f8f9fa', color: currentStep === 8 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 8"
+        @style="{backgroundColor: currentStep === 8 ? '#ffc107' : '#f8f9fa', color: currentStep === 8 ? 'white' : '#333'}">Step
         8</button>
-      <button class="step-nav-btn" @click="currentStep = 9"
-        @style="{backgroundColor: currentStep === 9 ? '#007bff' : '#f8f9fa', color: currentStep === 9 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 9"
+        @style="{backgroundColor: currentStep === 9 ? '#ffc107' : '#f8f9fa', color: currentStep === 9 ? 'white' : '#333'}">Step
         9</button>
-      <button class="step-nav-btn" @click="currentStep = 10"
-        @style="{backgroundColor: currentStep === 10 ? '#007bff' : '#f8f9fa', color: currentStep === 10 ? 'white' : '#333'}">Step
+      <button class="cta" @click="currentStep = 10"
+        @style="{backgroundColor: currentStep === 10 ? '#ffc107' : '#f8f9fa', color: currentStep === 10 ? 'white' : '#333'}">Step
         10</button>
     </div>
 
   </div>
-
-  <nav class="page-nav">
-    <a @link="tutorials">← Back to tutorials</a>
-  </nav>
 
 </main>
